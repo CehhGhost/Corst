@@ -1,4 +1,4 @@
-package spring.crut.context.models;
+package spring.crut.content.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

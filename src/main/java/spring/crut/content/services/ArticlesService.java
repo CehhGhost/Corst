@@ -1,9 +1,9 @@
-package spring.crut.context.services;
+package spring.crut.content.services;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import spring.crut.context.models.Article;
-import spring.crut.context.repositories.ArticlesRepository;
+import spring.crut.content.models.Article;
+import spring.crut.content.repositories.ArticlesRepository;
 import java.sql.Timestamp;
 
 import java.util.Optional;

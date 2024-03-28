@@ -17,13 +17,13 @@ public class RolesService {
     private final RolesRepository rolesRepository;
     private final AuthoritiesRepository authoritiesRepository;
 
-    public void setAuthorities(Integer id, List<String> authorities) {
+    public void setAuthorities(Integer id, List<Authority> authorities) {
         var role = rolesRepository.findById(id);
         if (role.isEmpty()) {
             throw new IllegalArgumentException("There is no such role");
         }
         for (var authority : authorities) {
-            var actualAuthority = authoritiesRepository.findByName(authority);
+            var actualAuthority = authoritiesRepository.findByName(authority.getName());
             if (actualAuthority.isEmpty()) {
                 throw new IllegalArgumentException("There is no such authority");
             }
@@ -32,15 +32,13 @@ public class RolesService {
         rolesRepository.save(role.get());
     }
 
-    public void createRole(RoleDTO roleDTO) {
-        if (rolesRepository.findByName(roleDTO.getName()).isPresent()) {
+    public void createRole(Role role) {
+        if (rolesRepository.findByName(role.getName()).isPresent()) {
             throw new IllegalArgumentException("This role is already existing");
         }
-        Role role = new Role();
-        role.setName(roleDTO.getName());
         List<Authority> authorities = new ArrayList<>();
-        for (var authority : roleDTO.getAuthorities()) {
-            var actualAuthority = authoritiesRepository.findByName(authority);
+        for (var authority : role.getAuthorities()) {
+            var actualAuthority = authoritiesRepository.findByName(authority.getName());
             if (actualAuthority.isEmpty()) {
                 throw new IllegalArgumentException("There is no such authority");
             }
@@ -48,5 +46,20 @@ public class RolesService {
         }
         role.setAuthorities(authorities);
         rolesRepository.save(role);
+    }
+
+    public void deleteRole(Integer id) {
+        var role = rolesRepository.findById(id);
+        if (role.isEmpty()) {
+            throw new IllegalArgumentException("There is no such role");
+        }
+        for (var user : role.get().getUsers()) {
+            user.setRole(null);
+        }
+        rolesRepository.delete(role.get());
+    }
+
+    public List<Role> getAllRoles() {
+        return rolesRepository.findAll();
     }
 }

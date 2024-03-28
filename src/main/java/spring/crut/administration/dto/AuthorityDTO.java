@@ -4,12 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleDTO {
+public class AuthorityDTO {
     private String name;
-    private List<AuthorityDTO> authorities;
 }

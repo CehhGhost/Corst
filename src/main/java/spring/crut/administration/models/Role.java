@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
-
+// TODO подумать насчет неизменяемости и уникальности роли админа
 @Entity
 @Data
 @NoArgsConstructor
@@ -21,9 +21,12 @@ public class Role {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "_roles_authorities",
             joinColumns = @JoinColumn(name = "roles_id"),
             inverseJoinColumns = @JoinColumn(name = "authorities_id"))
     private List<Authority> authorities;
+
+    @OneToMany
+    private List<User> users;
 }

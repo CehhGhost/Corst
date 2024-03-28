@@ -1,4 +1,4 @@
-package spring.crut.context.controllers;
+package spring.crut.content.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -8,9 +8,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import spring.crut.administration.security.CrutUserDetails;
-import spring.crut.context.dto.ArticleDTO;
-import spring.crut.context.models.Article;
-import spring.crut.context.services.ArticlesService;
+import spring.crut.content.dto.ArticleDTO;
+import spring.crut.content.models.Article;
+import spring.crut.content.services.ArticlesService;
 
 @RestController
 @RequiredArgsConstructor

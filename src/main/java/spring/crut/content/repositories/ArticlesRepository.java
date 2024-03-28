@@ -1,11 +1,8 @@
-package spring.crut.context.repositories;
+package spring.crut.content.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import spring.crut.administration.models.User;
-import spring.crut.context.models.Article;
-
-import java.util.Optional;
+import spring.crut.content.models.Article;
 
 @Repository
 public interface ArticlesRepository extends JpaRepository<Article, Integer> {
