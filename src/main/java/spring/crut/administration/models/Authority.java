@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -18,4 +19,10 @@ public class Authority {
     private Integer id;
 
     private String name;
+
+    @ManyToMany
+    @JoinTable(name = "_roles_authorities",
+            joinColumns = @JoinColumn(name = "roles_id"),
+            inverseJoinColumns = @JoinColumn(name = "authorities_id"))
+    private List<Role> roles;
 }

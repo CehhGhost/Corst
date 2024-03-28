@@ -1,11 +1,14 @@
 package spring.crut.administration.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import spring.crut.administration.models.User;
+import spring.crut.administration.services.CrutUserDetailsService;
+import spring.crut.administration.services.UsersService;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,21 +18,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CrutUserDetails implements UserDetails {
 
+    private final CrutUserDetailsService crutUserDetailsService;
     private final User user;
 
     @Override
-    @Transactional
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        var role = this.user.getRole();
-        if (role == null) {
-            return Collections.singletonList(new SimpleGrantedAuthority("NO_AUTHORITIES"));
-        }
-        var rolesAuthorities = role.getAuthorities();
-        for (var authority : rolesAuthorities) {
-            authorities.add(new SimpleGrantedAuthority(authority.getName()));
-        }
-        return authorities;
+        return crutUserDetailsService.getAuthorities(this.user);
     }
 
     @Override

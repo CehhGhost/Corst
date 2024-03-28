@@ -30,8 +30,8 @@ public class SentencesService {
             sentence.setTokens(new ArrayList<>());
             sentence = sentencesRepository.save(sentence);
             document.getSentences().add(sentence);
-            documentsRepository.save(document);
             tokensService.createTokens(sentenceDTO.getTokens(), sentence);
+            documentsRepository.save(document);
         }
     }
 

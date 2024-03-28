@@ -35,8 +35,4 @@ public class Token {
     @ManyToOne
     @JoinColumn(name = "sentence_id", referencedColumnName = "id", nullable = false)
     private Sentence sentence;
-
-    @ManyToOne
-    @JoinColumn(name = "document_id", referencedColumnName = "id", nullable = false)
-    private Document document;
 }

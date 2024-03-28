@@ -1,6 +1,9 @@
 package spring.crut;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hibernate.SessionFactory;
+import org.hibernate.engine.spi.SessionFactoryDelegatingImpl;
+import org.hibernate.internal.SessionFactoryImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

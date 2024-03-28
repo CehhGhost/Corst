@@ -31,9 +31,13 @@ public class DocumentsController {
         var document = modelMapper.map(documentDTO, Document.class);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CrutUserDetails userDetails = (CrutUserDetails) authentication.getPrincipal();
-        document.setSentences(new ArrayList<>());
         document.setOwner(userDetails.getUser());
         documentsService.createDocument(document);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<HttpStatus> deleteDocument(@PathVariable Integer id) {
+        documentsService.deleteDocument(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @GetMapping("/search/certain")

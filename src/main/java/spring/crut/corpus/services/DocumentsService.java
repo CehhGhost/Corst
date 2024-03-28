@@ -28,6 +28,7 @@ public class DocumentsService {
     private final ModelMapper modelMapper;
     @Transactional
     public void createDocument(Document document) {
+        document.setSentences(new ArrayList<>());
         document.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         document.setStatus(0);
         document = documentsRepository.save(document);
@@ -61,6 +62,13 @@ public class DocumentsService {
             }
         }
         return specifiedDocuments;
+    }
+
+    public void deleteDocument(Integer id) {
+        if (!documentsRepository.existsById(id)) {
+            throw new IllegalArgumentException("No such document with that id!");
+        }
+        documentsRepository.deleteById(id);
     }
 
     public static class SentenceResponse {

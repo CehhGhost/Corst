@@ -2,6 +2,7 @@ package spring.crut.administration.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import spring.crut.administration.dto.RoleDTO;
 import spring.crut.administration.models.Authority;
 import spring.crut.administration.models.Role;
@@ -61,5 +62,10 @@ public class RolesService {
 
     public List<Role> getAllRoles() {
         return rolesRepository.findAll();
+    }
+
+    @Transactional
+    public Role getRoleWithAuthorities(Integer id) {
+        return rolesRepository.findByIdWithAuthorities(id).orElseThrow(() -> new RuntimeException("Role not found"));
     }
 }

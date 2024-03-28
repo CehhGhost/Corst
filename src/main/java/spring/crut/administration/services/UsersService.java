@@ -1,13 +1,19 @@
 package spring.crut.administration.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import spring.crut.administration.models.Role;
 import spring.crut.administration.models.User;
 import spring.crut.administration.repositories.RolesRepository;
 import spring.crut.administration.repositories.UsersRepository;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor

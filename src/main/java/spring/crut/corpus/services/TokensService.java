@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import spring.crut.corpus.dto.TokenDTO;
+import spring.crut.corpus.models.Document;
 import spring.crut.corpus.models.Sentence;
 import spring.crut.corpus.models.Token;
 import spring.crut.corpus.repositories.TokensRepository;
@@ -16,6 +18,7 @@ import java.util.List;
 public class TokensService {
     private final TokensRepository tokensRepository;
     private final ObjectMapper objectMapper;
+    @Transactional
     public void createTokens(List<TokenDTO> tokenDTOList, Sentence sentence) {
         for (var tokenDTO : tokenDTOList) {
             Token token = new Token();
@@ -29,7 +32,6 @@ public class TokensService {
                 throw new RuntimeException(e);
             }
             token.setSentence(sentence);
-            token.setDocument(sentence.getDocument());
             tokensRepository.save(token);
             sentence.getTokens().add(token);
         }
