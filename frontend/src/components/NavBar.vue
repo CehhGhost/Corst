@@ -45,8 +45,12 @@
         to="/statistics"
         active-class="text-white"
         class="text-white"
+        style="margin-right: 1%"
       >
         Statistics
+      </q-btn>
+      <q-btn flat dense to="/help" active-class="text-white" class="text-white">
+        Help
       </q-btn>
       <q-space />
       <div>
