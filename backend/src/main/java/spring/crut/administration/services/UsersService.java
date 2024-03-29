@@ -55,4 +55,8 @@ public class UsersService {
         user.get().setPassword(passwordEncoder.encode(newPassword));
         usersRepository.save(user.get());
     }
+
+    public List<User> getAllUsers() {
+        return usersRepository.findAll();
+    }
 }
