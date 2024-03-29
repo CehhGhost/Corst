@@ -10,6 +10,7 @@ import spring.crut.administration.dto.RoleDTO;
 import spring.crut.administration.dto.UserDTO;
 import spring.crut.administration.models.Role;
 import spring.crut.administration.models.User;
+import spring.crut.administration.repositories.UsersRepository;
 import spring.crut.administration.services.UsersService;
 
 import java.util.ArrayList;
@@ -23,9 +24,13 @@ public class AdminController {
     private final UsersService usersService;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
+    private final UsersRepository usersRepository;
 
     @PostMapping("/register")
-    public ResponseEntity<HttpStatus> registerUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
+        if (usersRepository.existsUserByUsername(userDTO.getUsername())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This username is already existed");
+        }
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         var user = modelMapper.map(userDTO, User.class);
         usersService.createUser(user);

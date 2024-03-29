@@ -16,9 +16,11 @@ public class JWTUtil {
 
     @Value("${jwt_secret}")
     private String secret;
+    @Value("${jwt_expirationDate}")
+    private Integer expirationMinutes;
 
     public String generateToken(String username) {
-        Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(60).toInstant());
+        Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(expirationMinutes).toInstant());
 
         return JWT.create()
                 .withSubject("User details")
@@ -31,7 +33,6 @@ public class JWTUtil {
     public String validateTokenAndRetrieveClaim(String token) throws JWTVerificationException {
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret))
                 .withSubject("User details")
-                .withIssuer("alishev")
                 .build();
 
         DecodedJWT jwt = verifier.verify(token);
