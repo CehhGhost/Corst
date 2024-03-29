@@ -7,6 +7,7 @@
       color="primary"
       label="Add news"
       class="button"
+      size="large"
     />
   </div>
 </template>

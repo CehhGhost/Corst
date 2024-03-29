@@ -30,6 +30,33 @@
               </q-form>
             </q-card-section>
           </q-card>
+          <h4></h4>
+          <q-card class="rounded-borders">
+            <q-card-section class="lexgrammSearch">
+              <h3 class="text-h6">Lexgramm Search</h3>
+              <q-form @submit="lexgrammSearch" class="q-gutter-md">
+                <div class="row q-gutter-md items-center">
+                  <div class="col">
+                    <q-input
+                      v-model="exactSearchInput"
+                      placeholder="Lexgramm Search"
+                      outlined
+                    />
+                  </div>
+                  <div class="col-auto">
+                    <q-btn
+                      type="submit"
+                      icon="search"
+                      color="primary"
+                      label="Search"
+                      size="large"
+                      dense
+                    />
+                  </div>
+                </div>
+              </q-form>
+            </q-card-section>
+          </q-card>
         </div>
       </div>
     </q-page>
@@ -41,7 +68,17 @@ export default {
   data() {
     return {
       exactSearchInput: "",
-      lexgramBlocks: [],
+      lexgramBlocks: [
+        {
+          wordform: "",
+          partOfSpeech: "",
+          grammar: "",
+          errors: "",
+          additional: false,
+          from: "",
+          to: "",
+        },
+      ],
       showDeleteButton: true,
       displaySettingsModal: false,
       subcorpusModal: false,
@@ -49,20 +86,20 @@ export default {
   },
   methods: {
     exactSearch() {},
+    lexgrammSearch() {},
     addLexgramBlock() {
       this.lexgramBlocks.push({
         wordform: "",
         partOfSpeech: "",
         grammar: "",
         errors: "",
+        additional: true,
+        from: "",
+        to: "",
       });
       if (this.lexgramBlocks.length > 1) {
         this.showDeleteButton = true;
       }
-
-      this.lexgramBlocks.push({
-        customContent: lexgramFormContent,
-      });
     },
     removeBlock(index) {
       this.lexgramBlocks.splice(index, 1);
