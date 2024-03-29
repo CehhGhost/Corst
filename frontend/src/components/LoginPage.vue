@@ -5,7 +5,7 @@
         <q-card class="q-pa-md" :style="{ maxWidth: cardWidth }">
           <q-card-section class="text-h5">Login</q-card-section>
           <q-card-section>
-            <q-form @submit="login">
+            <q-form @submit="fakeLogin">
               <q-input
                 v-model="username"
                 outlined
@@ -29,7 +29,6 @@
                 color="primary"
                 label="Login"
                 dense
-                to="/"
                 class="full-width"
                 style="font-size: 18px; height: 40px"
               />
@@ -58,6 +57,10 @@ export default {
     window.removeEventListener("resize", this.calculateCardWidth);
   },
   methods: {
+    fakeLogin() {
+      console.log("Fake login with username:", this.username);
+      this.$router.push("/");
+    },
     async login() {
       try {
         const response = await fetch("http://localhost:8080/login", {
