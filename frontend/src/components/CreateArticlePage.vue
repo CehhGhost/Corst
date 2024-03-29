@@ -19,8 +19,9 @@
           </q-icon>
         </template>
       </q-input>
-
+      <div class="text-label">Text in Russian:</div>
       <q-editor v-model="russianText" />
+      <div class="text-label">Text in English:</div>
       <q-editor v-model="englishText" />
       <q-btn type="submit" label="Submit" color="primary" class="submit-btn" />
     </q-form>
