@@ -5,23 +5,24 @@
 
     <q-card class="q-mt-md">
       <q-card-section>
-        <q-avatar size="72px" class="q-mr-md">
-          <img src="https://via.placeholder.com/72" alt="Avatar" />
-        </q-avatar>
-        <div>
-          <h2 class="text-lg font-bold">John Doe</h2>
-          <p class="text-md">Software Developer</p>
-        </div>
+        <q-card class="bg-primary text-white">
+          <q-card-section>
+            <h2 class="text-lg">News</h2>
+          </q-card-section>
+          <q-card-section>
+            <p>Some news here...</p>
+          </q-card-section>
+        </q-card>
       </q-card-section>
-
-      <q-separator />
-
       <q-card-section>
-        <h3 class="text-lg font-bold">About Me</h3>
-        <p class="text-md">
-          I am a passionate software developer with experience in Vue.js and
-          Quasar.
-        </p>
+        <q-card class="bg-dark text-white">
+          <q-card-section>
+            <h2 class="text-lg">Events</h2>
+          </q-card-section>
+          <q-card-section>
+            <p>Some events here...</p>
+          </q-card-section>
+        </q-card>
       </q-card-section>
     </q-card>
   </div>
