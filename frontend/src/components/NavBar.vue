@@ -8,7 +8,16 @@
             <router-link to="/">Home</router-link>
         </li>
         <li>
-            <router-link to="/about">About</router-link>
+            <router-link to="/news">News</router-link>
+        </li>
+        <li>
+            <router-link to="/search">Search</router-link>
+        </li>
+        <li>
+            <router-link to="/statistics">Statistics</router-link>
+        </li>
+        <li>
+            <router-link to="/login">Login</router-link>
         </li>
         </ul>
     </nav>
