@@ -10,7 +10,7 @@
             <h2 class="text-lg">News</h2>
           </q-card-section>
           <q-card-section>
-            <p>Some news here...</p>
+            <p>Иван добрый ден</p>
           </q-card-section>
         </q-card>
       </q-card-section>
@@ -20,7 +20,7 @@
             <h2 class="text-lg">Events</h2>
           </q-card-section>
           <q-card-section>
-            <p>Some events here...</p>
+            <p>Собрать датасет</p>
           </q-card-section>
         </q-card>
       </q-card-section>
