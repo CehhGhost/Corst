@@ -5,7 +5,7 @@
         <q-card class="q-pa-md" :style="{ maxWidth: cardWidth }">
           <q-card-section class="text-h5">Login</q-card-section>
           <q-card-section>
-            <q-form @submit="fakeLogin">
+            <q-form @submit="login">
               <q-input
                 v-model="username"
                 outlined
@@ -23,7 +23,6 @@
                 class="q-mb-md"
                 style="font-size: 18px; height: 48px"
               />
-              <!--TODO Add functionality-->
               <q-btn
                 type="submit"
                 color="primary"
@@ -67,7 +66,7 @@ export default {
     },
     async login() {
       try {
-        const formData = new URLSearchParams();
+        let formData = new URLSearchParams();
         formData.append("username", this.username);
         formData.append("password", this.password);
 
@@ -77,12 +76,16 @@ export default {
             "Content-Type": "application/x-www-form-urlencoded",
           },
           body: formData,
+          mode: "no-cors",
         });
         if (response.ok) {
           const data = await response.json();
           console.log("Authentication successful:", data);
+          this.$router.push("/");
         } else {
-          console.error("Authentication failed");
+          alert("Incorrect username or password. Please try again.");
+          console.error("Response:", response);
+          this.password = "";
         }
       } catch (error) {
         console.error("Error during login:", error);

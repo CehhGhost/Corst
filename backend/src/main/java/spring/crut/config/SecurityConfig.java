@@ -29,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
+                .loginPage("http://localhost:9000/login")
                 .loginProcessingUrl("/login")
                 .successHandler(successHandler())
                 .and()

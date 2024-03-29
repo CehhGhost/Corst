@@ -30,7 +30,7 @@
               </q-form>
             </q-card-section>
           </q-card>
-          <h3></h3>
+          <h4></h4>
           <q-card class="rounded-borders">
             <q-card-section class="lexgrammSearch">
               <h3 class="text-h6">Lexgramm Search</h3>
@@ -39,7 +39,7 @@
                   <div class="col">
                     <q-input
                       v-model="exactSearchInput"
-                      placeholder="Exact search"
+                      placeholder="Lexgramm Search"
                       outlined
                     />
                   </div>
@@ -68,7 +68,17 @@ export default {
   data() {
     return {
       exactSearchInput: "",
-      lexgramBlocks: [],
+      lexgramBlocks: [
+        {
+          wordform: "",
+          partOfSpeech: "",
+          grammar: "",
+          errors: "",
+          additional: false,
+          from: "",
+          to: "",
+        },
+      ],
       showDeleteButton: true,
       displaySettingsModal: false,
       subcorpusModal: false,
@@ -83,14 +93,13 @@ export default {
         partOfSpeech: "",
         grammar: "",
         errors: "",
+        additional: true,
+        from: "",
+        to: "",
       });
       if (this.lexgramBlocks.length > 1) {
         this.showDeleteButton = true;
       }
-
-      this.lexgramBlocks.push({
-        customContent: lexgramFormContent,
-      });
     },
     removeBlock(index) {
       this.lexgramBlocks.splice(index, 1);
