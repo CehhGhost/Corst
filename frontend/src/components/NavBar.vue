@@ -1,6 +1,6 @@
 <template>
   <q-layout>
-    <q-header elevated class="bg-secondary text-white">
+    <q-header elevated class="bg-primary text-white">
       <q-toolbar class="row items-center">
         <q-btn flat dense to="/">
           <img
