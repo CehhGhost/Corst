@@ -1,40 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import MainView from '../views/Main.vue'
-import NewsView from '../views/News.vue'
-import SearchView from '../views/Search.vue'
-import LoginView from '../views/Login.vue'
-import StatisticsView from '../views/Statistics.vue'
-
+import { createRouter, createWebHistory } from "vue-router";
+import routes from "./routes"; // Assuming your routes are defined in a separate file
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: MainView
-    },
-    {
-      path: '/news',
-      name: 'news',
-      component: NewsView
-    },
-    {
-      path: '/search',
-      name: 'search',
-      component: SearchView
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: LoginView
-    },
-    {
-      path: '/statistics',
-      name: 'statistics',
-      component: StatisticsView
-    }
-  ]
-})
+  history: createWebHistory(process.env.VUE_ROUTER_BASE),
+  routes,
+});
 
-export default router
+export default router;
