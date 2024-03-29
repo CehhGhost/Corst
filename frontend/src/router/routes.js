@@ -19,6 +19,10 @@ const routes = [
     path: "/statistics",
     component: () => import("../views/StatisticsView.vue"),
   },
+  {
+    path: "/createArticle",
+    component: () => import("../views/CreateArticleView.vue"),
+  },
   // Error route
   {
     path: "/:catchAll(.*)*",

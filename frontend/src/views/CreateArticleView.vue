@@ -1,5 +1,5 @@
 <script setup>
-import NewsPage from "../components/NewsPage.vue";
+import CreateArticle from "../components/CreateArticlePage.vue";
 import NavBar from "../components/NavBar.vue";
 import FooterBar from "../components/FooterBar.vue";
 </script>
@@ -9,7 +9,7 @@ import FooterBar from "../components/FooterBar.vue";
     <q-header>
       <NavBar />
     </q-header>
-    <NewsPage />
+    <CreateArticle />
     <q-footer>
       <FooterBar />
     </q-footer>

@@ -10,7 +10,7 @@
             <h2 class="text-lg">News</h2>
           </q-card-section>
           <q-card-section>
-            <p>Иван добрый ден</p>
+            <p>Разработка идёт. Выполняется.</p>
           </q-card-section>
         </q-card>
       </q-card-section>
