@@ -2,14 +2,26 @@
   <div class="create-article">
     <h2>Create Article</h2>
     <q-form @submit="submitForm" class="form">
-      <q-date
-        minimal
-        v-model="selectedDate"
-        label="Select Date"
-        ref="dateInput"
-      />
-      <q-editor v-model="russianText" label="Text in Russian" />
-      <q-editor v-model="englishText" label="Text in English" />
+      <q-input filled v-model="date" mask="date" :rules="['date']">
+        <template v-slot:append>
+          <q-icon name="event" class="cursor-pointer">
+            <q-popup-proxy
+              cover
+              transition-show="scale"
+              transition-hide="scale"
+            >
+              <q-date minimal v-model="date">
+                <div class="row items-center justify-end">
+                  <q-btn v-close-popup label="Close" color="primary" flat />
+                </div>
+              </q-date>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+      </q-input>
+
+      <q-editor v-model="russianText" />
+      <q-editor v-model="englishText" />
       <q-btn type="submit" label="Submit" color="primary" class="submit-btn" />
     </q-form>
     <h1></h1>
@@ -20,20 +32,15 @@
 export default {
   data() {
     return {
-      selectedDate: new Date().toISOString().substr(0, 10),
+      date: new Date().toISOString().substr(0, 10),
       russianText: "",
       englishText: "",
     };
   },
-  mounted() {
-    this.$nextTick(() => {
-      this.$refs.dateInput.$emit("input", this.selectedDate);
-    });
-  },
   methods: {
     submitForm() {
       console.log("Submitted Data:");
-      console.log("Date:", this.selectedDate);
+      console.log("Date:", this.date);
       console.log("Russian Text:", this.russianText);
       console.log("English Text:", this.englishText);
       // TODO add further processing logic here
@@ -58,11 +65,6 @@ export default {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.q-date,
-.q-editor {
-  margin-bottom: 20px;
 }
 
 .submit-btn {
