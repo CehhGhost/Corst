@@ -1,9 +1,9 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import NavBar from './components/NavBar.vue'
-</script>
-
 <template>
-  <NavBar />
-  <RouterView />
+  <router-view />
 </template>
+
+<script setup>
+defineOptions({
+  name: "App",
+});
+</script>
