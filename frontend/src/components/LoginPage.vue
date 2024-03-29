@@ -31,6 +31,7 @@
                 dense
                 class="full-width"
                 style="font-size: 18px; height: 40px"
+                :disabled="formIsEmpty()"
               />
             </q-form>
           </q-card-section>
@@ -57,21 +58,25 @@ export default {
     window.removeEventListener("resize", this.calculateCardWidth);
   },
   methods: {
+    formIsEmpty() {
+      return this.username === "" || this.password === "";
+    },
     fakeLogin() {
       console.log("Fake login with username:", this.username);
       this.$router.push("/");
     },
     async login() {
       try {
-        const response = await fetch("http://localhost:8080/login", {
+        const formData = new URLSearchParams();
+        formData.append("username", this.username);
+        formData.append("password", this.password);
+
+        const response = await fetch("http://localhost:8081/login", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
           },
-          body: JSON.stringify({
-            username: this.username,
-            password: this.password,
-          }),
+          body: formData,
         });
         if (response.ok) {
           const data = await response.json();
