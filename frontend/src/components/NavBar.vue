@@ -68,6 +68,24 @@
         <q-btn
           flat
           dense
+          to="/demo"
+          active-class="text-white"
+          class="text-white"
+        >
+          Demo annotation
+        </q-btn>
+        <q-btn
+          flat
+          dense
+          to="/documents"
+          active-class="text-white"
+          class="text-white"
+        >
+          All Documents
+        </q-btn>
+        <q-btn
+          flat
+          dense
           active-class="text-white"
           class="text-white"
           @click="Logout()"
