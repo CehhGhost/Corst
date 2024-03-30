@@ -5,11 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class DocumentDTO {
+    private Integer id;
     private String title;
     private String text;
     private String genre;
@@ -20,4 +22,5 @@ public class DocumentDTO {
     private Timestamp createdAt;
     private Integer status;
     private String ownerUsername;
+    private List<SentenceDTO> sentences;
 }
