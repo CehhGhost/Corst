@@ -1,5 +1,7 @@
 package spring.crut.corpus.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -11,12 +13,15 @@ import spring.crut.administration.security.CrutUserDetails;
 import spring.crut.corpus.dto.CreateDocumentDTO;
 import spring.crut.corpus.dto.CertainSearchDTO;
 import spring.crut.corpus.dto.DocumentDTO;
+import spring.crut.corpus.dto.SentenceDTO;
 import spring.crut.corpus.models.Document;
 import spring.crut.corpus.services.DocumentsService;
 import spring.crut.corpus.services.SentencesService;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/documents")
@@ -43,8 +48,7 @@ public class DocumentsController {
     @GetMapping("/search/certain")
     public ResponseEntity<?> certainSearch(@RequestBody CertainSearchDTO certainSearchDTO) {
         List<Document> documents = documentsService.specifySubcorpus(certainSearchDTO);
-        return ResponseEntity.ok(documents.get(0).getText());
-        // return ResponseEntity.ok(sentencesService.getByCertainSearch(documents, certainSearchDTO.getWordform()));
+        return ResponseEntity.ok(sentencesService.getByCertainSearch(documents, certainSearchDTO.getWordform()));
     }
     @GetMapping
     public ResponseEntity<?> getAllDocuments() {
