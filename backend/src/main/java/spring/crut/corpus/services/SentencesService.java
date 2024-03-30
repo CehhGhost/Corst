@@ -1,5 +1,8 @@
 package spring.crut.corpus.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,7 @@ import spring.crut.corpus.repositories.SentencesRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +24,8 @@ public class SentencesService {
     private final SentencesRepository sentencesRepository;
     private final TokensService tokensService;
     private final DocumentsRepository documentsRepository;
+    private final ModelMapper modelMapper;
+    private final ObjectMapper objectMapper;
     @Transactional
     public void createSentences(List<SentenceDTO> sentenceDTOList, Document document) {
         for (var sentenceDTO : sentenceDTOList) {
@@ -36,19 +42,34 @@ public class SentencesService {
     }
 
     @Transactional
-    public List<Sentence> getByCertainSearch(List<Document> documents, String wordform) {
+    public List<SentenceDTO> getByCertainSearch(List<Document> documents, String wordform) {
+        wordform = wordform.toLowerCase();
         List<Sentence> resultSentences = new ArrayList<>();
         for (var document : documents) {
             List<Sentence> sentences = document.getSentences();
             for (var sentence : sentences) {
                 for (var token : sentence.getTokens()) {
-                    if (token.getLemma().equals(wordform)) {
+                    var lemma = token.getLemma();
+                    if (lemma.equals(wordform)) {
                         resultSentences.add(sentence);
                         break;
                     }
                 }
             }
         }
-        return resultSentences;
+        List<SentenceDTO> sentencesDTO = new ArrayList<>();
+        for (var sentence : resultSentences) {
+            var sentenceDTO = modelMapper.map(sentence, SentenceDTO.class);
+            for (int i = 0; i < sentence.getTokens().size(); ++i) {
+                try {
+                    var attrs = objectMapper.readValue(sentence.getTokens().get(i).getAttrs(), new TypeReference<Map<String, String>>() {});
+                    sentenceDTO.getTokens().get(i).setAttrs(attrs);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            sentencesDTO.add(sentenceDTO);
+        }
+        return sentencesDTO;
     }
 }
