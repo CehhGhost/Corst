@@ -133,6 +133,22 @@
               </q-form>
             </q-card-section>
           </q-card>
+          <h4></h4>
+          <div>
+            <div v-for="(result, index) in exactSearchResults" :key="index">
+              <q-card class="rounded-borders" style="margin-top: 10px">
+                <q-card-section>
+                  <div class="row q-gutter-md items-center">
+                    <div class="col-3">
+                      <!-- TODO Уточнить, что должно быть в названии -->
+                      <h3 class="text-h6">{{ result.documentTitle }}</h3>
+                      <p>{{ result.text }}</p>
+                    </div>
+                  </div>
+                </q-card-section>
+              </q-card>
+            </div>
+          </div>
         </div>
       </div>
     </q-page>
@@ -158,10 +174,34 @@ export default {
       showDeleteButton: true,
       displaySettingsModal: false,
       subcorpusModal: false,
+      exactSearchResults: [],
+      lexgrammSearchResults: [],
     };
   },
   methods: {
-    exactSearch() {},
+    async exactSearch() {
+      this.lexgrammSearchResults = [];
+      this.exactSearchResults = [];
+      const response = await fetch(
+        "http://localhost:8081/documents/search/certain",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          //TODO Specify subcorpus
+          body: JSON.stringify({
+            wordform: this.exactSearchInput,
+          }),
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        this.exactSearchResults = data;
+      } else {
+        console.error(response);
+      }
+    },
     lexgrammSearch() {},
     addLexgramBlock() {
       this.lexgramBlocks.push({
