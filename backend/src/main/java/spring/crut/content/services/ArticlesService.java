@@ -1,7 +1,10 @@
 package spring.crut.content.services;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import spring.crut.administration.security.CrutUserDetails;
 import spring.crut.content.models.Article;
 import spring.crut.content.repositories.ArticlesRepository;
 import java.sql.Timestamp;
@@ -22,6 +25,9 @@ public class ArticlesService {
     }
 
     public void saveArticle(Article article) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CrutUserDetails userDetails = (CrutUserDetails) authentication.getPrincipal();
+        article.setOwner(userDetails.getUser());
         article.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         article.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         articlesRepository.save(article);

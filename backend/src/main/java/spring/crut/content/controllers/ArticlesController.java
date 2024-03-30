@@ -22,9 +22,6 @@ public class ArticlesController {
     @PostMapping("/create")
     public ResponseEntity<HttpStatus> createArticle(@RequestBody ArticleDTO articleDTO) {
         var article = modelMapper.map(articleDTO, Article.class);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CrutUserDetails userDetails = (CrutUserDetails) authentication.getPrincipal();
-        article.setOwner(userDetails.getUser());
         articlesService.saveArticle(article);
         return ResponseEntity.ok(HttpStatus.OK);
     }

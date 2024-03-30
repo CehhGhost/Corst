@@ -10,8 +10,6 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ArticleDTO {
-    private String headerRus;
-    private String headerEng;
     private String textRus;
     private String textEng;
     private Date date;
