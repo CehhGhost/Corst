@@ -71,6 +71,10 @@ public class DocumentsService {
         documentsRepository.deleteById(id);
     }
 
+    public List<Document> getAllDocuments() {
+        return documentsRepository.findAll();
+    }
+
     public static class SentenceResponse {
         private List<SentenceDTO> sentences;
 

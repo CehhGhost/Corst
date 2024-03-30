@@ -8,10 +8,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import spring.crut.administration.security.CrutUserDetails;
-import spring.crut.corpus.dto.DocumentDTO;
+import spring.crut.corpus.dto.CreateDocumentDTO;
 import spring.crut.corpus.dto.CertainSearchDTO;
+import spring.crut.corpus.dto.DocumentDTO;
 import spring.crut.corpus.models.Document;
-import spring.crut.corpus.models.Sentence;
 import spring.crut.corpus.services.DocumentsService;
 import spring.crut.corpus.services.SentencesService;
 
@@ -27,7 +27,7 @@ public class DocumentsController {
     private final SentencesService sentencesService;
 
     @PostMapping("/create")
-    public ResponseEntity<HttpStatus> createDocument(@RequestBody DocumentDTO documentDTO) {
+    public ResponseEntity<HttpStatus> createDocument(@RequestBody CreateDocumentDTO documentDTO) {
         var document = modelMapper.map(documentDTO, Document.class);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CrutUserDetails userDetails = (CrutUserDetails) authentication.getPrincipal();
@@ -41,8 +41,19 @@ public class DocumentsController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @GetMapping("/search/certain")
-    public ResponseEntity<List<Sentence>> certainSearch(@RequestBody CertainSearchDTO certainSearchDTO) {
+    public ResponseEntity<?> certainSearch(@RequestBody CertainSearchDTO certainSearchDTO) {
         List<Document> documents = documentsService.specifySubcorpus(certainSearchDTO);
-        return ResponseEntity.ok(sentencesService.getByCertainSearch(documents, certainSearchDTO.getWordform()));
+        return ResponseEntity.ok(documents.get(0).getText());
+        // return ResponseEntity.ok(sentencesService.getByCertainSearch(documents, certainSearchDTO.getWordform()));
+    }
+    @GetMapping
+    public ResponseEntity<?> getAllDocuments() {
+        List<DocumentDTO> documentsDTO = new ArrayList<>();
+        for (var document: documentsService.getAllDocuments()) {
+            var documentDTO = modelMapper.map(document, DocumentDTO.class);
+            documentDTO.setOwnerUsername(document.getOwner().getUsername());
+            documentsDTO.add(documentDTO);
+        }
+        return ResponseEntity.ok(documentsDTO);
     }
 }
