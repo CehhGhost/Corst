@@ -66,26 +66,24 @@ export default {
     },
     async login() {
       try {
-        let formData = new URLSearchParams();
-        formData.append("username", this.username);
-        formData.append("password", this.password);
-
-        const response = await fetch("http://localhost:8081/login", {
+        const response = await fetch("http://localhost:8081/auth", {
           method: "POST",
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "application/json",
           },
-          body: formData,
-          mode: "no-cors",
+          body: JSON.stringify({
+            username: this.username,
+            password: this.password,
+          }),
         });
         if (response.ok) {
           const data = await response.json();
-          console.log("Authentication successful:", data);
+          localStorage.setItem("corst_token", data.jwt);
           this.$router.push("/");
         } else {
-          alert("Incorrect username or password. Please try again.");
-          console.error("Response:", response);
           this.password = "";
+          console.error("Response:", response.body);
+          alert("Incorrect username or password. Please try again.");
         }
       } catch (error) {
         console.error("Error during login:", error);
