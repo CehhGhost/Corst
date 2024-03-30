@@ -22,7 +22,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http
+                .csrf()
+                .disable()
+                .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/articles/create").hasAuthority("CREATE_ARTICLES")
                 .antMatchers(HttpMethod.POST, "/documents/create").hasAuthority("CREATE_DOCUMENTS")
                 .antMatchers(HttpMethod.POST, "/admin/register").hasAuthority("REGISTER_USERS")
@@ -31,10 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("http://localhost:9000/login")
                 .loginProcessingUrl("/login")
-                .successHandler(successHandler())
-                .and()
-                .csrf()
-                .disable(); // Отключение CSRF для упрощения примера
+                .successHandler(successHandler());
     }
 
     @Override
