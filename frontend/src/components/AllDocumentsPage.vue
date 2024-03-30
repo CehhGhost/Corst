@@ -9,7 +9,7 @@
           color="primary"
           label="Add Document"
           class="button"
-          to="\addDocument"
+          to="/addDocument"
         />
       </div>
       <div class="col-lg-6 col-md-8 col-sm-10">
@@ -52,7 +52,6 @@ export default {
         });
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
           this.documents = data;
         } else {
           console.log(response);
