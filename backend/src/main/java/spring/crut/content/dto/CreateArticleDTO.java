@@ -9,8 +9,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ArticleDTO {
-    private String id;
+public class CreateArticleDTO {
     private String textRus;
     private String textEng;
     private Date date;

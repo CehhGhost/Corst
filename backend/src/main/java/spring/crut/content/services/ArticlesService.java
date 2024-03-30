@@ -9,6 +9,7 @@ import spring.crut.content.models.Article;
 import spring.crut.content.repositories.ArticlesRepository;
 import java.sql.Timestamp;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,5 +32,10 @@ public class ArticlesService {
         article.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         article.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         articlesRepository.save(article);
+    }
+
+    public List<Article> getAllArticles() {
+        var articles = articlesRepository.findAll();
+        return articles;
     }
 }
