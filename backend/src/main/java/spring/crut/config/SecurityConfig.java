@@ -34,7 +34,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/articles/create").hasAuthority("CREATE_ARTICLES")
-                .antMatchers(HttpMethod.POST, "/documents/create").hasAuthority("CREATE_DOCUMENTS")
                 .antMatchers(HttpMethod.POST, "/admin/register").hasAuthority("REGISTER_USERS")
                 .anyRequest().permitAll()
                 .and()

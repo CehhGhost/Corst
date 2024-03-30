@@ -2,11 +2,21 @@
   <h3></h3>
   <q-page-container>
     <q-page class="q-pa-md">
+      <div>
+        <q-btn
+          push
+          icon="add"
+          color="primary"
+          label="Add Document"
+          class="button"
+          to="\addDocument"
+        />
+      </div>
       <div class="col-lg-6 col-md-8 col-sm-10">
         <div v-for="(document, i) in documents" :key="i">
           <q-card class="rounded-borders">
             <q-card-section>
-              <h3 class="text-h6">{{ document.name }}</h3>
+              <h3 class="text-h6">{{ document.title }}</h3>
               <div class="row q-gutter-md items-center">
                 {{ document.text }}
               </div>
@@ -22,12 +32,7 @@
 export default {
   data() {
     return {
-      documents: [
-        {
-          name: "Hello",
-          text: "World",
-        },
-      ],
+      documents: [],
       isLogin: this.checkLogin(),
     };
   },
@@ -48,10 +53,11 @@ export default {
         if (response.ok) {
           const data = await response.json();
           console.log(data);
+          this.documents = data;
         } else {
-          console.log("error");
-          alert("Error connecting to server. Please try again.");
-          router.push("/");
+          console.log(response);
+          //alert("Error connecting to server. Please try again.");
+          //router.push("/");
         }
       } catch (error) {
         console.error("Error during login:", error);
@@ -60,8 +66,8 @@ export default {
   },
   mounted() {
     if (this.isLogin) {
+      this.loadAllDocuments();
     } else {
-      alert("No");
       this.$router.push("/");
     }
   },
