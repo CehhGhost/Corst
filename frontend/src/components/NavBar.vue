@@ -53,7 +53,7 @@
         Help
       </q-btn>
       <q-space />
-      <div>
+      <div v-if="!CheckLogin()">
         <q-btn
           flat
           dense
@@ -64,12 +64,40 @@
           Login
         </q-btn>
       </div>
+      <div v-else>
+        <q-btn
+          flat
+          dense
+          active-class="text-white"
+          class="text-white"
+          @click="Logout()"
+        >
+          Logout
+        </q-btn>
+      </div>
     </q-toolbar>
   </q-header>
 </template>
 
 <script>
+import router from "src/router";
+
 export default {
   name: "AppHeader",
+  methods: {
+    CheckLogin() {
+      if (localStorage.getItem("corst_token") === null) {
+        return false;
+      } else {
+        //TODO Check expired token
+        return true;
+      }
+    },
+    Logout() {
+      localStorage.removeItem("corst_token");
+      router.push("/");
+      location.reload();
+    },
+  },
 };
 </script>
