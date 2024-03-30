@@ -34,7 +34,6 @@ export default {
   methods: {
     checkLogin() {
       if (localStorage.getItem("corst_token") == null) {
-        console.log(localStorage.getItem("corst_token"));
         return false;
       } else {
         //TODO Check expired token
@@ -60,13 +59,10 @@ export default {
     },
   },
   mounted() {
-    console.log(this.isLogin);
-    console.log(localStorage.getItem("corst_token") == null);
     if (this.isLogin) {
-      console.log("Yes");
     } else {
-      console.log("No");
-      router.push("/");
+      alert("No");
+      this.$router.push("/");
     }
   },
 };
