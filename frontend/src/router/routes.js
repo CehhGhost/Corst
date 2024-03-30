@@ -31,6 +31,10 @@ const routes = [
     path: "/demo",
     component: () => import("../views/DemoView.vue"),
   },
+  {
+    path: "/documents",
+    component: () => import("../views/AllDocumentsView.vue"),
+  },
   // Error route
   {
     path: "/:catchAll(.*)*",
