@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import spring.crut.administration.dto.AuthDTO;
+import spring.crut.administration.dto.JwtDTO;
 import spring.crut.administration.dto.UserDTO;
 import spring.crut.administration.repositories.UsersRepository;
 import spring.crut.administration.security.JWTUtil;
@@ -31,6 +32,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Incorrect credentials!");
         }
         String jwt = jwtUtil.generateToken(authDTO.getUsername());
-        return ResponseEntity.ok(jwt);
+        JwtDTO jwtDTO = new JwtDTO(jwt);
+        return ResponseEntity.ok(jwtDTO);
     }
 }
