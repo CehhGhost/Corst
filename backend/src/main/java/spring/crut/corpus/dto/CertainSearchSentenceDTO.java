@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CertainSearchSentenceDTO {
-    private String textTitle;
+    private String documentTitle;
 
     private Integer id;
     private String text;

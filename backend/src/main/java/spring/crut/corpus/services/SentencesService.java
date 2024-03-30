@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.crut.corpus.dto.CertainSearchSentenceDTO;
 import spring.crut.corpus.dto.CreateSentenceDTO;
-import spring.crut.corpus.dto.SentenceDTO;
 import spring.crut.corpus.models.Document;
 import spring.crut.corpus.models.Sentence;
 import spring.crut.corpus.repositories.DocumentsRepository;
@@ -61,7 +60,7 @@ public class SentencesService {
         List<CertainSearchSentenceDTO> sentencesDTO = new ArrayList<>();
         for (var sentence : resultSentences) {
             var sentenceDTO = modelMapper.map(sentence, CertainSearchSentenceDTO.class);
-            sentenceDTO.setTextTitle(sentence.getDocument().getTitle());
+            sentenceDTO.setDocumentTitle(sentence.getDocument().getTitle());
             for (int i = 0; i < sentence.getTokens().size(); ++i) {
                 try {
                     var attrs = objectMapper.readValue(sentence.getTokens().get(i).getAttrs(), new TypeReference<Map<String, String>>() {});
