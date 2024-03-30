@@ -8,7 +8,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-import spring.crut.corpus.dto.SentenceDTO;
+import spring.crut.corpus.dto.CreateSentenceDTO;
 import spring.crut.corpus.dto.CertainSearchDTO;
 import spring.crut.corpus.models.Document;
 import spring.crut.corpus.repositories.DocumentsRepository;
@@ -76,13 +76,13 @@ public class DocumentsService {
     }
 
     public static class SentenceResponse {
-        private List<SentenceDTO> sentences;
+        private List<CreateSentenceDTO> sentences;
 
-        public List<SentenceDTO> getSentences() {
+        public List<CreateSentenceDTO> getSentences() {
             return sentences;
         }
 
-        public void setSentences(List<SentenceDTO> sentences) {
+        public void setSentences(List<CreateSentenceDTO> sentences) {
             this.sentences = sentences;
         }
     }

@@ -23,7 +23,7 @@ public class ArticlesController {
     @PostMapping("/create")
     public ResponseEntity<HttpStatus> createArticle(@RequestBody CreateArticleDTO articleDTO) {
         var article = modelMapper.map(articleDTO, Article.class);
-        articlesService.saveArticle(article);
+        articlesService.createArticle(article);
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @GetMapping

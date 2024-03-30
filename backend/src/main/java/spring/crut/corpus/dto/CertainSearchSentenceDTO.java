@@ -9,7 +9,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SentenceDTO {
+public class CertainSearchSentenceDTO {
+    private String textTitle;
+
     private Integer id;
     private String text;
     private Integer num;

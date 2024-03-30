@@ -9,8 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SentenceDTO {
-    private Integer id;
+public class CreateSentenceDTO {
     private String text;
     private Integer num;
     private List<TokenDTO> tokens;

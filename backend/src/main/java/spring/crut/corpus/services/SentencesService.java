@@ -5,9 +5,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import spring.crut.corpus.dto.CertainSearchSentenceDTO;
+import spring.crut.corpus.dto.CreateSentenceDTO;
 import spring.crut.corpus.dto.SentenceDTO;
 import spring.crut.corpus.models.Document;
 import spring.crut.corpus.models.Sentence;
@@ -27,7 +28,7 @@ public class SentencesService {
     private final ModelMapper modelMapper;
     private final ObjectMapper objectMapper;
     @Transactional
-    public void createSentences(List<SentenceDTO> sentenceDTOList, Document document) {
+    public void createSentences(List<CreateSentenceDTO> sentenceDTOList, Document document) {
         for (var sentenceDTO : sentenceDTOList) {
             Sentence sentence = new Sentence();
             sentence.setText(sentenceDTO.getText());
@@ -42,7 +43,7 @@ public class SentencesService {
     }
 
     @Transactional
-    public List<SentenceDTO> getByCertainSearch(List<Document> documents, String wordform) {
+    public List<CertainSearchSentenceDTO> getByCertainSearch(List<Document> documents, String wordform) {
         wordform = wordform.toLowerCase();
         List<Sentence> resultSentences = new ArrayList<>();
         for (var document : documents) {
@@ -57,9 +58,10 @@ public class SentencesService {
                 }
             }
         }
-        List<SentenceDTO> sentencesDTO = new ArrayList<>();
+        List<CertainSearchSentenceDTO> sentencesDTO = new ArrayList<>();
         for (var sentence : resultSentences) {
-            var sentenceDTO = modelMapper.map(sentence, SentenceDTO.class);
+            var sentenceDTO = modelMapper.map(sentence, CertainSearchSentenceDTO.class);
+            sentenceDTO.setTextTitle(sentence.getDocument().getTitle());
             for (int i = 0; i < sentence.getTokens().size(); ++i) {
                 try {
                     var attrs = objectMapper.readValue(sentence.getTokens().get(i).getAttrs(), new TypeReference<Map<String, String>>() {});

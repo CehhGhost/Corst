@@ -25,7 +25,7 @@ public class ArticlesService {
         return article.get();
     }
 
-    public void saveArticle(Article article) {
+    public void createArticle(Article article) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CrutUserDetails userDetails = (CrutUserDetails) authentication.getPrincipal();
         article.setOwner(userDetails.getUser());

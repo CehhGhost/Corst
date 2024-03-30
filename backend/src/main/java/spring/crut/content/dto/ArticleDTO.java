@@ -13,5 +13,5 @@ public class ArticleDTO {
     private String id;
     private String textRus;
     private String textEng;
-    private Date date;
+    private String date;
 }

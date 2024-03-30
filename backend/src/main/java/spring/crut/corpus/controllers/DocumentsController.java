@@ -1,7 +1,5 @@
 package spring.crut.corpus.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -13,15 +11,12 @@ import spring.crut.administration.security.CrutUserDetails;
 import spring.crut.corpus.dto.CreateDocumentDTO;
 import spring.crut.corpus.dto.CertainSearchDTO;
 import spring.crut.corpus.dto.DocumentDTO;
-import spring.crut.corpus.dto.SentenceDTO;
 import spring.crut.corpus.models.Document;
 import spring.crut.corpus.services.DocumentsService;
 import spring.crut.corpus.services.SentencesService;
-import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/documents")
