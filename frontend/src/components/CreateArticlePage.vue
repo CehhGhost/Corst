@@ -1,5 +1,5 @@
 <template>
-  <div class="create-article">
+  <div class="create-article" v-if="isLogin()">
     <h2>Create Article</h2>
     <q-form @submit="submitForm" class="form">
       <q-input filled v-model="date" mask="date" :rules="['date']">
@@ -20,9 +20,9 @@
         </template>
       </q-input>
       <div class="text-label">Text in Russian:</div>
-      <q-editor v-model="russianText" />
+      <q-editor v-model="textRus" />
       <div class="text-label">Text in English:</div>
-      <q-editor v-model="englishText" />
+      <q-editor v-model="textEng" />
       <q-btn type="submit" label="Submit" color="primary" class="submit-btn" />
     </q-form>
     <h1></h1>
@@ -33,19 +33,46 @@
 export default {
   data() {
     return {
+      // TODO Разобраться с датой
       date: new Date().toISOString().substr(0, 10),
-      russianText: "",
-      englishText: "",
+      textRus: "",
+      textEng: "",
     };
   },
   methods: {
-    submitForm() {
-      console.log("Submitted Data:");
-      console.log("Date:", this.date);
-      console.log("Russian Text:", this.russianText);
-      console.log("English Text:", this.englishText);
-      // TODO add further processing logic here
+    isLogin() {
+      if (localStorage.getItem("corst_token") == null) {
+        return false;
+      } else {
+        //TODO Check expired token
+        return true;
+      }
     },
+    async submitForm() {
+      console.log(this.date.toString("yyyy-MM-dd"));
+      const response = await fetch("http://localhost:8081/articles/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("corst_token"),
+        },
+        body: JSON.stringify({
+          date: this.date.toString().replace(/\//g, "-"),
+          textRus: this.textRus,
+          textEng: this.textEng,
+        }),
+      });
+      if (response.ok) {
+        this.$router.push("/news");
+      } else {
+        console.error(response);
+      }
+    },
+  },
+  mounted() {
+    if (!this.isLogin()) {
+      this.$router.push("/");
+    }
   },
 };
 </script>
