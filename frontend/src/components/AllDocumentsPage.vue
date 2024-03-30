@@ -28,11 +28,13 @@ export default {
           text: "World",
         },
       ],
+      isLogin: this.checkLogin(),
     };
   },
   methods: {
-    async isLogin() {
-      if (localStorage.getItem("corst_token") === null) {
+    checkLogin() {
+      if (localStorage.getItem("corst_token") == null) {
+        console.log(localStorage.getItem("corst_token"));
         return false;
       } else {
         //TODO Check expired token
@@ -41,7 +43,7 @@ export default {
     },
     async loadAllDocuments() {
       try {
-        const response = await fetch("http://localhost:8081/auth", {
+        const response = await fetch("http://localhost:8081/documents", {
           method: "GET",
         });
         if (response.ok) {
@@ -58,8 +60,12 @@ export default {
     },
   },
   mounted() {
+    console.log(this.isLogin);
+    console.log(localStorage.getItem("corst_token") == null);
     if (this.isLogin) {
+      console.log("Yes");
     } else {
+      console.log("No");
       router.push("/");
     }
   },
