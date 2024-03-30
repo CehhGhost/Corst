@@ -36,6 +36,7 @@ export default {
 
 <template>
   <div>
+    <h1></h1>
     <div ref="recogitoContainer" style="height: 500px" id="recogito">
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam viverra
