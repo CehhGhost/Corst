@@ -40,7 +40,7 @@ public class DocumentsController {
         documentsService.deleteDocument(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
-    @GetMapping("/search/certain")
+    @PostMapping("/search/certain")
     public ResponseEntity<?> certainSearch(@RequestBody CertainSearchDTO certainSearchDTO) {
         // TODO List<Document> documents = documentsService.specifySubcorpus(certainSearchDTO); учитываает подкорпус, но требует настройки
         List<Document> documents = documentsService.getAllDocuments();
