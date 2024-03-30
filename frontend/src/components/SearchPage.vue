@@ -4,6 +4,20 @@
       <div class="row q-gutter-md justify-center">
         <div class="col-lg-6 col-md-8 col-sm-10">
           <h3></h3>
+          <div class="col-3">
+            <q-btn-group vertical style="margin-bottom: 20px">
+              <q-btn
+                label="Specify Subcorpus"
+                color="primary"
+                @click="openSubcorpusModal"
+              />
+              <q-btn
+                label="Display Options"
+                color="primary"
+                @click="openDisplaySettingsModal"
+              />
+            </q-btn-group>
+          </div>
           <q-card class="rounded-borders">
             <q-card-section class="exactSearch">
               <h3 class="text-h6">Exact Search</h3>
@@ -18,6 +32,7 @@
                   </div>
                   <div class="col-auto">
                     <q-btn
+                      no-caps
                       type="submit"
                       icon="search"
                       color="primary"
@@ -32,27 +47,88 @@
           </q-card>
           <h4></h4>
           <q-card class="rounded-borders">
-            <q-card-section class="lexgrammSearch">
+            <q-card-section class="exactSearch">
               <h3 class="text-h6">Lexgramm Search</h3>
               <q-form @submit="lexgrammSearch" class="q-gutter-md">
-                <div class="row q-gutter-md items-center">
-                  <div class="col">
-                    <q-input
-                      v-model="exactSearchInput"
-                      placeholder="Lexgramm Search"
-                      outlined
-                    />
+                <div>
+                  <div
+                    class="row align-items-end"
+                    v-for="(block, index) in lexgramBlocks"
+                    :key="index"
+                  >
+                    <div class="col-3">
+                      <label>
+                        Wordform
+                        <q-input
+                          outlined
+                          v-model="block.wordform"
+                          placeholder="Wordform"
+                          dense
+                        />
+                      </label>
+                    </div>
+                    <!-- Include lex select component here -->
+                    <div class="col-3">
+                      <label>
+                        Part of speech
+                        <q-input
+                          outlined
+                          v-model="block.partOfSpeech"
+                          placeholder="Part of speech"
+                          dense
+                        />
+                      </label>
+                    </div>
+                    <!-- Include gram select component here -->
+                    <div class="col-3">
+                      <label>
+                        Grammar
+                        <q-input
+                          outlined
+                          v-model="block.grammar"
+                          placeholder="Grammar characteristics"
+                          dense
+                        />
+                      </label>
+                    </div>
+                    <!-- Include err select component here -->
+                    <div class="col-2">
+                      <label>
+                        Errors
+                        <q-input
+                          outlined
+                          v-model="block.errors"
+                          placeholder="Tags"
+                          dense
+                        />
+                      </label>
+                    </div>
+                    <div class="col-1">
+                      <q-btn
+                        unelevated
+                        v-if="showDeleteButton && index > 0"
+                        @click="removeBlock(index)"
+                        color="negative"
+                        class="delete-btn"
+                        icon="delete"
+                      >
+                      </q-btn>
+                    </div>
                   </div>
-                  <div class="col-auto">
-                    <q-btn
-                      type="submit"
-                      icon="search"
-                      color="primary"
-                      label="Search"
-                      size="large"
-                      dense
-                    />
-                  </div>
+                </div>
+                <div class="col-1">
+                  <q-btn
+                    @click="addLexgramBlock"
+                    outline
+                    color="primary"
+                    label="Add Wordform"
+                  />
+                  <q-btn
+                    unelevated
+                    type="submit"
+                    label="Search"
+                    color="primary"
+                  />
                 </div>
               </q-form>
             </q-card-section>
@@ -129,5 +205,9 @@ export default {
 }
 .rounded-borders {
   border-radius: 12px;
+}
+.delete-btn {
+  margin-top: 23px;
+  margin-left: 5px;
 }
 </style>

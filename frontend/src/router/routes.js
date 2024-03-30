@@ -27,6 +27,10 @@ const routes = [
     path: "/help",
     component: () => import("../views/HelpView.vue"),
   },
+  {
+    path: "/demo",
+    component: () => import("../views/DemoView.vue"),
+  },
   // Error route
   {
     path: "/:catchAll(.*)*",
