@@ -4,9 +4,9 @@
     <q-page class="q-pa-md">
       <div class="col-lg-6 col-md-8 col-sm-10">
         <div v-for="(sentence, i) in document.sentences" :key="i">
-          <q-card class="rounded-borders" :id="'q-card-' + i">
+          <q-card class="rounded-borders">
             <q-card-section>
-              <div class="row q-gutter-md items-center">
+              <div class="row q-gutter-md items-center" :id="'a-card-' + i">
                 {{ sentence.text }}
               </div>
             </q-card-section>
@@ -93,7 +93,7 @@ export default {
             console.log("Deleted:", annotation);
           },
         });
-        recogito.attachTo("q-card-" + i);
+        recogito.attachTo("a-card-" + i);
         this.recogitoInstances.push(recogito);
       });
     },
@@ -103,7 +103,8 @@ export default {
       this.$router.push("/");
     }
     if (this.responseSuccess) {
-      this.loadDocument();
+      await this.loadDocument();
+      await this.loadRecogito();
       console.log(this.document);
     }
   },
