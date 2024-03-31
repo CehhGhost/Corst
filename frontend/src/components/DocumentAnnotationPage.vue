@@ -40,8 +40,8 @@ import "@recogito/recogito-js/dist/recogito.min.css";
 export default {
   data() {
     return {
-      document: null,
-      responseSuccess: false,
+      document: this.loadDocument(),
+      responseSuccess: true,
       recogitoInstances: [],
     };
   },
@@ -64,6 +64,7 @@ export default {
           }
         );
         if (response.ok) {
+          this.responseSuccess = true;
           const data = await response.json();
           this.document = data;
         } else {
@@ -76,32 +77,30 @@ export default {
       }
     },
   },
-  mounted() {
+  async mounted() {
     if (!this.checkLogin()) {
       this.$router.push("/");
-    } else {
-      this.loadDocument();
     }
-    this.document.sentences.forEach((sentence, i) => {
-      const recogito = new Recogito({
-        content: "recogito",
-        mode: "annotate",
-        selectHandler: (annotation) => {
-          console.log("Selected:", annotation);
-        },
-        createAnnotationHandler: (annotation) => {
-          console.log("Created:", annotation);
-        },
-        updateAnnotationHandler: (annotation) => {
-          console.log("Updated:", annotation);
-        },
-        deleteAnnotationHandler: (annotation) => {
-          console.log("Deleted:", annotation);
-        },
-      });
-      recogito.attachTo("q-card-" + i);
-      this.recogitoInstances.push(recogito);
-    });
+    // this.document.sentences.forEach((sentence, i) => {
+    //   const recogito = new Recogito({
+    //     content: "recogito",
+    //     mode: "annotate",
+    //     selectHandler: (annotation) => {
+    //       console.log("Selected:", annotation);
+    //     },
+    //     createAnnotationHandler: (annotation) => {
+    //       console.log("Created:", annotation);
+    //     },
+    //     updateAnnotationHandler: (annotation) => {
+    //       console.log("Updated:", annotation);
+    //     },
+    //     deleteAnnotationHandler: (annotation) => {
+    //       console.log("Deleted:", annotation);
+    //     },
+    //   });
+    //   recogito.attachTo("q-card-" + i);
+    //   this.recogitoInstances.push(recogito);
+    // });
   },
   beforeUnmount() {
     if (this.recogito) {
