@@ -14,7 +14,7 @@ export default {
   watch: {
     "document.status": {
       handler() {
-        // this.changeStatus();
+        this.changeStatus();
       },
       deep: true,
     },
