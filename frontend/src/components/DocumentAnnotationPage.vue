@@ -53,16 +53,15 @@ export default {
     async changeStatus() {
       try {
         const response = await fetch(
-          "http://localhost:8081/documents/" + this.$route.params.id,
+          "http://localhost:8081/documents/" +
+            this.$route.params.id +
+            "/set_status/" +
+            this.options.indexOf(this.document.status),
           {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-              status: this.options.indexOf(this.document.status),
-              id: this.$route.params.id,
-            }),
           }
         );
         if (response.ok) {
