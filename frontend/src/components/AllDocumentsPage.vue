@@ -20,6 +20,13 @@
               <div class="row q-gutter-md items-center">
                 {{ document.text }}
               </div>
+              <q-btn
+                push
+                color="primary"
+                label="Annotate"
+                class="button"
+                :to="'/annotateDocument/' + document.id"
+              />
             </q-card-section>
           </q-card>
         </div>
