@@ -75,6 +75,14 @@ public class DocumentsService {
         return documentsRepository.findAll();
     }
 
+    public Document getDocumentByID(Integer id) {
+        var document = documentsRepository.findById(id);
+        if (document.isEmpty()) {
+            throw new IllegalArgumentException("No such document!");
+        }
+        return document.get();
+    }
+
     public static class SentenceResponse {
         private List<CreateSentenceDTO> sentences;
 
