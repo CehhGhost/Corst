@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.crut.corpus.dto.CertainSearchSentenceDTO;
 import spring.crut.corpus.dto.CreateSentenceDTO;
+import spring.crut.corpus.dto.TokenDTO;
 import spring.crut.corpus.models.Document;
 import spring.crut.corpus.models.Sentence;
 import spring.crut.corpus.repositories.DocumentsRepository;
@@ -25,7 +26,6 @@ public class SentencesService {
     private final TokensService tokensService;
     private final DocumentsRepository documentsRepository;
     private final ModelMapper modelMapper;
-    private final ObjectMapper objectMapper;
     @Transactional
     public void createSentences(List<CreateSentenceDTO> sentenceDTOList, Document document) {
         for (var sentenceDTO : sentenceDTOList) {
@@ -61,16 +61,17 @@ public class SentencesService {
         for (var sentence : resultSentences) {
             var sentenceDTO = modelMapper.map(sentence, CertainSearchSentenceDTO.class);
             sentenceDTO.setDocumentTitle(sentence.getDocument().getTitle());
-            for (int i = 0; i < sentence.getTokens().size(); ++i) {
-                try {
-                    var attrs = objectMapper.readValue(sentence.getTokens().get(i).getAttrs(), new TypeReference<Map<String, String>>() {});
-                    sentenceDTO.getTokens().get(i).setAttrs(attrs);
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+            tokensService.setAttrsForTokensDTO(sentenceDTO.getTokens(), sentence.getTokens());
             sentencesDTO.add(sentenceDTO);
         }
         return sentencesDTO;
+    }
+
+    public Sentence getSentenceById(Integer id) {
+        var sentence = sentencesRepository.findById(id);
+        if (sentence.isEmpty()) {
+            throw new IllegalArgumentException("No such sentence with this id!");
+        }
+        return sentence.get();
     }
 }

@@ -1,6 +1,7 @@
 package spring.crut.corpus.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,9 @@ import spring.crut.corpus.models.Sentence;
 import spring.crut.corpus.models.Token;
 import spring.crut.corpus.repositories.TokensRepository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +37,15 @@ public class TokensService {
             token.setSentence(sentence);
             tokensRepository.save(token);
             sentence.getTokens().add(token);
+        }
+    }
+    public void setAttrsForTokensDTO(List<TokenDTO> tokensDTO, List<Token> tokens) {
+        for (int i = 0; i < tokens.size(); ++i) {
+            try {
+                tokensDTO.get(i).setAttrs(objectMapper.readValue(tokens.get(i).getAttrs(), new TypeReference<>() {}));
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

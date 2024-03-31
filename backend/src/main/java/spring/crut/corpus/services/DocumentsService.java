@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import spring.crut.corpus.dto.CreateSentenceDTO;
 import spring.crut.corpus.dto.CertainSearchDTO;
+import spring.crut.corpus.dto.DocumentDTO;
 import spring.crut.corpus.models.Document;
 import spring.crut.corpus.repositories.DocumentsRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -26,6 +27,7 @@ public class DocumentsService {
     private final ObjectMapper objectMapper;
     private final SentencesService sentencesService;
     private final ModelMapper modelMapper;
+    private final TokensService tokensService;
     @Transactional
     public void createDocument(Document document) {
         document.setSentences(new ArrayList<>());
@@ -81,6 +83,12 @@ public class DocumentsService {
             throw new IllegalArgumentException("No such document!");
         }
         return document.get();
+    }
+
+    public void setAttrsForTokensInDocumentDTO(DocumentDTO documentDTO) {
+        for (var sentence : documentDTO.getSentences()) {
+            tokensService.setAttrsForTokensDTO(sentence.getTokens(), sentencesService.getSentenceById(sentence.getId()).getTokens());
+        }
     }
 
     public static class SentenceResponse {

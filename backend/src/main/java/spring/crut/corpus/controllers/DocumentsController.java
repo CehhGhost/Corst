@@ -52,6 +52,7 @@ public class DocumentsController {
         for (var document: documentsService.getAllDocuments()) {
             var documentDTO = modelMapper.map(document, DocumentDTO.class);
             documentDTO.setOwnerUsername(document.getOwner().getUsername());
+            documentsService.setAttrsForTokensInDocumentDTO(documentDTO);
             documentsDTO.add(documentDTO);
         }
         return ResponseEntity.ok(documentsDTO);
@@ -59,6 +60,8 @@ public class DocumentsController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getDocumentByID(@PathVariable Integer id) {
         Document document = documentsService.getDocumentByID(id);
-        return ResponseEntity.ok(modelMapper.map(document, DocumentDTO.class));
+        var documentDTO = modelMapper.map(document, DocumentDTO.class);
+        documentsService.setAttrsForTokensInDocumentDTO(documentDTO);
+        return ResponseEntity.ok(documentDTO);
     }
 }
