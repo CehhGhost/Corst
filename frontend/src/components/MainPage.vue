@@ -10,7 +10,7 @@
             <h2 class="text-lg">News</h2>
           </q-card-section>
           <q-card-section>
-            <p>Разработка идёт. Выполняется.</p>
+            <p>Метро Люблино работаем</p>
           </q-card-section>
         </q-card>
       </q-card-section>
@@ -20,7 +20,7 @@
             <h2 class="text-lg">Events</h2>
           </q-card-section>
           <q-card-section>
-            <p>Собрать датасет</p>
+            <p>Вас привестствует КРУТ</p>
           </q-card-section>
         </q-card>
       </q-card-section>
