@@ -1,41 +1,3 @@
-<template>
-  <h3></h3>
-  <q-page-container v-if="responseSuccess">
-    <div>
-      <h3 class="text-h6 q-mb-md">Document status</h3>
-      <q-select outlined v-model="document.status" :options="options" />
-    </div>
-    <q-page class="q-pa-md">
-      <div class="col-lg-6 col-md-8 col-sm-10">
-        <div v-for="(sentence, i) in document.sentences" :key="i">
-          <q-card class="rounded-borders">
-            <q-card-section>
-              <div class="row q-gutter-md items-center" :id="'a-card-' + i">
-                {{ sentence.text }}
-              </div>
-            </q-card-section>
-          </q-card>
-        </div>
-      </div>
-    </q-page>
-  </q-page-container>
-  <q-page-container v-else>
-    <q-page class="q-pa-md">
-      <div>
-        <h1 class="text-h3">Error</h1>
-        <p>Failed to load document</p>
-        <q-btn
-          push
-          color="secondary"
-          label="Back"
-          class="button"
-          to="/documents"
-        />
-      </div>
-    </q-page>
-  </q-page-container>
-</template>
-
 <script>
 import { Recogito } from "@recogito/recogito-js";
 import "@recogito/recogito-js/dist/recogito.min.css";
@@ -52,7 +14,7 @@ export default {
   watch: {
     "document.status": {
       handler() {
-        this.changeStatus();
+        // this.changeStatus();
       },
       deep: true,
     },
@@ -119,8 +81,8 @@ export default {
     async loadRecogito() {
       this.document.sentences.forEach((sentence, i) => {
         const recogito = new Recogito({
-          content: "recogito",
-          mode: "annotate",
+          content: "a-card-" + i,
+          mode: "pre",
           selectHandler: (annotation) => {
             console.log("Selected:", annotation);
           },
@@ -134,7 +96,6 @@ export default {
             console.log("Deleted:", annotation);
           },
         });
-        recogito.attachTo("a-card-" + i);
         this.recogitoInstances.push(recogito);
       });
     },
@@ -156,3 +117,40 @@ export default {
   },
 };
 </script>
+
+<template>
+  <q-page-container>
+    <h3></h3>
+    <q-page class="q-pa-md">
+      <div v-if="responseSuccess">
+        <h3 class="row text-h6 q-mb-md">Document status</h3>
+        <q-select
+          outlined
+          v-model="document.status"
+          :options="options"
+          class="q-mb-md"
+        />
+        <q-card
+          v-for="(sentence, i) in document.sentences"
+          :key="i"
+          class="rounded-borders q-mb-md"
+        >
+          <q-card-section class="row items-center">
+            <div :id="'a-card-' + i">{{ sentence.text }}</div>
+          </q-card-section>
+        </q-card>
+      </div>
+      <div v-else>
+        <h1 class="text-h3">Error</h1>
+        <p>Failed to load document</p>
+        <q-btn
+          push
+          color="secondary"
+          label="Back"
+          class="q-mt-md"
+          to="/documents"
+        />
+      </div>
+    </q-page>
+  </q-page-container>
+</template>
