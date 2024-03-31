@@ -1,6 +1,10 @@
 <template>
   <h3></h3>
   <q-page-container v-if="responseSuccess">
+    <div>
+      <h3 class="text-h6 q-mb-md">Document status</h3>
+      <q-select outlined v-model="document.status" :options="options" />
+    </div>
     <q-page class="q-pa-md">
       <div class="col-lg-6 col-md-8 col-sm-10">
         <div v-for="(sentence, i) in document.sentences" :key="i">
@@ -42,9 +46,17 @@ export default {
       document: this.loadDocument(),
       responseSuccess: true,
       recogitoInstances: [],
+      options: ["Not annotated", "Annotated", "Checked"],
     };
   },
-
+  watch: {
+    "document.status": {
+      handler() {
+        this.changeStatus();
+      },
+      deep: true,
+    },
+  },
   methods: {
     checkLogin() {
       if (localStorage.getItem("corst_token") == null) {
@@ -66,6 +78,7 @@ export default {
           this.responseSuccess = true;
           const data = await response.json();
           this.document = data;
+          this.document.status = this.options[this.document.status];
         } else {
           console.error(response);
           this.responseSuccess = false;
@@ -73,6 +86,34 @@ export default {
       } catch (error) {
         console.error("Error during login:", error);
         this.responseSuccess = false;
+      }
+    },
+    async changeStatus() {
+      try {
+        const response = await fetch(
+          "http://localhost:8081/documents/" + this.$route.params.id,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              status: this.options.indexOf(this.document.status),
+            }),
+          }
+        );
+        if (response.ok) {
+          if (
+            "Notification" in window &&
+            Notification.permission === "granted"
+          ) {
+            new Notification("Status changed");
+          }
+        } else {
+          console.error(response);
+        }
+      } catch (error) {
+        console.error("Error during login:", error);
       }
     },
     async loadRecogito() {
