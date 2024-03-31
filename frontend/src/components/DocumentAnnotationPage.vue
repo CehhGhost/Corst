@@ -61,6 +61,7 @@ export default {
             },
             body: JSON.stringify({
               status: this.options.indexOf(this.document.status),
+              id: this.$route.params.id,
             }),
           }
         );
@@ -85,13 +86,15 @@ export default {
           mode: "pre",
         });
         recogito.on("createAnnotation", (annotation) => {
-          this.sendAnnotation(annotation, sentence.id);
+          console.log(annotation);
+          //this.sendAnnotation(annotation, sentence.id);
         });
         recogito.on("updateAnnotation", (annotation) => {
-          this.updateAnnotation(annotation, sentence.id);
+          console.log(annotation);
+          //this.updateAnnotation(annotation, sentence.id);
         });
         recogito.on("deleteAnnotation", (annotation) => {
-          this;
+          //this.deleteAnnotation(annotation, sentence.id);
         });
         this.recogitoInstances.push(recogito);
       });
