@@ -64,4 +64,9 @@ public class DocumentsController {
         documentsService.setAttrsForTokensInDocumentDTO(documentDTO);
         return ResponseEntity.ok(documentDTO);
     }
+    @PutMapping("/{id}/set_status/{status}")
+    public ResponseEntity<?> updateStatusForDocument(@PathVariable Integer id, @PathVariable Integer status) {
+        documentsService.setStatusById(id, status);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 }

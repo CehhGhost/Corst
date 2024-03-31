@@ -91,6 +91,12 @@ public class DocumentsService {
         }
     }
 
+    public void setStatusById(Integer id, Integer status) {
+        var document = this.getDocumentByID(id);
+        document.setStatus(status);
+        documentsRepository.save(document);
+    }
+
     public static class SentenceResponse {
         private List<CreateSentenceDTO> sentences;
 
