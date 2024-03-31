@@ -56,4 +56,9 @@ public class DocumentsController {
         }
         return ResponseEntity.ok(documentsDTO);
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getDocumentByID(@PathVariable Integer id) {
+        Document document = documentsService.getDocumentByID(id);
+        return ResponseEntity.ok(modelMapper.map(document, DocumentDTO.class));
+    }
 }
