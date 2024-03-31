@@ -53,15 +53,15 @@ export default {
     async changeStatus() {
       try {
         const response = await fetch(
-          "http://localhost:8081/documents/" + this.$route.params.id,
+          "http://localhost:8081/documents/" +
+            this.$route.params.id +
+            "/set_status/" +
+            this.options.indexOf(this.document.status),
           {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-              status: this.options.indexOf(this.document.status),
-            }),
           }
         );
         if (response.ok) {
@@ -85,13 +85,15 @@ export default {
           mode: "pre",
         });
         recogito.on("createAnnotation", (annotation) => {
-          this.sendAnnotation(annotation, sentence.id);
+          console.log(annotation);
+          //this.sendAnnotation(annotation, sentence.id);
         });
         recogito.on("updateAnnotation", (annotation) => {
-          this.updateAnnotation(annotation, sentence.id);
+          console.log(annotation);
+          //this.updateAnnotation(annotation, sentence.id);
         });
         recogito.on("deleteAnnotation", (annotation) => {
-          this;
+          //this.deleteAnnotation(annotation, sentence.id);
         });
         this.recogitoInstances.push(recogito);
       });
