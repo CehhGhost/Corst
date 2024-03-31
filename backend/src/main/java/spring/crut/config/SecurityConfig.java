@@ -33,8 +33,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/articles/create").hasAuthority("CREATE_ARTICLES")
-                .antMatchers(HttpMethod.POST, "/admin/register").hasAuthority("REGISTER_USERS")
                 .anyRequest().permitAll()
                 .and()
                 .sessionManagement()
