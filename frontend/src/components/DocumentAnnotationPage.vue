@@ -81,23 +81,86 @@ export default {
     async loadRecogito() {
       this.document.sentences.forEach((sentence, i) => {
         const recogito = new Recogito({
-          content: "a-card-" + i,
+          content: "a-card-" + sentence.id,
           mode: "pre",
-          selectHandler: (annotation) => {
-            console.log("Selected:", annotation);
-          },
-          createAnnotationHandler: (annotation) => {
-            console.log("Created:", annotation);
-          },
-          updateAnnotationHandler: (annotation) => {
-            console.log("Updated:", annotation);
-          },
-          deleteAnnotationHandler: (annotation) => {
-            console.log("Deleted:", annotation);
-          },
+        });
+        recogito.on("createAnnotation", (annotation) => {
+          this.sendAnnotation(annotation, sentence.id);
+        });
+        recogito.on("updateAnnotation", (annotation) => {
+          this.updateAnnotation(annotation, sentence.id);
+        });
+        recogito.on("deleteAnnotation", (annotation) => {
+          this;
         });
         this.recogitoInstances.push(recogito);
       });
+    },
+    async sendAnnotation(annotation, sentenceId) {
+      try {
+        const response = await fetch(
+          "http://localhost:8081/documents/" + this.$route.params.id,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              sentenceId: sentenceId,
+              annotation: annotation,
+            }),
+          }
+        );
+        if (!response.ok) {
+          console.error(response);
+        }
+      } catch (error) {
+        console.error("Error during login:", error);
+      }
+    },
+    async updateAnnotation(annotation, sentenceId) {
+      try {
+        const response = await fetch(
+          "http://localhost:8081/documents/" + this.$route.params.id,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              sentenceId: sentenceId,
+              annotation: annotation,
+            }),
+          }
+        );
+        if (!response.ok) {
+          console.error(response);
+        }
+      } catch (error) {
+        console.error("Error during login:", error);
+      }
+    },
+    async deleteAnnotation(annotation, sentenceId) {
+      try {
+        const response = await fetch(
+          "http://localhost:8081/documents/" + this.$route.params.id,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              sentenceId: sentenceId,
+              annotation: annotation,
+            }),
+          }
+        );
+        if (!response.ok) {
+          console.error(response);
+        }
+      } catch (error) {
+        console.error("Error during login:", error);
+      }
     },
   },
   async mounted() {
@@ -136,7 +199,7 @@ export default {
           class="rounded-borders q-mb-md"
         >
           <q-card-section class="row items-center">
-            <div :id="'a-card-' + i">{{ sentence.text }}</div>
+            <div :id="'a-card-' + sentence.id">{{ sentence.text }}</div>
           </q-card-section>
         </q-card>
       </div>
