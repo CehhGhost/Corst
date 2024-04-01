@@ -21,6 +21,7 @@
             dense
             placeholder="Enter content"
             class="q-mb-md"
+            min-height="400px"
           />
           Author Gender
           <q-select
@@ -103,7 +104,7 @@ export default {
   methods: {
     async getDocumentInfo() {
       try {
-        const response = await fetch(serverAdress + "/documents", {
+        const response = await fetch(serverAdress + "/info/document", {
           method: "GET",
         });
         this.responseSuccess = response.ok;
