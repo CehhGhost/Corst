@@ -38,7 +38,7 @@ public class AuthController {
         try {
             var username = jwtUtil.validateTokenAndRetrieveClaim(jwt);
             crutUserDetailsService.loadUserByUsername(username);
-        } catch (RuntimeException exc) {
+        } catch (RuntimeException exc) { // TODO сделать отлов получше
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(HttpStatus.OK);
