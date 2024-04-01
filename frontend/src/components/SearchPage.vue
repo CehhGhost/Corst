@@ -135,7 +135,7 @@
           </q-card>
           <h4></h4>
           <div>
-            <div v-for="(result, index) in exactSearchResults" :key="index">
+            <div v-for="(result, index) in searchResults" :key="index">
               <q-card class="rounded-borders" style="margin-top: 10px">
                 <q-card-section>
                   <div class="row q-gutter-md items-center">
@@ -176,14 +176,12 @@ export default {
       showDeleteButton: true,
       displaySettingsModal: false,
       subcorpusModal: false,
-      exactSearchResults: [],
-      lexgrammSearchResults: [],
+      searchResults: [],
     };
   },
   methods: {
     async exactSearch() {
-      this.lexgrammSearchResults = [];
-      this.exactSearchResults = [];
+      this.searchResults = [];
       const response = await fetch(serverAdress + "/documents/search/certain", {
         method: "POST",
         headers: {
@@ -196,7 +194,7 @@ export default {
       });
       if (response.ok) {
         const data = await response.json();
-        this.exactSearchResults = data;
+        this.searchResults = data;
       } else {
         console.error(response);
       }
