@@ -1,5 +1,5 @@
 <template>
-  <div class="create-article" v-if="isLogin()">
+  <div class="create-article" v-if="userStatus">
     <h2>Create Article</h2>
     <q-form @submit="submitForm" class="form">
       <q-input filled v-model="date" mask="date" :rules="['date']">
@@ -32,6 +32,7 @@
 <script>
 import { ref } from "vue";
 import { serverAdress } from "../global/globalVaribles.js";
+import { isLogin } from "../global/globalFunctions.js";
 
 export default {
   setup() {
@@ -47,19 +48,16 @@ export default {
     return {
       textRus: "",
       textEng: "",
+
+      userStatus: false,
     };
   },
   methods: {
-    isLogin() {
-      if (localStorage.getItem("corst_token") == null) {
-        return false;
-      } else {
-        //TODO Check expired token
-        return true;
-      }
-    },
     async submitForm() {
-      console.log(this.date.toString("yyyy-MM-dd"));
+      if (!this.textRus || !this.textEng) {
+        alert("Please fill all fields");
+        return;
+      }
       const response = await fetch(serverAdress + "/articles/create", {
         method: "POST",
         headers: {
@@ -79,8 +77,9 @@ export default {
       }
     },
   },
-  mounted() {
-    if (!this.isLogin()) {
+  async mounted() {
+    this.userStatus = await isLogin();
+    if (!this.userStatus) {
       this.$router.push("/");
     }
   },
