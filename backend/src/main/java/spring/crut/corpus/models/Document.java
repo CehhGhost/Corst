@@ -5,6 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 import spring.crut.administration.models.User;
+import spring.crut.corpus.enums.Gender;
+import spring.crut.corpus.enums.Status;
+import spring.crut.corpus.models.info.AcademicMajor;
+import spring.crut.corpus.models.info.Course;
+import spring.crut.corpus.models.info.Domain;
+import spring.crut.corpus.models.info.Genre;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -27,26 +33,32 @@ public class Document {
     @Column(name = "text", columnDefinition = "TEXT")
     private String text;
 
-    @Column(name = "genre")
-    private String genre;
+    @ManyToOne
+    @JoinColumn(name = "genre_id", referencedColumnName = "id")
+    private Genre genre;
 
     @Column(name = "status")
-    private Integer status;
+    @Enumerated(EnumType.ORDINAL)
+    private Status status;
 
-    @Column(name = "domain")
-    private String domain;
+    @ManyToOne
+    @JoinColumn(name = "domain_id", referencedColumnName = "id")
+    private Domain domain;
 
     @Column(name = "created_at")
     private Timestamp createdAt;
 
     @Column(name = "authors_gender")
-    private String authorsGender;
+    @Enumerated(EnumType.ORDINAL)
+    private Gender authorsGender;
 
-    @Column(name = "authors_course")
-    private String authorsCourse;
+    @ManyToOne
+    @JoinColumn(name = "authors_course_id", referencedColumnName = "id")
+    private Course authorsCourse;
 
-    @Column(name = "authors_academ_maj")
-    private String authorsAcademicMajor;
+    @ManyToOne
+    @JoinColumn(name = "authors_academ_maj_id", referencedColumnName = "id")
+    private AcademicMajor authorsAcademicMajor;
 
     @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id", nullable = false)

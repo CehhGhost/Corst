@@ -3,8 +3,8 @@ package spring.crut.corpus.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Cascade;
 import spring.crut.administration.models.User;
+import spring.crut.corpus.models.info.ErrorTag;
 
 import javax.persistence.*;
 import java.util.List;

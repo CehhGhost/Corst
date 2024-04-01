@@ -3,6 +3,7 @@ package spring.crut.corpus.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import spring.crut.corpus.enums.Status;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -20,7 +21,7 @@ public class DocumentDTO {
     private String authorsCourse;
     private String authorsAcademicMajor;
     private Timestamp createdAt;
-    private Integer status;
+    private String status;
     private String ownerUsername;
     private List<SentenceDTO> sentences;
 }
