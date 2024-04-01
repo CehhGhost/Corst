@@ -53,15 +53,13 @@ export default {
         const response = await fetch(serverAdress + "/documents", {
           method: "GET",
         });
+        this.responseSuccess = true;
         if (response.ok) {
           const data = await response.json();
           this.documents = data;
-        } else {
-          this.responseSuccess = false;
         }
       } catch (error) {
         console.error("Error:", error);
-        this.responseSuccess = false;
       }
     },
   },

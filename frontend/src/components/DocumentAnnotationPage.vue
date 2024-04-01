@@ -40,6 +40,7 @@
 
 <script>
 import { serverAdress } from "../global/globalVaribles.js";
+import { isLogin } from "../global/globalFunctions.js";
 import { Recogito } from "@recogito/recogito-js";
 import "@recogito/recogito-js/dist/recogito.min.css";
 
@@ -50,6 +51,8 @@ export default {
       responseSuccess: true,
       recogitoInstances: [],
       options: ["Not annotated", "Annotated", "Checked"],
+
+      userStatus: false,
     };
   },
   watch: {
@@ -61,14 +64,6 @@ export default {
     },
   },
   methods: {
-    checkLogin() {
-      if (localStorage.getItem("corst_token") == null) {
-        return false;
-      } else {
-        //TODO Check expired token
-        return true;
-      }
-    },
     async loadDocument() {
       try {
         const response = await fetch(
@@ -77,21 +72,23 @@ export default {
             method: "GET",
           }
         );
+        this.responseSuccess = response.ok;
         if (response.ok) {
-          this.responseSuccess = true;
           const data = await response.json();
           this.document = data;
           this.document.status = this.options[this.document.status];
         } else {
           console.error(response);
-          this.responseSuccess = false;
         }
       } catch (error) {
         console.error("Error during login:", error);
-        this.responseSuccess = false;
       }
     },
     async changeStatus() {
+      this.userStatus = await isLogin();
+      if (!this.userStatus) {
+        this.$router.push("/login");
+      }
       try {
         const response = await fetch(
           serverAdress +
@@ -141,6 +138,10 @@ export default {
       });
     },
     async sendAnnotation(annotation, sentenceId) {
+      this.userStatus = await isLogin();
+      if (!this.userStatus) {
+        this.$router.push("/login");
+      }
       try {
         const response = await fetch(
           serverAdress + "/documents/" + this.$route.params.id,
@@ -163,6 +164,10 @@ export default {
       }
     },
     async updateAnnotation(annotation, sentenceId) {
+      this.userStatus = await isLogin();
+      if (!this.userStatus) {
+        this.$router.push("/login");
+      }
       try {
         const response = await fetch(
           serverAdress + "/documents/" + this.$route.params.id,
@@ -208,7 +213,8 @@ export default {
     },
   },
   async mounted() {
-    if (!this.checkLogin()) {
+    this.userStatus = await isLogin();
+    if (!this.userStatus) {
       this.$router.push("/");
     }
     if (this.responseSuccess) {

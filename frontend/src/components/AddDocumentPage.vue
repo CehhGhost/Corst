@@ -37,6 +37,7 @@
 
 <script>
 import { serverAdress } from "../global/globalVaribles.js";
+import { isLogin } from "../global/globalFunctions.js";
 
 export default {
   data() {
@@ -46,19 +47,17 @@ export default {
       authorsGender: "",
 
       genders: ["Male", "Female", "Unknown"],
+
+      userStatus: false,
     };
   },
   methods: {
-    isLogin() {
-      if (localStorage.getItem("corst_token") == null) {
-        return false;
-      } else {
-        //TODO Check expired token
-        return true;
+    async addDocument() {
+      this.userStatus = await isLogin();
+      if (!this.userStatus) {
+        this.$router.push("/login");
       }
-    },
-    addDocument() {
-      fetch(serverAdress + "/documents/create", {
+      await fetch(serverAdress + "/documents/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -82,10 +81,9 @@ export default {
         });
     },
   },
-  mounted() {
-    console.log(this.isLogin());
-    if (!this.isLogin()) {
-      console.log("Not logged in");
+  async mounted() {
+    this.userStatus = await isLogin();
+    if (!this.userStatus) {
       this.$router.push("/");
     }
   },

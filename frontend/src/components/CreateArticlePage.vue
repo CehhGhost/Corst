@@ -54,6 +54,10 @@ export default {
   },
   methods: {
     async submitForm() {
+      this.userStatus = await isLogin();
+      if (!this.userStatus) {
+        this.$router.push("/login");
+      }
       if (!this.textRus || !this.textEng) {
         alert("Please fill all fields");
         return;

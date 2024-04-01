@@ -99,18 +99,11 @@
 
 <script>
 import router from "src/router";
+import { isLogin } from "src/global/globalFunctions";
 
 export default {
   name: "AppHeader",
   methods: {
-    isLogin() {
-      if (localStorage.getItem("corst_token") === null) {
-        return false;
-      } else {
-        //TODO Check expired token
-        return true;
-      }
-    },
     logout() {
       localStorage.removeItem("corst_token");
       router.push("/");
