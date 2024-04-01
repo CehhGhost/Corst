@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import { serverAdress } from "../global/globalVaribles.js";
+
 export default {
   data() {
     return {
@@ -47,7 +49,7 @@ export default {
     },
     async loadAllNews() {
       try {
-        const response = await fetch("http://localhost:8081/articles", {
+        const response = await fetch(serverAdress + "/articles", {
           method: "GET",
         });
         if (response.ok) {

@@ -1,4 +1,45 @@
+<template>
+  <q-page-container>
+    <h3></h3>
+    <q-page class="q-pa-md">
+      <div v-if="responseSuccess">
+        <div class="row">
+          <h3 class="row text-h6 q-mb-md">Document status</h3>
+          <q-select
+            outlined
+            v-model="document.status"
+            :options="options"
+            class="q-mb-md"
+            style="width: 170px"
+          />
+        </div>
+        <q-card
+          v-for="(sentence, i) in document.sentences"
+          :key="i"
+          class="rounded-borders q-mb-md"
+        >
+          <q-card-section class="row items-center">
+            <div :id="'a-card-' + sentence.id">{{ sentence.text }}</div>
+          </q-card-section>
+        </q-card>
+      </div>
+      <div v-else>
+        <h1 class="text-h3">Error</h1>
+        <p>Failed to load document</p>
+        <q-btn
+          push
+          color="secondary"
+          label="Back"
+          class="q-mt-md"
+          to="/documents"
+        />
+      </div>
+    </q-page>
+  </q-page-container>
+</template>
+
 <script>
+import { serverAdress } from "../global/globalVaribles.js";
 import { Recogito } from "@recogito/recogito-js";
 import "@recogito/recogito-js/dist/recogito.min.css";
 
@@ -14,7 +55,7 @@ export default {
   watch: {
     "document.status": {
       handler() {
-        // this.changeStatus();
+        this.changeStatus();
       },
       deep: true,
     },
@@ -31,7 +72,7 @@ export default {
     async loadDocument() {
       try {
         const response = await fetch(
-          "http://localhost:8081/documents/" + this.$route.params.id,
+          serverAdress + "/documents/" + this.$route.params.id,
           {
             method: "GET",
           }
@@ -53,7 +94,8 @@ export default {
     async changeStatus() {
       try {
         const response = await fetch(
-          "http://localhost:8081/documents/" +
+          serverAdress +
+            "/documents/" +
             this.$route.params.id +
             "/set_status/" +
             this.options.indexOf(this.document.status),
@@ -75,7 +117,7 @@ export default {
           console.error(response);
         }
       } catch (error) {
-        console.error("Error during login:", error);
+        console.error("Error:", error);
       }
     },
     async loadRecogito() {
@@ -101,7 +143,7 @@ export default {
     async sendAnnotation(annotation, sentenceId) {
       try {
         const response = await fetch(
-          "http://localhost:8081/documents/" + this.$route.params.id,
+          serverAdress + "/documents/" + this.$route.params.id,
           {
             method: "POST",
             headers: {
@@ -123,7 +165,7 @@ export default {
     async updateAnnotation(annotation, sentenceId) {
       try {
         const response = await fetch(
-          "http://localhost:8081/documents/" + this.$route.params.id,
+          serverAdress + "/documents/" + this.$route.params.id,
           {
             method: "PUT",
             headers: {
@@ -139,13 +181,13 @@ export default {
           console.error(response);
         }
       } catch (error) {
-        console.error("Error during login:", error);
+        console.error("Error:", error);
       }
     },
     async deleteAnnotation(annotation, sentenceId) {
       try {
         const response = await fetch(
-          "http://localhost:8081/documents/" + this.$route.params.id,
+          serverAdress + "/documents/" + this.$route.params.id,
           {
             method: "DELETE",
             headers: {
@@ -161,7 +203,7 @@ export default {
           console.error(response);
         }
       } catch (error) {
-        console.error("Error during login:", error);
+        console.error("Error:", error);
       }
     },
   },
@@ -182,40 +224,3 @@ export default {
   },
 };
 </script>
-
-<template>
-  <q-page-container>
-    <h3></h3>
-    <q-page class="q-pa-md">
-      <div v-if="responseSuccess">
-        <h3 class="row text-h6 q-mb-md">Document status</h3>
-        <q-select
-          outlined
-          v-model="document.status"
-          :options="options"
-          class="q-mb-md"
-        />
-        <q-card
-          v-for="(sentence, i) in document.sentences"
-          :key="i"
-          class="rounded-borders q-mb-md"
-        >
-          <q-card-section class="row items-center">
-            <div :id="'a-card-' + sentence.id">{{ sentence.text }}</div>
-          </q-card-section>
-        </q-card>
-      </div>
-      <div v-else>
-        <h1 class="text-h3">Error</h1>
-        <p>Failed to load document</p>
-        <q-btn
-          push
-          color="secondary"
-          label="Back"
-          class="q-mt-md"
-          to="/documents"
-        />
-      </div>
-    </q-page>
-  </q-page-container>
-</template>

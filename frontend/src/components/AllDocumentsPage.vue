@@ -36,11 +36,14 @@
 </template>
 
 <script>
+import { serverAdress } from "../global/globalVaribles.js";
+
 export default {
   data() {
     return {
       documents: [],
       isLogin: this.checkLogin(),
+      responseSuccess: true,
     };
   },
   methods: {
@@ -54,19 +57,18 @@ export default {
     },
     async loadAllDocuments() {
       try {
-        const response = await fetch("http://localhost:8081/documents", {
+        const response = await fetch(serverAdress + "/documents", {
           method: "GET",
         });
         if (response.ok) {
           const data = await response.json();
           this.documents = data;
         } else {
-          console.log(response);
-          //alert("Error connecting to server. Please try again.");
-          //router.push("/");
+          this.responseSuccess = false;
         }
       } catch (error) {
         console.error("Error during login:", error);
+        this.responseSuccess = false;
       }
     },
   },

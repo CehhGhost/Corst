@@ -135,7 +135,7 @@
           </q-card>
           <h4></h4>
           <div>
-            <div v-for="(result, index) in exactSearchResults" :key="index">
+            <div v-for="(result, index) in searchResults" :key="index">
               <q-card class="rounded-borders" style="margin-top: 10px">
                 <q-card-section>
                   <div class="row q-gutter-md items-center">
@@ -156,6 +156,8 @@
 </template>
 
 <script>
+import { serverAdress } from "src/global/globalVaribles";
+
 export default {
   data() {
     return {
@@ -174,30 +176,25 @@ export default {
       showDeleteButton: true,
       displaySettingsModal: false,
       subcorpusModal: false,
-      exactSearchResults: [],
-      lexgrammSearchResults: [],
+      searchResults: [],
     };
   },
   methods: {
     async exactSearch() {
-      this.lexgrammSearchResults = [];
-      this.exactSearchResults = [];
-      const response = await fetch(
-        "http://localhost:8081/documents/search/certain",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          //TODO Specify subcorpus
-          body: JSON.stringify({
-            wordform: this.exactSearchInput,
-          }),
-        }
-      );
+      this.searchResults = [];
+      const response = await fetch(serverAdress + "/documents/search/certain", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        //TODO Specify subcorpus
+        body: JSON.stringify({
+          wordform: this.exactSearchInput,
+        }),
+      });
       if (response.ok) {
         const data = await response.json();
-        this.exactSearchResults = data;
+        this.searchResults = data;
       } else {
         console.error(response);
       }
