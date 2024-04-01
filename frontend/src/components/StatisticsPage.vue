@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import { serverAdress } from "src/global/globalVaribles";
+
 export default {
   data() {
     return {
@@ -21,7 +23,7 @@ export default {
   methods: {
     async showUsers() {
       try {
-        const response = await fetch("http://localhost:8081/admin/user", {
+        const response = await fetch(serverAdress + "/admin/user", {
           method: "GET",
         });
         const users = await response.json();

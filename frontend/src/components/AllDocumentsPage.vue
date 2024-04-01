@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import { serverAdress } from "../global/globalVaribles.js";
+
 export default {
   data() {
     return {
@@ -55,7 +57,7 @@ export default {
     },
     async loadAllDocuments() {
       try {
-        const response = await fetch("http://localhost:8081/documents", {
+        const response = await fetch(serverAdress + "/documents", {
           method: "GET",
         });
         if (response.ok) {

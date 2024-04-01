@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import { serverAdress } from "../global/globalVaribles.js";
 import { Recogito } from "@recogito/recogito-js";
 import "@recogito/recogito-js/dist/recogito.min.css";
 
@@ -71,7 +72,7 @@ export default {
     async loadDocument() {
       try {
         const response = await fetch(
-          "http://localhost:8081/documents/" + this.$route.params.id,
+          serverAdress + "/documents/" + this.$route.params.id,
           {
             method: "GET",
           }
@@ -93,7 +94,8 @@ export default {
     async changeStatus() {
       try {
         const response = await fetch(
-          "http://localhost:8081/documents/" +
+          serverAdress +
+            "/documents/" +
             this.$route.params.id +
             "/set_status/" +
             this.options.indexOf(this.document.status),
@@ -115,7 +117,7 @@ export default {
           console.error(response);
         }
       } catch (error) {
-        console.error("Error during login:", error);
+        console.error("Error:", error);
       }
     },
     async loadRecogito() {
@@ -141,7 +143,7 @@ export default {
     async sendAnnotation(annotation, sentenceId) {
       try {
         const response = await fetch(
-          "http://localhost:8081/documents/" + this.$route.params.id,
+          serverAdress + "/documents/" + this.$route.params.id,
           {
             method: "POST",
             headers: {
@@ -163,7 +165,7 @@ export default {
     async updateAnnotation(annotation, sentenceId) {
       try {
         const response = await fetch(
-          "http://localhost:8081/documents/" + this.$route.params.id,
+          serverAdress + "/documents/" + this.$route.params.id,
           {
             method: "PUT",
             headers: {
@@ -179,13 +181,13 @@ export default {
           console.error(response);
         }
       } catch (error) {
-        console.error("Error during login:", error);
+        console.error("Error:", error);
       }
     },
     async deleteAnnotation(annotation, sentenceId) {
       try {
         const response = await fetch(
-          "http://localhost:8081/documents/" + this.$route.params.id,
+          serverAdress + "/documents/" + this.$route.params.id,
           {
             method: "DELETE",
             headers: {
@@ -201,7 +203,7 @@ export default {
           console.error(response);
         }
       } catch (error) {
-        console.error("Error during login:", error);
+        console.error("Error:", error);
       }
     },
   },

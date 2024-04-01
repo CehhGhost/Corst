@@ -41,6 +41,8 @@
 </template>
 
 <script>
+import { serverAdress } from "../global/globalVaribles.js";
+
 export default {
   data() {
     return {
@@ -66,7 +68,7 @@ export default {
     },
     async login() {
       try {
-        const response = await fetch("http://localhost:8081/auth", {
+        const response = await fetch(serverAdress + "/auth", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

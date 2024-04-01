@@ -156,6 +156,8 @@
 </template>
 
 <script>
+import { serverAdress } from "src/global/globalVaribles";
+
 export default {
   data() {
     return {
@@ -182,19 +184,16 @@ export default {
     async exactSearch() {
       this.lexgrammSearchResults = [];
       this.exactSearchResults = [];
-      const response = await fetch(
-        "http://localhost:8081/documents/search/certain",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          //TODO Specify subcorpus
-          body: JSON.stringify({
-            wordform: this.exactSearchInput,
-          }),
-        }
-      );
+      const response = await fetch(serverAdress + "/documents/search/certain", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        //TODO Specify subcorpus
+        body: JSON.stringify({
+          wordform: this.exactSearchInput,
+        }),
+      });
       if (response.ok) {
         const data = await response.json();
         this.exactSearchResults = data;
