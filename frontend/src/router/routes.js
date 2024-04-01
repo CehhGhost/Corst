@@ -5,7 +5,7 @@ const routes = [
   },
   {
     path: "/news",
-    component: () => import("../views/NewsView.vue"),
+    component: () => import("../views/AllArticlesView.vue"),
   },
   {
     path: "/search",
@@ -37,7 +37,7 @@ const routes = [
   },
   {
     path: "/addDocument",
-    component: () => import("../views/AddDocumentView.vue"),
+    component: () => import("../views/CreateDocumentView.vue"),
   },
   {
     path: "/annotateDocument/:id",

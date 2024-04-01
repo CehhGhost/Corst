@@ -1,5 +1,5 @@
 <script setup>
-import AddDocumentPage from "src/components/AddDocumentPage.vue";
+import CreateDocumentPage from "src/components/CreateDocumentPage.vue";
 import NavBar from "src/components/NavBar.vue";
 import FooterBar from "src/components/FooterBar.vue";
 </script>
@@ -9,7 +9,7 @@ import FooterBar from "src/components/FooterBar.vue";
     <q-header>
       <NavBar />
     </q-header>
-    <AddDocumentPage />
+    <CreateDocumentPage />
     <q-footer>
       <FooterBar />
     </q-footer>
