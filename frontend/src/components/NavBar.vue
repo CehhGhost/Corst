@@ -53,7 +53,7 @@
         Help
       </q-btn>
       <q-space />
-      <div v-if="!isLogin()">
+      <div v-if="!isLogin">
         <q-btn
           flat
           dense
@@ -103,6 +103,11 @@ import { isLogin } from "src/global/globalFunctions";
 
 export default {
   name: "AppHeader",
+  data() {
+    return {
+      isLogin: isLogin(),
+    };
+  },
   methods: {
     logout() {
       localStorage.removeItem("corst_token");

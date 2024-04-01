@@ -1,7 +1,7 @@
 <template>
   <q-page-container class="q-pa-md">
     <q-page class="flex flex-center">
-      <div v-if="isLogin()" class="create-document">
+      <div v-if="userStatus" class="create-document">
         <h2 class="q-mb-md">Add Document</h2>
         <q-form @submit="addDocument" class="q-gutter-md">
           <q-input
