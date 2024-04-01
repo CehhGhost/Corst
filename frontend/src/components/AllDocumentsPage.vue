@@ -1,6 +1,6 @@
 <template>
   <h3></h3>
-  <q-page-container>
+  <q-page-container v-if="userStatus">
     <q-page class="q-pa-md">
       <div>
         <q-btn
