@@ -41,6 +41,7 @@ export default {
     return {
       documents: [],
       isLogin: this.checkLogin(),
+      responseSuccess: true,
     };
   },
   methods: {
@@ -61,12 +62,11 @@ export default {
           const data = await response.json();
           this.documents = data;
         } else {
-          console.log(response);
-          //alert("Error connecting to server. Please try again.");
-          //router.push("/");
+          this.responseSuccess = false;
         }
       } catch (error) {
         console.error("Error during login:", error);
+        this.responseSuccess = false;
       }
     },
   },
