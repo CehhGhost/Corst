@@ -1,3 +1,43 @@
+<template>
+  <q-page-container>
+    <h3></h3>
+    <q-page class="q-pa-md">
+      <div v-if="responseSuccess">
+        <div class="row">
+          <h3 class="row text-h6 q-mb-md">Document status</h3>
+          <q-select
+            outlined
+            v-model="document.status"
+            :options="options"
+            class="q-mb-md"
+            style="width: 170px"
+          />
+        </div>
+        <q-card
+          v-for="(sentence, i) in document.sentences"
+          :key="i"
+          class="rounded-borders q-mb-md"
+        >
+          <q-card-section class="row items-center">
+            <div :id="'a-card-' + sentence.id">{{ sentence.text }}</div>
+          </q-card-section>
+        </q-card>
+      </div>
+      <div v-else>
+        <h1 class="text-h3">Error</h1>
+        <p>Failed to load document</p>
+        <q-btn
+          push
+          color="secondary"
+          label="Back"
+          class="q-mt-md"
+          to="/documents"
+        />
+      </div>
+    </q-page>
+  </q-page-container>
+</template>
+
 <script>
 import { Recogito } from "@recogito/recogito-js";
 import "@recogito/recogito-js/dist/recogito.min.css";
@@ -182,40 +222,3 @@ export default {
   },
 };
 </script>
-
-<template>
-  <q-page-container>
-    <h3></h3>
-    <q-page class="q-pa-md">
-      <div v-if="responseSuccess">
-        <h3 class="row text-h6 q-mb-md">Document status</h3>
-        <q-select
-          outlined
-          v-model="document.status"
-          :options="options"
-          class="q-mb-md"
-        />
-        <q-card
-          v-for="(sentence, i) in document.sentences"
-          :key="i"
-          class="rounded-borders q-mb-md"
-        >
-          <q-card-section class="row items-center">
-            <div :id="'a-card-' + sentence.id">{{ sentence.text }}</div>
-          </q-card-section>
-        </q-card>
-      </div>
-      <div v-else>
-        <h1 class="text-h3">Error</h1>
-        <p>Failed to load document</p>
-        <q-btn
-          push
-          color="secondary"
-          label="Back"
-          class="q-mt-md"
-          to="/documents"
-        />
-      </div>
-    </q-page>
-  </q-page-container>
-</template>
