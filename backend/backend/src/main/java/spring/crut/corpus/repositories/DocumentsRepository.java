@@ -6,5 +6,4 @@ import spring.crut.corpus.models.Document;
 
 @Repository
 public interface DocumentsRepository extends JpaRepository<Document, Integer> {
-    Iterable<Document> findAllByStatus(Integer status);
 }

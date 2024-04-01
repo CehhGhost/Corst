@@ -3,7 +3,6 @@ package spring.crut.corpus.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import spring.crut.corpus.enums.Status;
 
 import java.sql.Timestamp;
 import java.util.List;

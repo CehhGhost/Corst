@@ -1,19 +1,12 @@
 package spring.crut.administration.security;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.transaction.annotation.Transactional;
 import spring.crut.administration.models.User;
 import spring.crut.administration.services.CrutUserDetailsService;
-import spring.crut.administration.services.UsersService;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 @RequiredArgsConstructor
 public class CrutUserDetails implements UserDetails {

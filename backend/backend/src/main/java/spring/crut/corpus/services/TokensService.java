@@ -7,14 +7,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.crut.corpus.dto.TokenDTO;
-import spring.crut.corpus.models.Document;
+
 import spring.crut.corpus.models.Sentence;
 import spring.crut.corpus.models.Token;
 import spring.crut.corpus.repositories.TokensRepository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
