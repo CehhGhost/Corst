@@ -1,15 +1,12 @@
 package spring.crut.corpus.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.crut.corpus.dto.CertainSearchSentenceDTO;
 import spring.crut.corpus.dto.CreateSentenceDTO;
-import spring.crut.corpus.dto.TokenDTO;
+
 import spring.crut.corpus.models.Document;
 import spring.crut.corpus.models.Sentence;
 import spring.crut.corpus.repositories.DocumentsRepository;
@@ -17,7 +14,7 @@ import spring.crut.corpus.repositories.SentencesRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
 
 @Service
 @RequiredArgsConstructor

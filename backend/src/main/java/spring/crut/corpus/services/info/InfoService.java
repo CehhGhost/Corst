@@ -1,5 +1,6 @@
 package spring.crut.corpus.services.info;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import spring.crut.corpus.models.info.Info;
