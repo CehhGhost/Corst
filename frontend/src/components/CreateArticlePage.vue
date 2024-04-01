@@ -31,6 +31,7 @@
 
 <script>
 import { ref } from "vue";
+import { serverAdress } from "../global/globalVaribles.js";
 
 export default {
   setup() {
@@ -44,7 +45,6 @@ export default {
   },
   data() {
     return {
-      // TODO Разобраться с датой
       textRus: "",
       textEng: "",
     };
@@ -60,7 +60,7 @@ export default {
     },
     async submitForm() {
       console.log(this.date.toString("yyyy-MM-dd"));
-      const response = await fetch("http://localhost:8081/articles/create", {
+      const response = await fetch(serverAdress + "/articles/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
