@@ -1,5 +1,5 @@
 <template>
-  <div v-if="checkLogin()">
+  <div v-if="userStatus">
     <h1></h1>
     <q-btn
       push
@@ -30,23 +30,17 @@
 
 <script>
 import { serverAdress } from "../global/globalVaribles.js";
+import { isLogin } from "../global/globalFunctions.js";
 
 export default {
   data() {
     return {
       news: [],
-      isLogin: this.checkLogin(),
+
+      userStatus: false,
     };
   },
   methods: {
-    checkLogin() {
-      if (localStorage.getItem("corst_token") == null) {
-        return false;
-      } else {
-        //TODO Check expired token
-        return true;
-      }
-    },
     async loadAllNews() {
       try {
         const response = await fetch(serverAdress + "/articles", {
@@ -63,7 +57,8 @@ export default {
       }
     },
   },
-  created() {
+  async mounted() {
+    this.userStatus = await isLogin();
     this.loadAllNews();
   },
 };

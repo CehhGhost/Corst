@@ -68,11 +68,11 @@
         <q-btn
           flat
           dense
-          to="/demo"
+          to="/addDocument"
           active-class="text-white"
           class="text-white"
         >
-          Demo annotation
+          New Document
         </q-btn>
         <q-btn
           flat
