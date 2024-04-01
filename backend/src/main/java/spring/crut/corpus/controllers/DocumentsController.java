@@ -32,7 +32,7 @@ public class DocumentsController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CrutUserDetails userDetails = (CrutUserDetails) authentication.getPrincipal();
         document.setOwner(userDetails.getUser());
-        documentsService.createDocument(document);
+        documentsService.createDocument(document, documentDTO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @DeleteMapping("/delete/{id}")

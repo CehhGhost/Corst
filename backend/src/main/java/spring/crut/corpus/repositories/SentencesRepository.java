@@ -9,5 +9,6 @@ import spring.crut.corpus.models.Sentence;
 
 import java.util.List;
 
+@Repository
 public interface SentencesRepository extends JpaRepository<Sentence, Integer> {
 }

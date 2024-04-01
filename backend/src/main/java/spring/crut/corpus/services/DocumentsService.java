@@ -8,12 +8,18 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+import spring.crut.corpus.dto.CreateDocumentDTO;
 import spring.crut.corpus.dto.CreateSentenceDTO;
 import spring.crut.corpus.dto.CertainSearchDTO;
 import spring.crut.corpus.dto.DocumentDTO;
 import spring.crut.corpus.models.Document;
 import spring.crut.corpus.repositories.DocumentsRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
+import spring.crut.corpus.enums.Status;
+import spring.crut.corpus.services.info.AcademicMajorsService;
+import spring.crut.corpus.services.info.CoursesService;
+import spring.crut.corpus.services.info.DomainsService;
+import spring.crut.corpus.services.info.GenresService;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -28,11 +34,19 @@ public class DocumentsService {
     private final SentencesService sentencesService;
     private final ModelMapper modelMapper;
     private final TokensService tokensService;
+    private final AcademicMajorsService academicMajorsService;
+    private final CoursesService coursesService;
+    private final DomainsService domainsService;
+    private final GenresService genresService;
     @Transactional
-    public void createDocument(Document document) {
+    public void createDocument(Document document, CreateDocumentDTO createDocumentDTO) {
         document.setSentences(new ArrayList<>());
         document.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-        document.setStatus(0);
+        document.setStatus(Status.NOT_ANNOTATED);
+        document.setAuthorsAcademicMajor(academicMajorsService.create(createDocumentDTO.getAuthorsAcademicMajor()));
+        document.setAuthorsCourse(coursesService.create(createDocumentDTO.getAuthorsCourse()));
+        document.setDomain(domainsService.create(createDocumentDTO.getDomain()));
+        document.setGenre(genresService.create(createDocumentDTO.getGenre()));
         document = documentsRepository.save(document);
         String natashaServiceUrl = "http://127.0.0.1:5000/analyse";
 
@@ -93,7 +107,7 @@ public class DocumentsService {
 
     public void setStatusById(Integer id, Integer status) {
         var document = this.getDocumentByID(id);
-        document.setStatus(status);
+        document.setStatus(Status.values()[status]);
         documentsRepository.save(document);
     }
 
