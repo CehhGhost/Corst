@@ -37,43 +37,35 @@
 
 <script>
 import { serverAdress } from "../global/globalVaribles.js";
+import { isLogin } from "../global/globalFunctions.js";
 
 export default {
   data() {
     return {
       documents: [],
-      isLogin: this.checkLogin(),
       responseSuccess: true,
+      userStatus: false,
     };
   },
   methods: {
-    checkLogin() {
-      if (localStorage.getItem("corst_token") == null) {
-        return false;
-      } else {
-        //TODO Check expired token
-        return true;
-      }
-    },
     async loadAllDocuments() {
       try {
         const response = await fetch(serverAdress + "/documents", {
           method: "GET",
         });
+        this.responseSuccess = true;
         if (response.ok) {
           const data = await response.json();
           this.documents = data;
-        } else {
-          this.responseSuccess = false;
         }
       } catch (error) {
-        console.error("Error during login:", error);
-        this.responseSuccess = false;
+        console.error("Error:", error);
       }
     },
   },
-  mounted() {
-    if (this.isLogin) {
+  async mounted() {
+    this.userStatus = await isLogin();
+    if (this.userStatus) {
       this.loadAllDocuments();
     } else {
       this.$router.push("/");
