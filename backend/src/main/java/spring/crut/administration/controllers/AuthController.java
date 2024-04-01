@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import spring.crut.administration.dto.AuthDTO;
 import spring.crut.administration.dto.JwtDTO;
 import spring.crut.administration.security.JWTUtil;
+import spring.crut.administration.services.CrutUserDetailsService;
+import spring.crut.administration.services.UsersService;
 
 
 @RestController
@@ -19,6 +21,7 @@ import spring.crut.administration.security.JWTUtil;
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
+    private final CrutUserDetailsService crutUserDetailsService;
 
     @PostMapping
     public ResponseEntity<?> loginUser(@RequestBody AuthDTO authDTO) {
@@ -34,8 +37,9 @@ public class AuthController {
     }
     @GetMapping("/check_login") ResponseEntity<?> checkValidationOfToken(@RequestParam(name = "jwt") String jwt) {
         try {
-            jwtUtil.validateTokenAndRetrieveClaim(jwt);
-        } catch (JWTVerificationException exc) {
+            String username = jwtUtil.validateTokenAndRetrieveClaim(jwt);
+            crutUserDetailsService.loadUserByUsername(username);
+        } catch (RuntimeException exc) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(HttpStatus.OK);
