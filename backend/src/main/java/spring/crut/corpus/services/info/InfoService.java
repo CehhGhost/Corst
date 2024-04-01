@@ -13,6 +13,9 @@ public abstract class InfoService <T extends Info, R extends InfoRepository<T>> 
     protected R repository;
     @Transactional
     public T create(String name) {
+        if (name == null) {
+            return null;
+        }
         name = name.toLowerCase();
         var check = repository.findByName(name);
         T info;
