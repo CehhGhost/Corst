@@ -30,11 +30,21 @@
 </template>
 
 <script>
+import { ref } from "vue";
+
 export default {
+  setup() {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, "0");
+    const day = String(currentDate.getDate()).padStart(2, "0");
+    return {
+      date: ref(`${year}/${month}/${day}`),
+    };
+  },
   data() {
     return {
       // TODO Разобраться с датой
-      date: new Date().toISOString().substr(0, 10),
       textRus: "",
       textEng: "",
     };
