@@ -5,6 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 import spring.crut.corpus.models.info.Info;
 import spring.crut.corpus.repositories.info.InfoRepository;
 
+import java.util.List;
+
 public abstract class InfoService <T extends Info, R extends InfoRepository<T>> {
     @Autowired
     protected R repository;
@@ -19,6 +21,10 @@ public abstract class InfoService <T extends Info, R extends InfoRepository<T>> 
             info = check.get();
         }
         return info;
+    }
+    @Transactional
+    public List<T> getAll() {
+        return repository.findAll();
     }
 
     protected abstract T createInfo(String name);
