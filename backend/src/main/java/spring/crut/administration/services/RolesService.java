@@ -9,7 +9,9 @@ import spring.crut.administration.repositories.AuthoritiesRepository;
 import spring.crut.administration.repositories.RolesRepository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +38,7 @@ public class RolesService {
         if (rolesRepository.findByName(role.getName()).isPresent()) {
             throw new IllegalArgumentException("This role is already existing");
         }
-        List<Authority> authorities = new ArrayList<>();
+        Set<Authority> authorities = new HashSet<>();
         for (var authority : role.getAuthorities()) {
             var actualAuthority = authoritiesRepository.findByName(authority.getName());
             if (actualAuthority.isEmpty()) {
