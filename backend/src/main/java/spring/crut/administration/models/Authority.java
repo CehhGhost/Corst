@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -23,6 +24,7 @@ public class Authority {
     @ManyToMany
     @JoinTable(name = "_roles_authorities",
             joinColumns = @JoinColumn(name = "roles_id"),
-            inverseJoinColumns = @JoinColumn(name = "authorities_id"))
-    private List<Role> roles;
+            inverseJoinColumns = @JoinColumn(name = "authorities_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"roles_id", "authorities_id"}))
+    private Set<Role> roles;
 }

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import spring.crut.administration.dto.AuthDTO;
 import spring.crut.administration.dto.JwtDTO;
@@ -38,7 +39,7 @@ public class AuthController {
         try {
             var username = jwtUtil.validateTokenAndRetrieveClaim(jwt);
             crutUserDetailsService.loadUserByUsername(username);
-        } catch (RuntimeException exc) { // TODO сделать отлов получше
+        } catch (JWTVerificationException | UsernameNotFoundException exc) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(HttpStatus.OK);
