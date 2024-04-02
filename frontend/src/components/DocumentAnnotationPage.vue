@@ -50,7 +50,7 @@ export default {
       document: this.loadDocument(),
       responseSuccess: true,
       recogitoInstances: [],
-      documentStatus: 0,
+      documentStatus: "Not annotated",
       options: ["Not annotated", "Annotated", "Checked"],
 
       userStatus: false,
@@ -86,7 +86,6 @@ export default {
       }
     },
     async changeStatus() {
-      console.log(this.documentStatus);
       this.userStatus = await isLogin();
       if (!this.userStatus) {
         this.$router.push("/login");
@@ -106,12 +105,7 @@ export default {
           }
         );
         if (response.ok) {
-          if (
-            "Notification" in window &&
-            Notification.permission === "granted"
-          ) {
-            new Notification("Status changed");
-          }
+          // TODO Add Notifier
         } else {
           console.error(response);
         }
