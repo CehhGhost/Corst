@@ -1,9 +1,14 @@
 package spring.crut.corpus.services;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import spring.crut.corpus.dto.CertainSearchSentenceDTO;
 import spring.crut.corpus.dto.CreateSentenceDTO;
 
@@ -23,6 +28,9 @@ public class SentencesService {
     private final TokensService tokensService;
     private final DocumentsRepository documentsRepository;
     private final ModelMapper modelMapper;
+    private final RestTemplate restTemplate;
+
+    private final ObjectMapper objectMapper;
     @Transactional
     public void createSentences(List<CreateSentenceDTO> sentenceDTOList, Document document) {
         for (var sentenceDTO : sentenceDTOList) {
@@ -40,17 +48,26 @@ public class SentencesService {
 
     @Transactional
     public List<CertainSearchSentenceDTO> getByCertainSearch(List<Document> documents, String wordform) {
-        wordform = wordform.toLowerCase();
+
+        String natashaServiceUrl = "http://127.0.0.1:5000/lemmatize";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> requestEntity = new HttpEntity<>("{\"text\": \"" + wordform + "\"}", headers);
+        ResponseEntity<String> responseEntity = restTemplate.exchange(natashaServiceUrl, HttpMethod.POST, requestEntity, String.class);
+        String responseBody = responseEntity.getBody();
+        LemmatizedWordform lemmatizedWordform;
+        try {
+            lemmatizedWordform = objectMapper.readValue(responseBody, LemmatizedWordform.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
         List<Sentence> resultSentences = new ArrayList<>();
         for (var document : documents) {
             List<Sentence> sentences = document.getSentences();
             for (var sentence : sentences) {
-                for (var token : sentence.getTokens()) {
-                    var lemma = token.getLemma();
-                    if (lemma.equals(wordform)) {
-                        resultSentences.add(sentence);
-                        break;
-                    }
+                if (sentence.getLemmatizedText().contains(lemmatizedWordform.getText())) {
+                    resultSentences.add(sentence);
                 }
             }
         }
@@ -70,5 +87,18 @@ public class SentencesService {
             throw new IllegalArgumentException("No such sentence with this id!");
         }
         return sentence.get();
+    }
+
+    static class LemmatizedWordform {
+        @JsonProperty("lemmatized_string")
+        private String text;
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
     }
 }

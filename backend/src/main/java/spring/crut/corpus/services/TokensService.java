@@ -21,12 +21,14 @@ public class TokensService {
     private final ObjectMapper objectMapper;
     @Transactional
     public void createTokens(List<TokenDTO> tokenDTOList, Sentence sentence) {
+        StringBuilder lemmatizedSentence = new StringBuilder();
         for (var tokenDTO : tokenDTOList) {
             Token token = new Token();
             token.setText(tokenDTO.getText());
             token.setNum(tokenDTO.getNum());
             token.setPos(tokenDTO.getPos());
             token.setLemma(tokenDTO.getLemma());
+            lemmatizedSentence.append(tokenDTO.getLemma());
             try {
                 token.setAttrs(objectMapper.writeValueAsString(tokenDTO.getAttrs()));
             } catch (JsonProcessingException e) {
@@ -36,6 +38,7 @@ public class TokensService {
             tokensRepository.save(token);
             sentence.getTokens().add(token);
         }
+        sentence.setLemmatizedText(lemmatizedSentence.toString());
     }
     public void setAttrsForTokensDTO(List<TokenDTO> tokensDTO, List<Token> tokens) {
         for (int i = 0; i < tokens.size(); ++i) {
