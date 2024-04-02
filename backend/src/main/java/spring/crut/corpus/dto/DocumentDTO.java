@@ -20,7 +20,7 @@ public class DocumentDTO {
     private String authorsCourse;
     private String authorsAcademicMajor;
     private Timestamp createdAt;
-    private String status;
+    private Integer statusNum;
     private String ownerUsername;
     private List<SentenceDTO> sentences;
 }
