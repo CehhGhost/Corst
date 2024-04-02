@@ -53,6 +53,31 @@
                         </div>
                       </q-card-actions>
                     </q-card>
+                    <q-card outlined>
+                      <q-card-section class="bg-primary text-white">
+                        <div class="text-h6">Author Gender</div>
+                      </q-card-section>
+
+                      <q-card-actions>
+                        <div>
+                          <q-checkbox
+                            v-model="subcorpusData.genders"
+                            val="male"
+                            label="Male"
+                          ></q-checkbox>
+                          <q-checkbox
+                            v-model="subcorpusData.genders"
+                            val="female"
+                            label="Female"
+                          ></q-checkbox>
+                          <q-checkbox
+                            v-model="subcorpusData.genders"
+                            val="unknown"
+                            label="Unknown"
+                          ></q-checkbox>
+                        </div>
+                      </q-card-actions>
+                    </q-card>
                   </div>
                 </div>
               </q-card-section>
