@@ -21,10 +21,10 @@ public class InfoController {
     @GetMapping ("/document")
     public ResponseEntity<?> getAllDocumentInfo() {
         DocumentInfoDTO documentInfoDTO = new DocumentInfoDTO();
-        documentInfoDTO.setDomains(domainsService.getAll());
-        documentInfoDTO.setCourses(coursesService.getAll());
-        documentInfoDTO.setGenres(genresService.getAll());
-        documentInfoDTO.setAcademicMajors(academicMajorsService.getAll());
+        documentInfoDTO.setDomains(domainsService.getAllNames());
+        documentInfoDTO.setCourses(coursesService.getAllNames());
+        documentInfoDTO.setGenres(genresService.getAllNames());
+        documentInfoDTO.setAcademicMajors(academicMajorsService.getAllNames());
         return ResponseEntity.ok(documentInfoDTO);
     }
 }

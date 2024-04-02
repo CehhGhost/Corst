@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import spring.crut.corpus.models.info.Info;
 import spring.crut.corpus.repositories.info.InfoRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class InfoService <T extends Info, R extends InfoRepository<T>> {
@@ -13,7 +14,7 @@ public abstract class InfoService <T extends Info, R extends InfoRepository<T>> 
     protected R repository;
     @Transactional
     public T create(String name) {
-        if (name == null) {
+        if (name == null || name.isEmpty()) {
             return null;
         }
         name = name.toLowerCase();
@@ -29,6 +30,14 @@ public abstract class InfoService <T extends Info, R extends InfoRepository<T>> 
     @Transactional
     public List<T> getAll() {
         return repository.findAll();
+    }
+    @Transactional
+    public List<String> getAllNames() {
+        List<String> result = new ArrayList<>();
+        for (var info : repository.findAll()) {
+            result.add(info.getName());
+        }
+        return result;
     }
 
     protected abstract T createInfo(String name);
