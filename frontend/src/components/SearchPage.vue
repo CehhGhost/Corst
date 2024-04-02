@@ -249,6 +249,14 @@ export default {
         periodFrom: "",
         periodTo: "",
         genders: [],
+        genres: [],
+        domains: [],
+        authorsCourses: [],
+        authorsAcademicMajors: [],
+      },
+
+      subcorpusTextInfoContainer: {
+        genres: [],
         domains: [],
         authorsCourses: [],
         authorsAcademicMajors: [],
@@ -259,6 +267,23 @@ export default {
     };
   },
   methods: {
+    async getSubcorpusTextInfo() {
+      try {
+        const response = await fetch(serverAdress + "/info/document", {
+          method: "GET",
+        });
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data);
+          return data;
+        } else {
+          console.error(response);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
     async exactSearch() {
       this.searchResults = [];
       const response = await fetch(serverAdress + "/documents/search/certain", {
@@ -312,6 +337,16 @@ export default {
     closeDisplaySettingsModal() {
       this.displaySettingsModal = false;
     },
+  },
+  async mounted() {
+    await this.getSubcorpusTextInfo().then((data) => {
+      this.subcorpusTextInfoContainer.genres = data.genres;
+      this.subcorpusTextInfoContainer.domains = data.domains;
+      this.subcorpusTextInfoContainer.authorsCourses = data.courses;
+      this.subcorpusTextInfoContainer.authorsAcademicMajors =
+        data.academicMajors;
+    });
+    console.log(this.subcorpusTextInfoContainer);
   },
 };
 </script>
