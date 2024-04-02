@@ -25,6 +25,9 @@ public class Sentence {
     @Column(name = "num")
     private Integer num;
 
+    @Column(name = "lemmatized_text")
+    private String lemmatizedText;
+
     @OneToMany
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
     private List<Token> tokens;
