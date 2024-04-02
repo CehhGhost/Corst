@@ -19,461 +19,40 @@
             </q-btn-group>
           </div>
           <q-dialog v-model="displaySubcorpusModal" persistent>
-            <q-card>
+            <q-card style="width: 1200px">
+              <q-card-section class="row items-center q-pb-none">
+                <label class="text-h6">Specify Subcorpus</label>
+                <q-space />
+                <q-btn icon="close" flat round dense v-close-popup />
+              </q-card-section>
               <q-card-section class="row items-center">
-                <h4 class="search">Выбрать подкорпус</h4>
-                <div class="conatiner mx-4">
-                  <h4>Период</h4>
-                  <div class="row mb-2 subcorpus-bg">
-                    <div class="col-sm-1 mt-1">
-                      <h4 style="font-size: 20px">От</h4>
-                    </div>
-                    <div class="col-sm-3">
-                      <label>
-                        <input
-                          name="years1"
-                          type="text"
-                          class="form-control input-sm"
-                          placeholder="2014"
-                          size="100%"
-                        />
-                      </label>
-                    </div>
-                    <div class="col-sm-1 mt-1">
-                      <h4 style="font-size: 20px">до</h4>
-                    </div>
-                    <div class="col-sm-3">
-                      <label>
-                        <input
-                          name="years2"
-                          type="text"
-                          class="form-control input-sm"
-                          placeholder="2015"
-                          size="100%"
-                        />
-                      </label>
-                    </div>
-                  </div>
-                  <h4>Пол автора</h4>
-                  <div class="row mb-2 subcorpus-bg">
-                    <div class="col-sm-4">
-                      <input type="radio" name="genAnswer" value=" " />
-                      <label>Любой</label>
-                    </div>
-                    <div class="col-sm-4">
-                      <input type="radio" name="genAnswer" value="м" />
-                      <label>Мужской</label>
-                    </div>
-                    <div class="col-sm-4">
-                      <input type="radio" name="genAnswer" value="ж" />
-                      <label>Женский</label>
-                    </div>
-                  </div>
-                  <h4>Курс</h4>
-                  <div class="row mb-2 subcorpus-bg">
-                    <div class="col-sm-6">
-                      <input
-                        type="checkbox"
-                        class="chk-all"
-                        name="cas"
-                        value="all"
-                        data-group="g1"
-                      />
-                      <label>Выбрать все</label><br />
+                <hr />
+                <div class="row">
+                  <div>
+                    <q-card outlined>
+                      <q-card-section class="bg-primary text-white">
+                        <div class="text-h6">Period</div>
+                      </q-card-section>
 
-                      <input
-                        type="checkbox"
-                        name="cas6"
-                        value="s6"
-                        data-group="g1"
-                      />
-                      <label>6 курс специалитет</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="cas5"
-                        value="s5"
-                        data-group="g1"
-                      />
-                      <label>5 курс специалитет</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="cas4"
-                        value="s4"
-                        data-group="g1"
-                      />
-                      <label>4 курс специалитет</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="cas3"
-                        value="s3"
-                        data-group="g1"
-                      />
-                      <label>3 курс специалитет</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="cas2"
-                        value="s2"
-                        data-group="g1"
-                      />
-                      <label>2 курс специалитет</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="cas1"
-                        value="s1"
-                        data-group="g1"
-                      />
-                      <label>1 курс специалитет</label>
-                    </div>
-                    <div class="col-sm-6">
-                      <input
-                        type="checkbox"
-                        name="cab4"
-                        value="b4"
-                        data-group="g1"
-                      />
-                      <label>4 курс бакалавриат</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="cab3"
-                        value="b3"
-                        data-group="g1"
-                      />
-                      <label>3 курс бакалавриат</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="cab2"
-                        value="b2"
-                        data-group="g1"
-                      />
-                      <label>2 курс бакалавриат</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="cab1"
-                        value="b1"
-                        data-group="g1"
-                      />
-                      <label>1 курс бакалавриат</label>
-                    </div>
-                  </div>
-                  <h4>Тип работы</h4>
-                  <div class="row mb-2 subcorpus-bg">
-                    <div class="col-sm-6">
-                      <input type="checkbox" class="chk-all" data-group="g2" />
-                      <label>Выбрать все</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="conference"
-                        data-group="g2"
-                      />
-                      <label>Обзор конференции</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="course_work"
-                        data-group="g2"
-                      />
-                      <label>Курсовая работа</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="аutobiography"
-                        data-group="g2"
-                      />
-                      <label>Автобиография</label><br />
-
-                      <input type="checkbox" name="VKR" data-group="g2" />
-                      <label>ВКР</label><br />
-
-                      <input type="checkbox" name="statement" data-group="g2" />
-                      <label>Заявление</label><br />
-
-                      <input type="checkbox" name="essay" data-group="g2" />
-                      <label>Эссе</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="annotation"
-                        data-group="g2"
-                      />
-                      <label>Аннотация</label><br />
-                    </div>
-                    <div class="col-sm-6">
-                      <input type="checkbox" name="paragraph" data-group="g2" />
-                      <label>Абзац</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="course_work_draft"
-                        data-group="g2"
-                      />
-                      <label>Курсовая работа (черновик)</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="semester_work"
-                        data-group="g2"
-                      />
-                      <label>Семестровая работа</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="project_summary"
-                        data-group="g2"
-                      />
-                      <label>Аннотация проекта</label><br />
-
-                      <input type="checkbox" name="diploma" data-group="g2" />
-                      <label>Диплом</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="commercial_offer"
-                        data-group="g2"
-                      />
-                      <label>Коммерческое предложение</label><br />
-
-                      <input type="checkbox" name="abstract" data-group="g2" />
-                      <label>Реферат</label><br />
-                    </div>
-                  </div>
-                  <h4>Специальность автора</h4>
-                  <div class="row mb-2 subcorpus-bg">
-                    <div class="col-sm-6">
-                      <input type="checkbox" class="chk-all" data-group="g3" />
-                      <label>Выбрать все</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="Культурология"
-                        data-group="g3"
-                      />
-                      <label>Культурология</label><br />
-
-                      <input type="checkbox" name="Экономика" data-group="g3" />
-                      <label>Экономика</label><br />
-
-                      <input type="checkbox" name="История" data-group="g3" />
-                      <label>История</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="Журналистика"
-                        data-group="g3"
-                      />
-                      <label>Журналистика</label><br />
-
-                      <input type="checkbox" name="Дизайн" data-group="g3" />
-                      <label>Дизайн</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="Востоковедение"
-                        data-group="g3"
-                      />
-                      <label>Востоковедение</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="Медиакоммуникации"
-                        data-group="g3"
-                      />
-                      <label>Медиакоммуникации</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="Политология"
-                        data-group="g3"
-                      />
-                      <label>Политология</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="Лингвистика"
-                        data-group="g3"
-                      />
-                      <label>Лингвистика</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="Юриспруденция"
-                        data-group="g3"
-                      />
-                      <label>Юриспруденция</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="Менеджмент"
-                        data-group="g3"
-                      />
-                      <label>Менеджмент</label><br />
-                    </div>
-                    <div class="col-sm-6">
-                      <input
-                        type="checkbox"
-                        name="Социология"
-                        data-group="g3"
-                      />
-                      <label>Социология</label><br />
-
-                      <input type="checkbox" name="Логистика" data-group="g3" />
-                      <label>Логистика</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="Математика"
-                        data-group="g3"
-                      />
-                      <label>Математика</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="Иностранные языки"
-                        data-group="g3"
-                      />
-                      <label>Иностранные языки</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="Мировая экономика"
-                        data-group="g3"
-                      />
-                      <label>Мировая экономика</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="Современное искусство"
-                        data-group="g3"
-                      />
-                      <label>Современное искусство</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="Прикладная математика и информатика"
-                        data-group="g3"
-                      />
-                      <label>Прикладная математика и информатика</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="Реклама и связи с общественностью"
-                        data-group="g3"
-                      />
-                      <label>Реклама и связи с общественностью</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="Психология"
-                        data-group="g3"
-                      />
-                      <label>Психология</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="История искусств"
-                        data-group="g3"
-                      />
-                      <label>История искусств</label><br />
-
-                      <input type="checkbox" name="Филология" data-group="g3" />
-                      <label>Филология</label><br />
-                    </div>
-                  </div>
-                  <h4>Научная область</h4>
-                  <div class="row mb-2 subcorpus-bg">
-                    <div class="col-sm-6">
-                      <input type="checkbox" class="chk-all" data-group="g4" />
-                      <label>Выбрать все</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="политология_d"
-                        data-group="g4"
-                      />
-                      <label>Политология</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="психология_d"
-                        data-group="g4"
-                      />
-                      <label>Психология</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="разнородная_тематика_d"
-                        data-group="g4"
-                      />
-                      <label>Разнородная тематика</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="менеджмент_d"
-                        data-group="g4"
-                      />
-                      <label>Менеджмент</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="журналистика_d"
-                        data-group="g4"
-                      />
-                      <label>Журналистика</label><br />
-
-                      <input type="checkbox" name="право_d" data-group="g4" />
-                      <label>Право</label><br />
-                    </div>
-                    <div class="col-sm-6">
-                      <input
-                        type="checkbox"
-                        name="cоциология_d"
-                        data-group="g4"
-                      />
-                      <label>Социология</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="риторика_d"
-                        data-group="g4"
-                      />
-                      <label>Риторика</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="cоциолингвистика_d"
-                        data-group="g4"
-                      />
-                      <label>Социолингвистика</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="лингвистика_d"
-                        data-group="g4"
-                      />
-                      <label>Лингвистика</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="образование_d"
-                        data-group="g4"
-                      />
-                      <label>Образование</label><br />
-
-                      <input
-                        type="checkbox"
-                        name="филология_d"
-                        data-group="g4"
-                      />
-                      <label>Филология</label><br />
-                    </div>
+                      <q-card-actions>
+                        <div class="row">
+                          <q-input
+                            v-model="subcorpusData.periodFrom"
+                            label="From"
+                            placeholder="2014"
+                            outlined
+                            style="width: 48%; margin-right: 4%"
+                          />
+                          <q-input
+                            v-model="subcorpusData.periodTo"
+                            label="To"
+                            placeholder="2015"
+                            outlined
+                            style="width: 48%"
+                          />
+                        </div>
+                      </q-card-actions>
+                    </q-card>
                   </div>
                 </div>
               </q-card-section>
@@ -640,6 +219,15 @@ export default {
           to: "",
         },
       ],
+
+      subcorpusData: {
+        periodFrom: "",
+        periodTo: "",
+        genders: [],
+        domains: [],
+        authorsCourses: [],
+        authorsAcademicMajors: [],
+      },
 
       showDeleteButton: true,
       searchResults: [],
