@@ -106,8 +106,12 @@ public class DocumentsService {
     }
 
     public void setStatusById(Integer id, Integer status) {
+        var values = Status.values();
+        if (status < 0 || status >= values.length) {
+            throw new IllegalArgumentException("wrong status!");
+        }
         var document = this.getDocumentByID(id);
-        document.setStatus(Status.values()[status]);
+        document.setStatus(values[status]);
         documentsRepository.save(document);
     }
 
