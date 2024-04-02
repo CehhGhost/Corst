@@ -21,7 +21,6 @@
             dense
             placeholder="Enter content"
             class="q-mb-md"
-            min-height="400px"
           />
           Author Gender
           <q-select
@@ -29,17 +28,54 @@
             outlined
             :options="authorsGenders"
           />
-          <q-select
-            filled
-            v-model="model"
-            use-input
-            use-chips
-            input-debounce="0"
-            @new-value="createValue"
-            :options="filterOptions"
-            @filter="filterFn"
-            style="width: 250px"
-          />
+          <div class="row">
+            <q-select
+              outlined
+              v-model="genre"
+              use-input
+              use-chips
+              input-debounce="0"
+              @new-value="createValue"
+              :options="filteredGenres"
+              @filter="filterGenres"
+              style="width: 47%; margin-right: 6%"
+            />
+            <q-select
+              outlined
+              v-model="domain"
+              use-input
+              use-chips
+              input-debounce="0"
+              @new-value="createValue"
+              :options="filteredDomains"
+              @filter="filterDomains"
+              style="width: 47%"
+            />
+          </div>
+          <div class="row">
+            <q-select
+              outlined
+              v-model="authorsCourse"
+              use-input
+              use-chips
+              input-debounce="0"
+              @new-value="createValue"
+              :options="filteredAuthorsCourses"
+              @filter="filterAuthorsCourses"
+              style="width: 47%; margin-right: 6%"
+            />
+            <q-select
+              outlined
+              v-model="authorsAcademicMajor"
+              use-input
+              use-chips
+              input-debounce="0"
+              @new-value="createValue"
+              :options="filteredAuthorsAcademicMajors"
+              @filter="filterAuthorsAcademicMajors"
+              style="width: 47%"
+            />
+          </div>
           <q-btn
             type="submit"
             label="Add Document"
@@ -54,7 +90,7 @@
 
 <style scoped>
 .create-document {
-  width: 1000px;
+  width: 750px;
   margin: 0 auto;
   padding: 20px;
 }
@@ -76,25 +112,31 @@
 </style>
 
 <script>
+import { ref } from "vue";
 import { serverAdress } from "../global/globalVaribles.js";
 import { isLogin } from "../global/globalFunctions.js";
 
 export default {
   data() {
     return {
-      title: "",
-      text: "",
+      title: null,
+      text: null,
 
-      genre: "",
-      domain: "",
-      authorsCourse: "",
-      authorsAcademicMajor: "",
+      genre: null,
+      domain: null,
+      authorsCourse: null,
+      authorsAcademicMajor: null,
       genres: [],
       domains: [],
       authorsCourses: [],
       authorsAcademicMajors: [],
 
-      authorsGender: "",
+      filteredGenres: [],
+      filteredDomains: [],
+      filteredAuthorsCourses: [],
+      filteredAuthorsAcademicMajors: [],
+
+      authorsGender: null,
       authorsGenders: ["Male", "Female", "Unknown"],
 
       userStatus: false,
@@ -110,6 +152,7 @@ export default {
         this.responseSuccess = response.ok;
         if (response.ok) {
           const data = await response.json();
+          console.log(data);
           return data;
         }
       } catch (error) {
@@ -121,11 +164,35 @@ export default {
       this.domains = data.domains;
       this.authorsCourses = data.courses;
       this.authorsAcademicMajors = data.academicMajors;
+      for (let i = 0; i < this.genres.length; i++) {
+        this.filteredGenres.push(this.genres[i]);
+      }
+      for (let i = 0; i < this.domains.length; i++) {
+        this.filteredDomains.push(this.domains[i]);
+      }
+      for (let i = 0; i < this.authorsCourses.length; i++) {
+        this.filteredAuthorsCourses.push(this.authorsCourses[i]);
+      }
+      for (let i = 0; i < this.authorsAcademicMajors.length; i++) {
+        this.filteredAuthorsAcademicMajors.push(this.authorsAcademicMajors[i]);
+      }
     },
     async addDocument() {
       this.userStatus = await isLogin();
       if (!this.userStatus) {
         this.$router.push("/login");
+      }
+      if (
+        !this.title ||
+        !this.text ||
+        !this.authorsGender ||
+        !this.genre ||
+        !this.domain ||
+        !this.authorsCourse ||
+        !this.authorsAcademicMajor
+      ) {
+        alert("Please fill all fields");
+        return;
       }
       await fetch(serverAdress + "/documents/create", {
         method: "POST",
@@ -137,6 +204,10 @@ export default {
           title: this.title,
           text: this.text,
           authorsGender: this.authorsGender.toUpperCase(),
+          genre: this.genre,
+          domain: this.domain,
+          authorsCourse: this.authorsCourse,
+          authorsAcademicMajor: this.authorsAcademicMajor,
         }),
       })
         .then((response) => {
@@ -149,6 +220,60 @@ export default {
         .catch((error) => {
           console.error("Error:", error);
         });
+    },
+    createValue(val, done) {
+      if (val.length > 0) {
+        done(val, "add-unique");
+      }
+    },
+    filterGenres(val, update) {
+      update(() => {
+        if (val === "") {
+          this.filteredGenres = this.genres;
+        } else {
+          const needle = val.toLowerCase();
+          this.filteredGenres = this.genres.filter(
+            (v) => v.toLowerCase().indexOf(needle) > -1
+          );
+        }
+      });
+    },
+    filterDomains(val, update) {
+      update(() => {
+        if (val === "") {
+          this.filteredDomains = this.domains;
+        } else {
+          const needle = val.toLowerCase();
+          this.filteredDomains = this.domains.filter(
+            (v) => v.toLowerCase().indexOf(needle) > -1
+          );
+        }
+      });
+    },
+    filterAuthorsCourses(val, update) {
+      update(() => {
+        if (val === "") {
+          this.filteredAuthorsCourses = this.authorsCourses;
+        } else {
+          const needle = val.toLowerCase();
+          this.filteredAuthorsCourses = this.authorsCourses.filter(
+            (v) => v.toLowerCase().indexOf(needle) > -1
+          );
+        }
+      });
+    },
+    filterAuthorsAcademicMajors(val, update) {
+      update(() => {
+        if (val === "") {
+          this.filteredAuthorsAcademicMajors = this.authorsAcademicMajors;
+        } else {
+          const needle = val.toLowerCase();
+          this.filteredAuthorsAcademicMajors =
+            this.authorsAcademicMajors.filter(
+              (v) => v.toLowerCase().indexOf(needle) > -1
+            );
+        }
+      });
     },
   },
   async mounted() {
