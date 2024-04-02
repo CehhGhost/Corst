@@ -9,15 +9,80 @@
               <q-btn
                 label="Specify Subcorpus"
                 color="primary"
-                @click="openSubcorpusModal"
+                @click="displaySubcorpusModal = true"
               />
               <q-btn
                 label="Display Options"
                 color="primary"
-                @click="openDisplaySettingsModal"
+                @click="displaySettingsModal = true"
               />
             </q-btn-group>
           </div>
+          <q-dialog v-model="displaySubcorpusModal" persistent>
+            <q-card style="width: 1200px">
+              <q-card-section class="row items-center q-pb-none">
+                <label class="text-h6">Specify Subcorpus</label>
+                <q-space />
+                <q-btn icon="close" flat round dense v-close-popup />
+              </q-card-section>
+              <q-card-section class="row items-center">
+                <hr />
+                <div class="row">
+                  <div>
+                    <q-card outlined>
+                      <q-card-section class="bg-primary text-white">
+                        <div class="text-h6">Period</div>
+                      </q-card-section>
+
+                      <q-card-actions>
+                        <div class="row">
+                          <q-input
+                            v-model="subcorpusData.periodFrom"
+                            label="From"
+                            placeholder="2014"
+                            outlined
+                            style="width: 48%; margin-right: 4%"
+                          />
+                          <q-input
+                            v-model="subcorpusData.periodTo"
+                            label="To"
+                            placeholder="2015"
+                            outlined
+                            style="width: 48%"
+                          />
+                        </div>
+                      </q-card-actions>
+                    </q-card>
+                    <q-card outlined>
+                      <q-card-section class="bg-primary text-white">
+                        <div class="text-h6">Author Gender</div>
+                      </q-card-section>
+
+                      <q-card-actions>
+                        <div>
+                          <q-checkbox
+                            v-model="subcorpusData.genders"
+                            val="male"
+                            label="Male"
+                          ></q-checkbox>
+                          <q-checkbox
+                            v-model="subcorpusData.genders"
+                            val="female"
+                            label="Female"
+                          ></q-checkbox>
+                          <q-checkbox
+                            v-model="subcorpusData.genders"
+                            val="unknown"
+                            label="Unknown"
+                          ></q-checkbox>
+                        </div>
+                      </q-card-actions>
+                    </q-card>
+                  </div>
+                </div>
+              </q-card-section>
+            </q-card>
+          </q-dialog>
           <q-card class="rounded-borders">
             <q-card-section class="exactSearch">
               <h3 class="text-h6">Exact Search</h3>
@@ -157,8 +222,14 @@
 
 <script>
 import { serverAdress } from "src/global/globalVaribles";
+import { ref } from "vue";
 
 export default {
+  setup() {
+    const displaySettingsModal = ref(false);
+    const displaySubcorpusModal = ref(false);
+    return { displaySettingsModal, displaySubcorpusModal };
+  },
   data() {
     return {
       exactSearchInput: "",
@@ -173,9 +244,17 @@ export default {
           to: "",
         },
       ],
+
+      subcorpusData: {
+        periodFrom: "",
+        periodTo: "",
+        genders: [],
+        domains: [],
+        authorsCourses: [],
+        authorsAcademicMajors: [],
+      },
+
       showDeleteButton: true,
-      displaySettingsModal: false,
-      subcorpusModal: false,
       searchResults: [],
     };
   },
@@ -220,17 +299,18 @@ export default {
         this.showDeleteButton = false;
       }
     },
+    openSubcorpusModal() {
+      this.displaySubcorpusModal = true;
+      console.log(this.displaySubcorpusModal);
+    },
     openDisplaySettingsModal() {
       this.displaySettingsModal = true;
     },
+    closeSubcorpusModal() {
+      this.displaySubcorpusModal = false;
+    },
     closeDisplaySettingsModal() {
       this.displaySettingsModal = false;
-    },
-    openSubcorpusModal() {
-      this.subcorpusModal = true;
-    },
-    closeSubcorpusModal() {
-      this.subcorpusModal = false;
     },
   },
 };
