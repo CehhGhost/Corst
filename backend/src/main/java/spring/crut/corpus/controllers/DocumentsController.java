@@ -64,6 +64,7 @@ public class DocumentsController {
     public ResponseEntity<?> getDocumentByID(@PathVariable Integer id) {
         Document document = documentsService.getDocumentByID(id);
         var documentDTO = modelMapper.map(document, DocumentDTO.class);
+        documentDTO.setStatusNum(Status.valueOf(document.getStatus().name()).ordinal());
         documentsService.setAttrsForTokensInDocumentDTO(documentDTO);
         return ResponseEntity.ok(documentDTO);
     }
