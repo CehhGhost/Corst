@@ -28,6 +28,7 @@ public class DocumentsController {
 
     @PostMapping("/create")
     public ResponseEntity<HttpStatus> createDocument(@RequestBody CreateDocumentDTO documentDTO) {
+        documentDTO.setAuthorsGender(documentDTO.getAuthorsGender().toUpperCase());
         var document = modelMapper.map(documentDTO, Document.class);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CrutUserDetails userDetails = (CrutUserDetails) authentication.getPrincipal();
