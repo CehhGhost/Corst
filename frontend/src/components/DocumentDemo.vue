@@ -1,66 +1,60 @@
-<template>
-  <div class="q-pa-md">
-    <h1></h1>
-    <q-select
-      outlined
-      v-model="model"
-      use-input
-      use-chips
-      input-debounce="0"
-      @new-value="createValue"
-      :options="filterOptions"
-      @filter="filterFn"
-      style="width: 250px"
-    />
-  </div>
-</template>
-
 <script>
-import { ref } from "vue";
-
-const stringOptions = ["Google", "Facebook", "Twitter", "Apple", "Oracle"];
+import { Recogito } from "@recogito/recogito-js";
+import "@recogito/recogito-js/dist/recogito.min.css";
 
 export default {
-  setup() {
-    const filterOptions = ref(stringOptions);
-
+  data() {
     return {
-      model: ref(null),
-      filterOptions,
-
-      createValue(val, done) {
-        // Calling done(var) when new-value-mode is not set or "add", or done(var, "add") adds "var" content to the model
-        // and it resets the input textbox to empty string
-        // ----
-        // Calling done(var) when new-value-mode is "add-unique", or done(var, "add-unique") adds "var" content to the model
-        // only if is not already set
-        // and it resets the input textbox to empty string
-        // ----
-        // Calling done(var) when new-value-mode is "toggle", or done(var, "toggle") toggles the model with "var" content
-        // (adds to model if not already in the model, removes from model if already has it)
-        // and it resets the input textbox to empty string
-        // ----
-        // If "var" content is undefined/null, then it doesn't tampers with the model
-        // and only resets the input textbox to empty string
-
-        if (val.length > 2) {
-          done(val, "add-unique");
-        }
-      },
-
-      filterFn(val, update) {
-        update(() => {
-          if (val === "") {
-            filterOptions.value = stringOptions;
-          } else {
-            const needle = val.toLowerCase();
-            filterOptions.value = stringOptions.filter(
-              (v) => v.toLowerCase().indexOf(needle) > -1
-            );
-          }
-        });
-      },
+      recogito: null,
     };
+  },
+  mounted() {
+    this.recogito = new Recogito({
+      content: "recogito",
+      mode: "annotate",
+      selectHandler: (annotation) => {
+        console.log("Selected:", annotation);
+      },
+      createAnnotationHandler: (annotation) => {
+        console.log("Created:", annotation);
+      },
+      updateAnnotationHandler: (annotation) => {
+        console.log("Updated:", annotation);
+      },
+      deleteAnnotationHandler: (annotation) => {
+        console.log("Deleted:", annotation);
+      },
+    });
+  },
+  beforeUnmount() {
+    if (this.recogito) {
+      this.recogito.destroy();
+    }
   },
 };
 </script>
+
+<template>
+  <div>
+    <h1></h1>
+    <div ref="recogitoContainer" style="height: 500px" id="recogito">
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam viverra
+        urna vitae orci sagittis, ac tempus ligula ultrices. Mauris non ipsum eu
+        lectus vehicula vulputate id ac tortor. In et ligula in libero vulputate
+        egestas. Fusce rutrum non risus nec feugiat. Integer quis lacus
+        malesuada, congue dolor sit amet, condimentum libero.
+      </p>
+
+      <p>
+        Donec tincidunt urna libero, sit amet fermentum justo auctor vel. Ut
+        sodales lorem id semper maximus. Fusce dapibus arcu quis justo ultrices,
+        et consequat velit placerat. Pellentesque habitant morbi tristique
+        senectus et netus et malesuada fames ac turpis egestas. Proin feugiat
+        nunc a turpis ullamcorper molestie. Praesent vitae sollicitudin libero,
+        nec molestie odio. Suspendisse potenti. Vivamus non tincidunt libero.
+        Cras non dui mi.
+      </p>
+    </div>
+  </div>
+</template>

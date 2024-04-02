@@ -203,7 +203,7 @@ export default {
         body: JSON.stringify({
           title: this.title,
           text: this.text,
-          authorsGender: this.authorsGender.toUpperCase(),
+          authorsGender: this.authorsGender,
           genre: this.genre,
           domain: this.domain,
           authorsCourse: this.authorsCourse,

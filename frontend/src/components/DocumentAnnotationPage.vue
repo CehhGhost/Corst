@@ -7,7 +7,7 @@
           <h3 class="row text-h6 q-mb-md">Document status</h3>
           <q-select
             outlined
-            v-model="document.status"
+            v-model="documentStatus"
             :options="options"
             class="q-mb-md"
             style="width: 170px"
@@ -50,13 +50,14 @@ export default {
       document: this.loadDocument(),
       responseSuccess: true,
       recogitoInstances: [],
+      documentStatus: 0,
       options: ["Not annotated", "Annotated", "Checked"],
 
       userStatus: false,
     };
   },
   watch: {
-    "document.status": {
+    documentStatus: {
       handler() {
         this.changeStatus();
       },
@@ -76,7 +77,7 @@ export default {
         if (response.ok) {
           const data = await response.json();
           this.document = data;
-          this.document.status = this.options[this.document.status];
+          this.documentStatus = this.options[this.document.statusNum];
         } else {
           console.error(response);
         }
@@ -85,6 +86,7 @@ export default {
       }
     },
     async changeStatus() {
+      console.log(this.documentStatus);
       this.userStatus = await isLogin();
       if (!this.userStatus) {
         this.$router.push("/login");
@@ -95,7 +97,7 @@ export default {
             "/documents/" +
             this.$route.params.id +
             "/set_status/" +
-            this.options.indexOf(this.document.status),
+            this.options.indexOf(this.documentStatus),
           {
             method: "PUT",
             headers: {
@@ -220,7 +222,6 @@ export default {
     if (this.responseSuccess) {
       await this.loadDocument();
       await this.loadRecogito();
-      console.log(this.document);
     }
   },
   beforeUnmount() {
