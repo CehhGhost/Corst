@@ -33,7 +33,6 @@
                       <q-card-section class="bg-primary text-white">
                         <div class="text-h6">Period</div>
                       </q-card-section>
-
                       <q-card-actions>
                         <div class="row">
                           <q-input
@@ -53,11 +52,19 @@
                         </div>
                       </q-card-actions>
                     </q-card>
-                    <q-card outlined>
-                      <q-card-section class="bg-primary text-white">
+
+                    <q-card outlined style="margin-top: 20px">
+                      <q-card-section
+                        class="bg-primary text-white"
+                        @click="
+                          toggleAllCheckboxes(
+                            subcorpusTextInfoContainer.genders,
+                            subcorpusData.genders
+                          )
+                        "
+                      >
                         <div class="text-h6">Author Gender</div>
                       </q-card-section>
-
                       <q-card-actions>
                         <div
                           v-for="(
@@ -69,6 +76,36 @@
                             v-model="subcorpusData.genders"
                             :val="gender.toLowerCase()"
                             :label="gender"
+                          ></q-checkbox>
+                        </div>
+                      </q-card-actions>
+                    </q-card>
+
+                    <q-card outlined style="margin-top: 20px">
+                      <q-card-section
+                        class="bg-primary text-white"
+                        @click="
+                          toggleAllCheckboxes(
+                            subcorpusTextInfoContainer.authorsCourses,
+                            subcorpusData.authorsCourses
+                          )
+                        "
+                      >
+                        <div class="text-h6">Authors course</div>
+                      </q-card-section>
+                      <q-card-actions
+                        style="flex-direction: column; align-items: flex-start"
+                      >
+                        <div
+                          v-for="(
+                            course, i
+                          ) in subcorpusTextInfoContainer.authorsCourses"
+                          :key="i"
+                        >
+                          <q-checkbox
+                            v-model="subcorpusData.authorsCourses"
+                            :val="course.toLowerCase()"
+                            :label="course"
                           ></q-checkbox>
                         </div>
                       </q-card-actions>
@@ -331,6 +368,19 @@ export default {
     },
     closeDisplaySettingsModal() {
       this.displaySettingsModal = false;
+    },
+    toggleAllCheckboxes(checkboxes, data) {
+      const allChecked = data.length === checkboxes.length;
+
+      if (allChecked) {
+        data.splice(0);
+      } else {
+        data.splice(
+          0,
+          data.length,
+          ...checkboxes.map((course) => course.toLowerCase())
+        );
+      }
     },
   },
   async mounted() {
