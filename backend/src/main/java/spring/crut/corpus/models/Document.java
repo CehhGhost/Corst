@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 import spring.crut.administration.models.User;
+import spring.crut.corpus.dto.SubcorpusDataDTO;
 import spring.crut.corpus.enums.Gender;
 import spring.crut.corpus.enums.Status;
 import spring.crut.corpus.models.info.AcademicMajor;
@@ -14,6 +15,7 @@ import spring.crut.corpus.models.info.Genre;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
 
 @Entity
@@ -71,10 +73,4 @@ public class Document {
     @OneToMany
     @Cascade({org.hibernate.annotations.CascadeType.DELETE, org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     private List<Sentence> sentences;
-
-    public boolean equalsSubcorpus(Document other) {
-        return this.genre.equals(other.genre) && this.domain.equals(other.domain)
-                && this.authorsGender.equals(other.authorsGender) && this.authorsCourse.equals(other.authorsCourse)
-                && this.authorsAcademicMajor.equals(other.authorsAcademicMajor);
-    }
 }

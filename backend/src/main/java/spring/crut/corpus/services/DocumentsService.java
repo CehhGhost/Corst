@@ -8,10 +8,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-import spring.crut.corpus.dto.CreateDocumentDTO;
-import spring.crut.corpus.dto.CreateSentenceDTO;
-import spring.crut.corpus.dto.CertainSearchDTO;
-import spring.crut.corpus.dto.DocumentDTO;
+import spring.crut.corpus.dto.*;
 import spring.crut.corpus.models.Document;
 import spring.crut.corpus.repositories.DocumentsRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -23,6 +20,7 @@ import spring.crut.corpus.services.info.GenresService;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -69,11 +67,10 @@ public class DocumentsService {
     }
 
     public List<Document> specifySubcorpus(CertainSearchDTO certainSearchDTO) {
-        var specifiedDocument = modelMapper.map(certainSearchDTO, Document.class);
         var documents = documentsRepository.findAll();
         List<Document> specifiedDocuments = new ArrayList<>();
         for (var document : documents) {
-            if (document.equalsSubcorpus(specifiedDocument)) {
+            if (this.equalsSubcorpus(document, certainSearchDTO.getSubcorpusData())) {
                 specifiedDocuments.add(document);
             }
         }
@@ -113,6 +110,18 @@ public class DocumentsService {
         var document = this.getDocumentByID(id);
         document.setStatus(values[status]);
         documentsRepository.save(document);
+    }
+
+    public boolean equalsSubcorpus(Document document, SubcorpusDataDTO subcorpusDataDTO) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(document.getCreatedAt().getTime());
+        int documentCreatedAtYear = calendar.get(Calendar.YEAR);
+        return (subcorpusDataDTO.getAuthorsCourses().isEmpty() || subcorpusDataDTO.getAuthorsCourses().contains(document.getAuthorsCourse().getName())) &&
+                (subcorpusDataDTO.getAuthorsAcademicMajors().isEmpty() || subcorpusDataDTO.getAuthorsAcademicMajors().contains(document.getAuthorsAcademicMajor().getName())) &&
+                (subcorpusDataDTO.getGenres().isEmpty() || subcorpusDataDTO.getGenres().contains(document.getGenre().getName())) &&
+                (subcorpusDataDTO.getAuthorsGenders().isEmpty() || subcorpusDataDTO.getAuthorsGenders().contains(document.getAuthorsGender().name())) &&
+                (subcorpusDataDTO.getDomain().isEmpty() || subcorpusDataDTO.getDomain().contains(document.getDomain().getName())) &&
+                (subcorpusDataDTO.getPeriodFrom() <= documentCreatedAtYear && documentCreatedAtYear <= subcorpusDataDTO.getPeriodTo());
     }
 
     public static class SentenceResponse {

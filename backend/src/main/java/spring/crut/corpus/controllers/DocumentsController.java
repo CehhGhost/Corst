@@ -44,8 +44,8 @@ public class DocumentsController {
     }
     @PostMapping("/search/certain")
     public ResponseEntity<?> certainSearch(@RequestBody CertainSearchDTO certainSearchDTO) {
-        // TODO List<Document> documents = documentsService.specifySubcorpus(certainSearchDTO); учитываает подкорпус, но требует настройки
-        List<Document> documents = documentsService.getAllDocuments();
+        List<Document> documents = documentsService.specifySubcorpus(certainSearchDTO);
+        // List<Document> documents = documentsService.getAllDocuments();
         return ResponseEntity.ok(sentencesService.getByCertainSearch(documents, certainSearchDTO.getWordform()));
     }
     @GetMapping
