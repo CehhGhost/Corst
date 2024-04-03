@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,7 +86,7 @@ public class DocumentsService {
     }
 
     public List<Document> getAllDocuments() {
-        return documentsRepository.findAll();
+        return documentsRepository.findAll(Sort.by("id"));
     }
 
     public Document getDocumentByID(Integer id) {
