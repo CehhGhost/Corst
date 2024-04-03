@@ -117,7 +117,10 @@
 
                   <div style="flex: 1 0 30%; max-width: 70%">
                     <q-card outlined style="margin-left: 30px">
-                      <q-card-section class="bg-primary text-white">
+                      <q-card-section
+                        class="bg-primary text-white"
+                        @click="toggleTextFeaturesTextboxes()"
+                      >
                         <div class="text-h6">Text features</div>
                       </q-card-section>
                       <q-card-actions
@@ -535,6 +538,36 @@ export default {
     },
     closeDisplaySettingsModal() {
       this.displaySettingsModal = false;
+    },
+    toggleTextFeaturesTextboxes() {
+      const allChecked =
+        this.subcorpusData.genres.length ===
+          this.subcorpusTextInfoContainer.genres.length &&
+        this.subcorpusData.authorsAcademicMajors.length ===
+          this.subcorpusTextInfoContainer.authorsAcademicMajors.length &&
+        this.subcorpusData.domains.length ===
+          this.subcorpusTextInfoContainer.domains.length;
+      if (allChecked) {
+        this.subcorpusData.genres.splice(0);
+        this.subcorpusData.authorsAcademicMajors.splice(0);
+        this.subcorpusData.domains.splice(0);
+      } else {
+        this.subcorpusData.genres.splice(
+          0,
+          this.subcorpusData.genres.length,
+          ...this.subcorpusTextInfoContainer.genres
+        );
+        this.subcorpusData.authorsAcademicMajors.splice(
+          0,
+          this.subcorpusData.authorsAcademicMajors.length,
+          ...this.subcorpusTextInfoContainer.authorsAcademicMajors
+        );
+        this.subcorpusData.domains.splice(
+          0,
+          this.subcorpusData.domains.length,
+          ...this.subcorpusTextInfoContainer.domains
+        );
+      }
     },
     toggleAllCheckboxes(checkboxes, data) {
       const allChecked = data.length === checkboxes.length;
