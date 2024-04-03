@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class SubcorpusDataDTO {
     private List<String> genres;
-    private List<String> domain;
+    private List<String> domains;
     private List<String> authorsGenders;
     private List<String> authorsCourses;
     private List<String> authorsAcademicMajors;
