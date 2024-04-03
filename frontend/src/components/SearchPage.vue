@@ -484,12 +484,6 @@ export default {
     },
 
     async exactSearch() {
-      console.log(
-        JSON.stringify({
-          wordform: this.exactSearchInput,
-          subcorpusData: this.subcorpusData,
-        })
-      );
       this.searchResults = [];
       const response = await fetch(serverAdress + "/documents/search/certain", {
         method: "POST",
