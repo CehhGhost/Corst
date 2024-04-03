@@ -12,6 +12,7 @@ import java.util.List;
 public class SubcorpusDataDTO {
     private List<String> genres;
     private List<String> domains;
+    private List<String> statuses;
     private List<String> authorsGenders;
     private List<String> authorsCourses;
     private List<String> authorsAcademicMajors;
