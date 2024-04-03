@@ -387,7 +387,18 @@
                           v-model="block.errors"
                           placeholder="Tags"
                           dense
-                        />
+                        >
+                          <template v-slot:append>
+                            <q-icon name="menu" class="cursor-pointer">
+                              <q-popup-proxy
+                                cover
+                                transition-show="scale"
+                                transition-hide="scale"
+                              >
+                              </q-popup-proxy>
+                            </q-icon>
+                          </template>
+                        </q-input>
                       </div>
                       <div class="col-1">
                         <q-btn
