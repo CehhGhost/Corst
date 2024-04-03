@@ -113,15 +113,22 @@ public class DocumentsService {
     }
 
     public boolean equalsSubcorpus(Document document, SubcorpusDataDTO subcorpusDataDTO) {
+        if (subcorpusDataDTO == null) {
+            return true;
+        }
+        if (subcorpusDataDTO.getStatuses() != null && !subcorpusDataDTO.getStatuses().isEmpty()) {
+            subcorpusDataDTO.getStatuses().replaceAll(s -> s.replaceAll(" ", "_").toUpperCase());
+        }
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(document.getCreatedAt().getTime());
         int documentCreatedAtYear = calendar.get(Calendar.YEAR);
-        return (subcorpusDataDTO.getAuthorsCourses().isEmpty() || subcorpusDataDTO.getAuthorsCourses().contains(document.getAuthorsCourse().getName())) &&
-                (subcorpusDataDTO.getAuthorsAcademicMajors().isEmpty() || subcorpusDataDTO.getAuthorsAcademicMajors().contains(document.getAuthorsAcademicMajor().getName())) &&
-                (subcorpusDataDTO.getGenres().isEmpty() || subcorpusDataDTO.getGenres().contains(document.getGenre().getName())) &&
-                (subcorpusDataDTO.getAuthorsGenders().isEmpty() || subcorpusDataDTO.getAuthorsGenders().contains(document.getAuthorsGender().name())) &&
-                (subcorpusDataDTO.getDomains().isEmpty() || subcorpusDataDTO.getDomains().contains(document.getDomain().getName())) &&
-                (subcorpusDataDTO.getPeriodFrom() <= documentCreatedAtYear && documentCreatedAtYear <= subcorpusDataDTO.getPeriodTo());
+        return (subcorpusDataDTO.getAuthorsCourses() == null || subcorpusDataDTO.getAuthorsCourses().isEmpty() || subcorpusDataDTO.getAuthorsCourses().contains(document.getAuthorsCourse().getName())) &&
+                (subcorpusDataDTO.getAuthorsAcademicMajors() == null || subcorpusDataDTO.getAuthorsAcademicMajors().isEmpty() || subcorpusDataDTO.getAuthorsAcademicMajors().contains(document.getAuthorsAcademicMajor().getName())) &&
+                (subcorpusDataDTO.getGenres() == null || subcorpusDataDTO.getGenres().isEmpty() || subcorpusDataDTO.getGenres().contains(document.getGenre().getName())) &&
+                (subcorpusDataDTO.getAuthorsGenders() == null || subcorpusDataDTO.getAuthorsGenders().isEmpty() || subcorpusDataDTO.getAuthorsGenders().contains(document.getAuthorsGender().name())) &&
+                (subcorpusDataDTO.getDomains() == null || subcorpusDataDTO.getDomains().isEmpty() || subcorpusDataDTO.getDomains().contains(document.getDomain().getName())) &&
+                (subcorpusDataDTO.getPeriodFrom() == null || subcorpusDataDTO.getPeriodFrom() <= documentCreatedAtYear) &&
+                (subcorpusDataDTO.getPeriodTo() == null || documentCreatedAtYear <= subcorpusDataDTO.getPeriodTo());
     }
 
     public static class SentenceResponse {
