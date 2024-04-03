@@ -61,7 +61,7 @@
                         class="bg-primary text-white"
                         @click="
                           toggleAllCheckboxes(
-                            subcorpusTextInfoContainer.genders,
+                            subcorpusTextInfoContainer.authorsGenders,
                             subcorpusData.genders
                           )
                         "
@@ -72,7 +72,7 @@
                         <div
                           v-for="(
                             gender, i
-                          ) in subcorpusTextInfoContainer.genders"
+                          ) in subcorpusTextInfoContainer.authorsGenders"
                           :key="i"
                         >
                           <q-checkbox
@@ -267,67 +267,108 @@
               <q-form @submit="lexgrammSearch" class="q-gutter-md">
                 <div>
                   <div
-                    class="row align-items-end"
+                    style="display: flex; flex-direction: column"
                     v-for="(block, index) in lexgramBlocks"
                     :key="index"
                   >
-                    <div class="col-3">
-                      <label>
-                        Wordform
+                    <div
+                      v-if="block.additional"
+                      class="row"
+                      style="
+                        flex-direction: row;
+                        align-items: flex-start;
+                        margin-top: 20px;
+                      "
+                    >
+                      <div style="display: flex; margin-right: 20px">
+                        <q-btn
+                          unelevated
+                          no-caps
+                          color="primary"
+                          label="From"
+                        />
                         <q-input
                           outlined
-                          v-model="block.wordform"
-                          placeholder="Wordform"
+                          v-model="block.from"
+                          :placeholder="index"
                           dense
+                          id="from"
                         />
-                      </label>
-                    </div>
-                    <!-- Include lex select component here -->
-                    <div class="col-3">
-                      <label>
-                        Part of speech
+                        <q-btn
+                          unelevated
+                          no-caps
+                          color="secondary"
+                          label="to"
+                        />
                         <q-input
                           outlined
-                          v-model="block.partOfSpeech"
-                          placeholder="Part of speech"
+                          v-model="block.to"
+                          :placeholder="index"
                           dense
+                          id="to"
                         />
-                      </label>
+                      </div>
                     </div>
-                    <!-- Include gram select component here -->
-                    <div class="col-3">
-                      <label>
-                        Grammar
-                        <q-input
-                          outlined
-                          v-model="block.grammar"
-                          placeholder="Grammar characteristics"
-                          dense
-                        />
-                      </label>
-                    </div>
-                    <!-- Include err select component here -->
-                    <div class="col-2">
-                      <label>
-                        Errors
-                        <q-input
-                          outlined
-                          v-model="block.errors"
-                          placeholder="Tags"
-                          dense
-                        />
-                      </label>
-                    </div>
-                    <div class="col-1">
-                      <q-btn
-                        unelevated
-                        v-if="showDeleteButton && index > 0"
-                        @click="removeBlock(index)"
-                        color="negative"
-                        class="delete-btn"
-                        icon="delete"
-                      >
-                      </q-btn>
+
+                    <div class="row align-items-end">
+                      <div class="col-3">
+                        <label>
+                          Wordform
+                          <q-input
+                            outlined
+                            v-model="block.wordform"
+                            placeholder="Wordform"
+                            dense
+                          />
+                        </label>
+                      </div>
+                      <!-- Include lex select component here -->
+                      <div class="col-3">
+                        <label>
+                          Part of speech
+                          <q-input
+                            outlined
+                            v-model="block.partOfSpeech"
+                            placeholder="Part of speech"
+                            dense
+                          />
+                        </label>
+                      </div>
+                      <!-- Include gram select component here -->
+                      <div class="col-3">
+                        <label>
+                          Grammar
+                          <q-input
+                            outlined
+                            v-model="block.grammar"
+                            placeholder="Grammar characteristics"
+                            dense
+                          />
+                        </label>
+                      </div>
+                      <!-- Include err select component here -->
+                      <div class="col-2">
+                        <label>
+                          Errors
+                          <q-input
+                            outlined
+                            v-model="block.errors"
+                            placeholder="Tags"
+                            dense
+                          />
+                        </label>
+                      </div>
+                      <div class="col-1">
+                        <q-btn
+                          unelevated
+                          v-if="showDeleteButton && index > 0"
+                          @click="removeBlock(index)"
+                          color="negative"
+                          class="delete-btn"
+                          icon="delete"
+                        >
+                        </q-btn>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -407,7 +448,7 @@ export default {
       },
 
       subcorpusTextInfoContainer: {
-        genders: ["Male", "Female", "Unknown"],
+        authorsGenders: ["Male", "Female", "Unknown"],
         genres: [],
         domains: [],
         authorsCourses: [],
@@ -437,15 +478,21 @@ export default {
     },
 
     async exactSearch() {
+      console.log(
+        JSON.stringify({
+          wordform: this.exactSearchInput,
+          subcorpusData: this.subcorpusData,
+        })
+      );
       this.searchResults = [];
       const response = await fetch(serverAdress + "/documents/search/certain", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        //TODO Specify subcorpus
         body: JSON.stringify({
           wordform: this.exactSearchInput,
+          subcorpusData: this.subcorpusData,
         }),
       });
       if (response.ok) {
@@ -463,8 +510,8 @@ export default {
         grammar: "",
         errors: "",
         additional: true,
-        from: "",
-        to: "",
+        from: this.lexgramBlocks.length,
+        to: this.lexgramBlocks.length,
       });
       if (this.lexgramBlocks.length > 1) {
         this.showDeleteButton = true;

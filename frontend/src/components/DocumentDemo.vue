@@ -57,4 +57,10 @@ export default {
       </p>
     </div>
   </div>
+
+  <q-field standout="bg-primary text-white" stack-label>
+    <template v-slot:control>
+      <div class="self-center no-outline">To</div>
+    </template>
+  </q-field>
 </template>
