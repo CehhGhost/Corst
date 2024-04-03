@@ -22,8 +22,8 @@
             placeholder="Enter content"
             class="q-mb-md"
           />
-          Author Gender
           <q-select
+            label="Gender"
             v-model="authorsGender"
             outlined
             :options="authorsGenders"
@@ -34,6 +34,7 @@
               v-model="genre"
               use-input
               use-chips
+              label="Genre"
               input-debounce="0"
               @new-value="createValue"
               :options="filteredGenres"
@@ -44,6 +45,7 @@
               outlined
               v-model="domain"
               use-input
+              label="Domain"
               use-chips
               input-debounce="0"
               @new-value="createValue"
@@ -58,6 +60,7 @@
               v-model="authorsCourse"
               use-input
               use-chips
+              label="Course"
               input-debounce="0"
               @new-value="createValue"
               :options="filteredAuthorsCourses"
@@ -69,6 +72,7 @@
               v-model="authorsAcademicMajor"
               use-input
               use-chips
+              label="Academic Major"
               input-debounce="0"
               @new-value="createValue"
               :options="filteredAuthorsAcademicMajors"
@@ -198,9 +202,10 @@ export default {
           "Content-Type": "application/json",
           Authorization: "Bearer " + localStorage.getItem("corst_token"),
         },
+        // TODO Экранировать кавычки
         body: JSON.stringify({
           title: this.title,
-          text: this.text,
+          text: this.text.replace(/"/g, "'"),
           authorsGender: this.authorsGender,
           genre: this.genre,
           domain: this.domain,
