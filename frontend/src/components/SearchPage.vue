@@ -62,7 +62,7 @@
                         @click="
                           toggleAllCheckboxes(
                             subcorpusTextInfoContainer.authorsGenders,
-                            subcorpusData.genders
+                            subcorpusData.authorsGenders
                           )
                         "
                       >
@@ -76,7 +76,7 @@
                           :key="i"
                         >
                           <q-checkbox
-                            v-model="subcorpusData.genders"
+                            v-model="subcorpusData.authorsGenders"
                             :val="gender.toLowerCase()"
                             :label="gender"
                           ></q-checkbox>
@@ -281,12 +281,7 @@
                       "
                     >
                       <div style="display: flex; margin-right: 20px">
-                        <q-btn
-                          unelevated
-                          no-caps
-                          color="primary"
-                          label="From"
-                        />
+                        <q-btn unelevated no-caps color="teal" label="From" />
                         <q-input
                           outlined
                           v-model="block.from"
@@ -294,12 +289,7 @@
                           dense
                           id="from"
                         />
-                        <q-btn
-                          unelevated
-                          no-caps
-                          color="secondary"
-                          label="to"
-                        />
+                        <q-btn unelevated no-caps color="teal" label="to" />
                         <q-input
                           outlined
                           v-model="block.to"
@@ -439,7 +429,7 @@ export default {
       subcorpusData: {
         periodFrom: "",
         periodTo: "",
-        genders: [],
+        authorsGenders: [],
         genres: [],
         domains: [],
         authorsCourses: [],
