@@ -341,7 +341,18 @@
                           v-model="block.partOfSpeech"
                           placeholder="Part of speech"
                           dense
-                        />
+                        >
+                          <template v-slot:append>
+                            <q-icon name="menu" class="cursor-pointer">
+                              <q-popup-proxy
+                                cover
+                                transition-show="scale"
+                                transition-hide="scale"
+                              >
+                              </q-popup-proxy>
+                            </q-icon>
+                          </template>
+                        </q-input>
                       </div>
                       <!-- Include gram select component here -->
                       <div class="col-3">
@@ -353,7 +364,18 @@
                           v-model="block.grammar"
                           placeholder="Grammar characteristics"
                           dense
-                        />
+                        >
+                          <template v-slot:append>
+                            <q-icon name="menu" class="cursor-pointer">
+                              <q-popup-proxy
+                                cover
+                                transition-show="scale"
+                                transition-hide="scale"
+                              >
+                              </q-popup-proxy>
+                            </q-icon>
+                          </template>
+                        </q-input>
                       </div>
                       <!-- Include err select component here -->
                       <div class="col-2">
