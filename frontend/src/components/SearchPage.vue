@@ -59,21 +59,16 @@
                       </q-card-section>
 
                       <q-card-actions>
-                        <div>
+                        <div
+                          v-for="(
+                            gender, i
+                          ) in subcorpusTextInfoContainer.genders"
+                          :key="i"
+                        >
                           <q-checkbox
                             v-model="subcorpusData.genders"
-                            val="male"
-                            label="Male"
-                          ></q-checkbox>
-                          <q-checkbox
-                            v-model="subcorpusData.genders"
-                            val="female"
-                            label="Female"
-                          ></q-checkbox>
-                          <q-checkbox
-                            v-model="subcorpusData.genders"
-                            val="unknown"
-                            label="Unknown"
+                            :val="gender.toLowerCase()"
+                            :label="gender"
                           ></q-checkbox>
                         </div>
                       </q-card-actions>
@@ -256,6 +251,7 @@ export default {
       },
 
       subcorpusTextInfoContainer: {
+        genders: ["Male", "Female", "Unknown"],
         genres: [],
         domains: [],
         authorsCourses: [],
@@ -274,7 +270,6 @@ export default {
         });
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
           return data;
         } else {
           console.error(response);
@@ -346,7 +341,6 @@ export default {
       this.subcorpusTextInfoContainer.authorsAcademicMajors =
         data.academicMajors;
     });
-    console.log(this.subcorpusTextInfoContainer);
   },
 };
 </script>
