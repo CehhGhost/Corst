@@ -286,7 +286,7 @@
                           no-caps
                           color="teal"
                           label="From"
-                          @click="focusInput('from')"
+                          @click="focusInput('from', index)"
                         />
                         <q-input
                           outlined
@@ -294,7 +294,7 @@
                           :placeholder="index"
                           dense
                           style="width: 50px"
-                          ref="fromInput"
+                          :ref="'fromInput' + index"
                           id="from"
                         />
                         <q-btn
@@ -302,7 +302,7 @@
                           no-caps
                           color="teal"
                           label="to"
-                          @click="focusInput('to')"
+                          @click="focusInput('to', index)"
                         />
                         <q-input
                           outlined
@@ -310,7 +310,7 @@
                           :placeholder="index"
                           style="width: 50px"
                           dense
-                          ref="toInput"
+                          :ref="'toInput' + index"
                           id="to"
                         />
                       </div>
@@ -555,8 +555,8 @@ export default {
         );
       }
     },
-    focusInput(field) {
-      this.$refs[`${field}Input`][0].focus();
+    focusInput(field, id) {
+      this.$refs[`${field}Input${id}`][0].focus();
     },
   },
   async mounted() {
