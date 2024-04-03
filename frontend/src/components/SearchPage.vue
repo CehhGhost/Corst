@@ -18,8 +18,8 @@
               />
             </q-btn-group>
           </div>
-          <q-dialog v-model="displaySubcorpusModal" persistent>
-            <q-card style="width: 1200px">
+          <q-dialog v-model="displaySubcorpusModal">
+            <q-card style="width: 800px; max-width: 90vw">
               <q-card-section class="row items-center q-pb-none">
                 <label class="text-h6">Specify Subcorpus</label>
                 <q-space />
@@ -27,8 +27,11 @@
               </q-card-section>
               <q-card-section class="row items-center">
                 <hr />
-                <div class="row">
-                  <div>
+                <div
+                  class="row"
+                  style="display: flex; flex-wrap: wrap; width: 1100px"
+                >
+                  <div style="flex: 1 0 30%; max-width: 30%">
                     <q-card outlined>
                       <q-card-section class="bg-primary text-white">
                         <div class="text-h6">Period</div>
@@ -106,6 +109,121 @@
                             v-model="subcorpusData.authorsCourses"
                             :val="course.toLowerCase()"
                             :label="course"
+                          ></q-checkbox>
+                        </div>
+                      </q-card-actions>
+                    </q-card>
+                  </div>
+
+                  <div style="flex: 1 0 30%; max-width: 70%">
+                    <q-card outlined style="margin-left: 30px">
+                      <q-card-section class="bg-primary text-white">
+                        <div class="text-h6">Text features</div>
+                      </q-card-section>
+                      <q-card-actions
+                        style="flex-direction: row; align-items: flex-start"
+                      >
+                        <div style="flex: 1">
+                          <label
+                            @click="
+                              toggleAllCheckboxes(
+                                subcorpusTextInfoContainer.genres,
+                                subcorpusData.genres
+                              )
+                            "
+                            >Type of assignment
+                          </label>
+                          <div
+                            style="display: flex; flex-direction: column"
+                            v-for="(
+                              genre, i
+                            ) in subcorpusTextInfoContainer.genres"
+                            :key="i"
+                          >
+                            <q-checkbox
+                              v-model="subcorpusData.genres"
+                              :val="genre.toLowerCase()"
+                              :label="genre"
+                            ></q-checkbox>
+                          </div>
+                        </div>
+                        <div style="flex: 1">
+                          <label
+                            @click="
+                              toggleAllCheckboxes(
+                                subcorpusTextInfoContainer.authorsAcademicMajors,
+                                subcorpusData.authorsAcademicMajors
+                              )
+                            "
+                            >Academic major
+                          </label>
+                          <div
+                            style="display: flex; flex-direction: column"
+                            v-for="(
+                              academicMajor, i
+                            ) in subcorpusTextInfoContainer.authorsAcademicMajors"
+                            :key="i"
+                          >
+                            <q-checkbox
+                              v-model="subcorpusData.authorsAcademicMajors"
+                              :val="academicMajor.toLowerCase()"
+                              :label="academicMajor"
+                            ></q-checkbox>
+                          </div>
+                        </div>
+                        <div style="flex: 1">
+                          <label
+                            @click="
+                              toggleAllCheckboxes(
+                                subcorpusTextInfoContainer.domains,
+                                subcorpusData.domains
+                              )
+                            "
+                            >Domain
+                          </label>
+                          <div
+                            style="display: flex; flex-direction: column"
+                            v-for="(
+                              domain, i
+                            ) in subcorpusTextInfoContainer.domains"
+                            :key="i"
+                          >
+                            <q-checkbox
+                              v-model="subcorpusData.domains"
+                              :val="domain.toLowerCase()"
+                              :label="domain"
+                            ></q-checkbox>
+                          </div>
+                        </div>
+                      </q-card-actions>
+                    </q-card>
+
+                    <q-card
+                      outlined
+                      style="margin-top: 20px; margin-left: 30px"
+                    >
+                      <q-card-section
+                        class="bg-primary text-white"
+                        @click="
+                          toggleAllCheckboxes(
+                            subcorpusTextInfoContainer.statuses,
+                            subcorpusData.statuses
+                          )
+                        "
+                      >
+                        <div class="text-h6">Text status</div>
+                      </q-card-section>
+                      <q-card-actions>
+                        <div
+                          v-for="(
+                            status, i
+                          ) in subcorpusTextInfoContainer.statuses"
+                          :key="i"
+                        >
+                          <q-checkbox
+                            v-model="subcorpusData.statuses"
+                            :val="status.toLowerCase()"
+                            :label="status"
                           ></q-checkbox>
                         </div>
                       </q-card-actions>
@@ -285,6 +403,7 @@ export default {
         domains: [],
         authorsCourses: [],
         authorsAcademicMajors: [],
+        statuses: [],
       },
 
       subcorpusTextInfoContainer: {
@@ -293,6 +412,7 @@ export default {
         domains: [],
         authorsCourses: [],
         authorsAcademicMajors: [],
+        statuses: ["Not Annotated", "Annotated", "Checked"],
       },
 
       showDeleteButton: true,
