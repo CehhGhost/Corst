@@ -86,7 +86,7 @@ public class DocumentsService {
     }
 
     public List<Document> getAllDocuments() {
-        return documentsRepository.findAll(Sort.by("id"));
+        return documentsRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
     public Document getDocumentByID(Integer id) {
