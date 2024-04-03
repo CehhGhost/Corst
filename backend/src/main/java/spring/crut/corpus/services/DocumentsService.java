@@ -120,6 +120,9 @@ public class DocumentsService {
         if (subcorpusDataDTO.getStatuses() != null && !subcorpusDataDTO.getStatuses().isEmpty()) {
             subcorpusDataDTO.getStatuses().replaceAll(s -> s.replaceAll(" ", "_").toUpperCase());
         }
+        if (subcorpusDataDTO.getAuthorsGenders() != null && !subcorpusDataDTO.getAuthorsGenders().isEmpty()) {
+            subcorpusDataDTO.getAuthorsGenders().replaceAll(String::toUpperCase);
+        }
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(document.getCreatedAt().getTime());
         int documentCreatedAtYear = calendar.get(Calendar.YEAR);
@@ -128,6 +131,7 @@ public class DocumentsService {
                 (subcorpusDataDTO.getGenres() == null || subcorpusDataDTO.getGenres().isEmpty() || subcorpusDataDTO.getGenres().contains(document.getGenre().getName())) &&
                 (subcorpusDataDTO.getAuthorsGenders() == null || subcorpusDataDTO.getAuthorsGenders().isEmpty() || subcorpusDataDTO.getAuthorsGenders().contains(document.getAuthorsGender().name())) &&
                 (subcorpusDataDTO.getDomains() == null || subcorpusDataDTO.getDomains().isEmpty() || subcorpusDataDTO.getDomains().contains(document.getDomain().getName())) &&
+                (subcorpusDataDTO.getStatuses() == null || subcorpusDataDTO.getStatuses().isEmpty() || subcorpusDataDTO.getStatuses().contains(document.getStatus().name())) &&
                 (subcorpusDataDTO.getPeriodFrom() == null || subcorpusDataDTO.getPeriodFrom() <= documentCreatedAtYear) &&
                 (subcorpusDataDTO.getPeriodTo() == null || documentCreatedAtYear <= subcorpusDataDTO.getPeriodTo());
     }
