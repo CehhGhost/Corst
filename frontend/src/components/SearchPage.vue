@@ -513,8 +513,8 @@ export default {
         grammar: "",
         errors: "",
         additional: true,
-        from: this.lexgramBlocks.length,
-        to: this.lexgramBlocks.length,
+        from: "1",
+        to: "1",
       });
       if (this.lexgramBlocks.length > 1) {
         this.showDeleteButton = true;
