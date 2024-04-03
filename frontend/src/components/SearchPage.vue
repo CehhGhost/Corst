@@ -281,72 +281,88 @@
                       "
                     >
                       <div style="display: flex; margin-right: 20px">
-                        <q-btn unelevated no-caps color="teal" label="From" />
+                        <q-btn
+                          unelevated
+                          no-caps
+                          color="teal"
+                          label="From"
+                          @click="focusInput('from')"
+                        />
                         <q-input
                           outlined
                           v-model="block.from"
                           :placeholder="index"
                           dense
+                          style="width: 50px"
+                          ref="fromInput"
                           id="from"
                         />
-                        <q-btn unelevated no-caps color="teal" label="to" />
+                        <q-btn
+                          unelevated
+                          no-caps
+                          color="teal"
+                          label="to"
+                          @click="focusInput('to')"
+                        />
                         <q-input
                           outlined
                           v-model="block.to"
                           :placeholder="index"
+                          style="width: 50px"
                           dense
+                          ref="toInput"
                           id="to"
                         />
                       </div>
                     </div>
 
-                    <div class="row align-items-end">
+                    <div class="row align-items-end" style="margin-top: 17px">
                       <div class="col-3">
-                        <label>
+                        <label v-if="!showDeleteButton || !index > 0">
                           Wordform
-                          <q-input
-                            outlined
-                            v-model="block.wordform"
-                            placeholder="Wordform"
-                            dense
-                          />
                         </label>
+                        <q-input
+                          outlined
+                          v-model="block.wordform"
+                          placeholder="Wordform"
+                          dense
+                        />
                       </div>
                       <!-- Include lex select component here -->
                       <div class="col-3">
-                        <label>
+                        <label v-if="!showDeleteButton || !index > 0">
                           Part of speech
-                          <q-input
-                            outlined
-                            v-model="block.partOfSpeech"
-                            placeholder="Part of speech"
-                            dense
-                          />
                         </label>
+                        <q-input
+                          outlined
+                          v-model="block.partOfSpeech"
+                          placeholder="Part of speech"
+                          dense
+                        />
                       </div>
                       <!-- Include gram select component here -->
                       <div class="col-3">
-                        <label>
+                        <label v-if="!showDeleteButton || !index > 0">
                           Grammar
-                          <q-input
-                            outlined
-                            v-model="block.grammar"
-                            placeholder="Grammar characteristics"
-                            dense
-                          />
                         </label>
+                        <q-input
+                          outlined
+                          v-model="block.grammar"
+                          placeholder="Grammar characteristics"
+                          dense
+                        />
                       </div>
                       <!-- Include err select component here -->
                       <div class="col-2">
-                        <label>
+                        <label v-if="!showDeleteButton || !index > 0">
                           Errors
-                          <q-input
-                            outlined
-                            v-model="block.errors"
-                            placeholder="Tags"
-                            dense
-                          />
                         </label>
+                        <q-input
+                          outlined
+                          v-model="block.errors"
+                          placeholder="Tags"
+                          dense
+                        />
                       </div>
                       <div class="col-1">
                         <q-btn
@@ -539,6 +555,9 @@ export default {
         );
       }
     },
+    focusInput(field) {
+      this.$refs[`${field}Input`][0].focus();
+    },
   },
   async mounted() {
     await this.getSubcorpusTextInfo().then((data) => {
@@ -560,7 +579,7 @@ export default {
   border-radius: 12px;
 }
 .delete-btn {
-  margin-top: 23px;
+  margin-top: 2px;
   margin-left: 5px;
 }
 </style>
