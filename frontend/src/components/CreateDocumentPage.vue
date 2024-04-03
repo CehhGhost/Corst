@@ -112,7 +112,6 @@
 </style>
 
 <script>
-import { ref } from "vue";
 import { serverAdress } from "../global/globalVaribles.js";
 import { isLogin } from "../global/globalFunctions.js";
 
