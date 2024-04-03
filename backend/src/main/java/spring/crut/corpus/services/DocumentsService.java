@@ -120,7 +120,7 @@ public class DocumentsService {
                 (subcorpusDataDTO.getAuthorsAcademicMajors().isEmpty() || subcorpusDataDTO.getAuthorsAcademicMajors().contains(document.getAuthorsAcademicMajor().getName())) &&
                 (subcorpusDataDTO.getGenres().isEmpty() || subcorpusDataDTO.getGenres().contains(document.getGenre().getName())) &&
                 (subcorpusDataDTO.getAuthorsGenders().isEmpty() || subcorpusDataDTO.getAuthorsGenders().contains(document.getAuthorsGender().name())) &&
-                (subcorpusDataDTO.getDomain().isEmpty() || subcorpusDataDTO.getDomain().contains(document.getDomain().getName())) &&
+                (subcorpusDataDTO.getDomains().isEmpty() || subcorpusDataDTO.getDomains().contains(document.getDomain().getName())) &&
                 (subcorpusDataDTO.getPeriodFrom() <= documentCreatedAtYear && documentCreatedAtYear <= subcorpusDataDTO.getPeriodTo());
     }
 
