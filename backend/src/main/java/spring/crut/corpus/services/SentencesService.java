@@ -48,6 +48,10 @@ public class SentencesService {
 
     @Transactional
     public List<CertainSearchSentenceDTO> getByCertainSearch(List<Document> documents, String wordform) {
+        List<CertainSearchSentenceDTO> sentencesDTO = new ArrayList<>();
+        if (wordform == null || wordform.isEmpty()) {
+            return sentencesDTO;
+        }
 
         String natashaServiceUrl = "http://127.0.0.1:5000/lemmatize";
 
@@ -71,7 +75,6 @@ public class SentencesService {
                 }
             }
         }
-        List<CertainSearchSentenceDTO> sentencesDTO = new ArrayList<>();
         for (var sentence : resultSentences) {
             var sentenceDTO = modelMapper.map(sentence, CertainSearchSentenceDTO.class);
             sentenceDTO.setDocumentTitle(sentence.getDocument().getTitle());
