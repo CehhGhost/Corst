@@ -469,7 +469,7 @@ export default {
       lexgramBlocks: [
         {
           wordform: "",
-          partOfSpeech: "",
+          partOfSpeech: [],
           grammar: "",
           errors: "",
           additional: false,
@@ -496,6 +496,114 @@ export default {
         authorsCourses: [],
         authorsAcademicMajors: [],
         statuses: ["Not Annotated", "Annotated", "Checked"],
+      },
+
+      lexgrammFeaturesFixed: {
+        partOfSpeech: [
+          "ADJ",
+          "ADP",
+          "ADV",
+          "AUX",
+          "CCONJ",
+          "DET",
+          "INTJ",
+          "NOUN",
+          "NUM",
+          "PART",
+          "PRON",
+          "PROPN",
+          "PUNCT",
+          "SCONJ",
+          "SYM",
+          "VERB",
+          "X",
+        ],
+        grammar: [
+          {
+            block: "Nominal Features",
+            value: [
+              {
+                name: "Gender",
+                value: ["Masc", "Fem", "Neut"],
+              },
+              {
+                name: "Animacy",
+                value: ["Anim", "Inan"],
+              },
+              {
+                name: "Number",
+                value: ["Sing", "Plur"],
+              },
+              {
+                name: "Case",
+                value: ["Nom", "Gen", "Dat", "Acc", "Ins", "Loc", "Voc", "Par"],
+              },
+            ],
+          },
+          {
+            block: "Degree and Polarity",
+            value: [
+              {
+                name: "Degree",
+                value: ["Pos", "Cmp", "Sup"],
+              },
+              {
+                name: "Polarity",
+                value: ["Neg"],
+              },
+              {
+                name: "Variant",
+                value: ["Short"],
+              },
+            ],
+          },
+          {
+            block: "Verbal Features",
+            value: [
+              {
+                name: "Aspect",
+                value: ["Perf", "AspectImp"],
+              },
+              {
+                name: "Mood",
+                value: ["Ind", "MoodImp", "Cnd"],
+              },
+              {
+                name: "Number",
+                value: ["Sing", "Plur"],
+              },
+              {
+                name: "Tense",
+                value: ["Past", "Pres", "Fut"],
+              },
+              {
+                name: "Voice",
+                value: ["Act", "Pass", "Mid"],
+              },
+            ],
+          },
+          {
+            block: "Pronouns, Determiners, Quantifiers",
+            value: {
+              name: "Person",
+              value: ["1", "2", "3"],
+            },
+          },
+          {
+            block: "Other Features",
+            value: [
+              {
+                name: "Hyph",
+                value: ["HyphYes"],
+              },
+              {
+                name: "Foreign",
+                value: ["ForeignYes"],
+              },
+            ],
+          },
+        ],
+        errors: [],
       },
 
       showDeleteButton: true,
