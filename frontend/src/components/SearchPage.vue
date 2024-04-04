@@ -331,7 +331,6 @@
                           dense
                         />
                       </div>
-                      <!-- Include lex select component here -->
                       <div class="col-3">
                         <label v-if="!showDeleteButton || !index > 0">
                           Part of speech
@@ -353,16 +352,28 @@
                               >
                                 <q-card>
                                   <q-card-section
-                                    class="bg-primary text-white"
-                                    @click="
-                                      toggleAllCheckboxes(
-                                        lexgrammFeaturesFixed.partOfSpeech,
-                                        block.partOfSpeech,
-                                        'upper'
-                                      )
-                                    "
+                                    class="bg-primary text-white row items-center"
                                   >
-                                    <div class="text-h6">Part of speech</div>
+                                    <div
+                                      class="text-h6"
+                                      @click="
+                                        toggleAllCheckboxes(
+                                          lexgrammFeaturesFixed.partOfSpeech,
+                                          block.partOfSpeech,
+                                          'upper'
+                                        )
+                                      "
+                                    >
+                                      Part of speech
+                                    </div>
+                                    <q-space />
+                                    <q-btn
+                                      icon="close"
+                                      flat
+                                      round
+                                      dense
+                                      v-close-popup
+                                    />
                                   </q-card-section>
                                   <q-card-section
                                     style="display: flex; flex-wrap: wrap"
@@ -453,6 +464,78 @@
                                 transition-show="scale"
                                 transition-hide="scale"
                               >
+                                <q-card>
+                                  <q-card-section
+                                    class="bg-primary text-white row items-center"
+                                  >
+                                    <div class="text-h6">
+                                      Grammar characteristics
+                                    </div>
+                                    <q-space />
+                                    <q-btn
+                                      icon="close"
+                                      flat
+                                      round
+                                      dense
+                                      v-close-popup
+                                    />
+                                  </q-card-section>
+                                  <q-card-section>
+                                    <div
+                                      v-for="block_ in lexgrammFeaturesFixed.grammar"
+                                      :key="block_"
+                                    >
+                                      <q-card-section
+                                        style="display: flex; flex-wrap: wrap"
+                                      >
+                                        <div class="text-h4">
+                                          {{ block_.block }}
+                                        </div>
+                                      </q-card-section>
+                                      <q-card-section
+                                        style="display: flex; flex-wrap: wrap"
+                                      >
+                                        <q-list>
+                                          <div
+                                            class="row items-center"
+                                            style="
+                                              display: flex;
+                                              flex-wrap: wrap;
+                                            "
+                                          >
+                                            <q-item
+                                              v-for="blockValue in block_.value"
+                                              :key="blockValue.name"
+                                            >
+                                              <q-card-section
+                                                style="
+                                                  flex-direction: row;
+                                                  align-items: flex-start;
+                                                "
+                                              >
+                                                <div class="text-h6">
+                                                  {{ blockValue.name }}
+                                                </div>
+                                                <div
+                                                  v-for="(
+                                                    value, i
+                                                  ) in blockValue.value"
+                                                  :key="i"
+                                                >
+                                                  <q-checkbox
+                                                    v-model="block.grammar"
+                                                    :val="value"
+                                                    :label="value"
+                                                  ></q-checkbox>
+                                                </div>
+                                              </q-card-section>
+                                            </q-item>
+                                          </div>
+                                        </q-list>
+                                      </q-card-section>
+                                    </div>
+                                  </q-card-section>
+                                </q-card>
                               </q-popup-proxy>
                             </q-icon>
                           </template>
@@ -552,11 +635,11 @@ export default {
         {
           wordform: "",
           partOfSpeech: [],
-          grammar: "",
-          errors: "",
+          grammar: [],
+          errors: [],
           additional: false,
-          from: "",
-          to: "",
+          from: 0,
+          to: 0,
         },
       ],
 
@@ -651,10 +734,6 @@ export default {
                 value: ["Ind", "MoodImp", "Cnd"],
               },
               {
-                name: "Number",
-                value: ["Sing", "Plur"],
-              },
-              {
                 name: "Tense",
                 value: ["Past", "Pres", "Fut"],
               },
@@ -666,10 +745,12 @@ export default {
           },
           {
             block: "Pronouns, Determiners, Quantifiers",
-            value: {
-              name: "Person",
-              value: ["1", "2", "3"],
-            },
+            value: [
+              {
+                name: "Person",
+                value: ["1", "2", "3"],
+              },
+            ],
           },
           {
             block: "Other Features",
@@ -728,7 +809,26 @@ export default {
         console.error(response);
       }
     },
-    lexgrammSearch() {},
+    async lexgramSearch() {
+      this.searchResults = [];
+      const data = {
+        lexgramBlocks: this.lexgramBlocks,
+        subcorpusData: this.subcorpusData,
+      };
+      const response = fetch(serverAdress + "/documents/search/lexgramm", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        this.searchResults = data;
+      } else {
+        console.error(response);
+      }
+    },
     addLexgramBlock() {
       this.lexgramBlocks.push({
         wordform: "",
@@ -804,12 +904,14 @@ export default {
             data.length,
             ...checkboxes.map((item) => item.toLowerCase())
           );
-        } else {
+        } else if (caseType === "upper") {
           data.splice(
             0,
             data.length,
             ...checkboxes.map((item) => item.toUpperCase())
           );
+        } else {
+          data.splice(0, data.length, ...checkboxes);
         }
       }
     },
