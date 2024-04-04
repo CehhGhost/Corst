@@ -11,6 +11,7 @@ import spring.crut.administration.security.CrutUserDetails;
 import spring.crut.corpus.dto.CreateDocumentDTO;
 import spring.crut.corpus.dto.CertainSearchDTO;
 import spring.crut.corpus.dto.DocumentDTO;
+import spring.crut.corpus.dto.LexGramSearchDTO;
 import spring.crut.corpus.enums.Status;
 import spring.crut.corpus.models.Document;
 import spring.crut.corpus.services.DocumentsService;
@@ -44,9 +45,13 @@ public class DocumentsController {
     }
     @PostMapping("/search/certain")
     public ResponseEntity<?> certainSearch(@RequestBody CertainSearchDTO certainSearchDTO) {
-        List<Document> documents = documentsService.specifySubcorpus(certainSearchDTO);
-        // List<Document> documents = documentsService.getAllDocuments();
+        List<Document> documents = documentsService.specifySubcorpus(certainSearchDTO.getSubcorpusData());
         return ResponseEntity.ok(sentencesService.getByCertainSearch(documents, certainSearchDTO.getWordform()));
+    }
+    @PostMapping("/search/lex_gram")
+    public ResponseEntity<?> lexGramSearch(@RequestBody LexGramSearchDTO lexGramSearchDTO) {
+        List<Document> documents = documentsService.specifySubcorpus(lexGramSearchDTO.getSubcorpusData());
+        return ResponseEntity.ok(sentencesService.getByLexGramSearch(documents, lexGramSearchDTO.getLexGramTokensDTO()));
     }
     @GetMapping
     public ResponseEntity<?> getAllDocuments() {

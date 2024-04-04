@@ -67,11 +67,11 @@ public class DocumentsService {
         sentencesService.createSentences(sentences.getSentences(), document);
     }
 
-    public List<Document> specifySubcorpus(CertainSearchDTO certainSearchDTO) {
+    public List<Document> specifySubcorpus(SubcorpusDataDTO subcorpusDataDTO) {
         var documents = documentsRepository.findAll();
         List<Document> specifiedDocuments = new ArrayList<>();
         for (var document : documents) {
-            if (this.equalsSubcorpus(document, certainSearchDTO.getSubcorpusData())) {
+            if (this.equalsSubcorpus(document, subcorpusDataDTO)) {
                 specifiedDocuments.add(document);
             }
         }
