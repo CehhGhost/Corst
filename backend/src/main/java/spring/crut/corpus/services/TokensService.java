@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import spring.crut.corpus.dto.LexGramTokenDTO;
 import spring.crut.corpus.dto.TokenDTO;
 
 import spring.crut.corpus.models.Sentence;
@@ -48,5 +49,9 @@ public class TokensService {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public boolean equalsToLexGramTokenDTO(Token token, LexGramTokenDTO token1) {
+        return token.getLemma().equals(token1.getWordform());
     }
 }

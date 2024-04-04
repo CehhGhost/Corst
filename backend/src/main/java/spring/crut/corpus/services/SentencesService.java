@@ -9,16 +9,19 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-import spring.crut.corpus.dto.CertainSearchSentenceDTO;
+import spring.crut.corpus.dto.SearchSentenceDTO;
 import spring.crut.corpus.dto.CreateSentenceDTO;
 
+import spring.crut.corpus.dto.LexGramTokenDTO;
 import spring.crut.corpus.models.Document;
 import spring.crut.corpus.models.Sentence;
 import spring.crut.corpus.repositories.DocumentsRepository;
 import spring.crut.corpus.repositories.SentencesRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -47,8 +50,8 @@ public class SentencesService {
     }
 
     @Transactional
-    public List<CertainSearchSentenceDTO> getByCertainSearch(List<Document> documents, String wordform) {
-        List<CertainSearchSentenceDTO> sentencesDTO = new ArrayList<>();
+    public List<SearchSentenceDTO> getByCertainSearch(List<Document> documents, String wordform) {
+        List<SearchSentenceDTO> sentencesDTO = new ArrayList<>();
         if (wordform == null || wordform.isEmpty()) {
             return sentencesDTO;
         }
@@ -76,7 +79,87 @@ public class SentencesService {
             }
         }
         for (var sentence : resultSentences) {
-            var sentenceDTO = modelMapper.map(sentence, CertainSearchSentenceDTO.class);
+            var sentenceDTO = modelMapper.map(sentence, SearchSentenceDTO.class);
+            sentenceDTO.setDocumentTitle(sentence.getDocument().getTitle());
+            tokensService.setAttrsForTokensDTO(sentenceDTO.getTokens(), sentence.getTokens());
+            sentencesDTO.add(sentenceDTO);
+        }
+        return sentencesDTO;
+    }
+
+    @Transactional
+    public List<SearchSentenceDTO> getByLexGramSearch(List<Document> documents, List<LexGramTokenDTO> lexGramTokensDTO) {
+        List<SearchSentenceDTO> sentencesDTO = new ArrayList<>();
+        if (lexGramTokensDTO == null || lexGramTokensDTO.isEmpty()) {
+            return sentencesDTO;
+        }
+        Map<Integer, List<Integer>> checkMap = new HashMap<>();
+        for (int i = 0; i < lexGramTokensDTO.size(); ++i) {
+            var token = lexGramTokensDTO.get(i);
+            if (token.getTo() < token.getFrom()) {
+                var exchange = token.getTo();
+                token.setTo(token.getFrom());
+                token.setFrom(exchange);
+            }
+            for (int j = token.getFrom(); j <= token.getTo(); ++j) {
+                if (!checkMap.containsKey(j)) {
+                    checkMap.put(j, new ArrayList<>());
+                }
+                checkMap.get(j).add(i);
+            }
+        }
+        Boolean[] tokensArray = new Boolean[lexGramTokensDTO.size()];
+        Boolean[] positionArray = new Boolean[checkMap.size()];
+        List<Sentence> resultSentences = new ArrayList<>();
+        for (var document : documents) {
+            var sentences = document.getSentences();
+            for (var sentence : sentences) {
+                var tokens = sentence.getTokens();
+                for (int i = 0; i < tokens.size(); ++i) {
+                    for (var startingPosition : checkMap.get(0)) {
+                        if (tokensService.equalsToLexGramTokenDTO(tokens.get(i), lexGramTokensDTO.get(startingPosition))) {
+                            boolean correctSentence = true;
+                            for (int j = 0; j < checkMap.size(); ++j) {
+                                positionArray[j] = false;
+                            }
+                            for (int j = 0; j < lexGramTokensDTO.size(); ++j) {
+                                tokensArray[j] = false;
+                            }
+                            tokensArray[startingPosition] = true;
+                            for (var position : checkMap.keySet()) {
+                                for (var token : checkMap.get(position)) {
+                                    if (i + token >= 0 && i + token < tokens.size() &&
+                                            tokensService.equalsToLexGramTokenDTO(tokens.get(i + token), lexGramTokensDTO.get(token))) {
+                                        positionArray[position] = true;
+                                        tokensArray[token] = true;
+                                    }
+                                }
+                            }
+                            for (int j = 0; j < checkMap.size(); ++j) {
+                                if (!positionArray[j]) {
+                                    for (var token : checkMap.get(j)) {
+                                        if (!tokensArray[token]) {
+                                            correctSentence = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (!correctSentence) {
+                                    break;
+                                }
+                            }
+                            if (correctSentence) {
+                                resultSentences.add(sentence);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        for (var sentence : resultSentences) {
+            var sentenceDTO = modelMapper.map(sentence, SearchSentenceDTO.class);
             sentenceDTO.setDocumentTitle(sentence.getDocument().getTitle());
             tokensService.setAttrsForTokensDTO(sentenceDTO.getTokens(), sentence.getTokens());
             sentencesDTO.add(sentenceDTO);

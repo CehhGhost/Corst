@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CertainSearchSentenceDTO {
+public class SearchSentenceDTO {
     private String documentTitle;
 
     private Integer id;

@@ -10,8 +10,10 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LexGramTokenDTO {
-    private String text;
-    private String pos;
-    private String lemma;
-    private Map<String, String> attrs;
+    Integer from;
+    Integer to;
+    private String wordform;
+    private String partOfSpeech;
+    private Map<String, String> grammar;
+    private Map<String, String> errors;
 }
