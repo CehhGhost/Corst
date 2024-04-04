@@ -337,6 +337,7 @@
                           Part of speech
                         </label>
                         <q-input
+                          readonly
                           outlined
                           v-model="block.partOfSpeech"
                           placeholder="Part of speech"
@@ -348,7 +349,86 @@
                                 cover
                                 transition-show="scale"
                                 transition-hide="scale"
+                                style="background-color: rgba(0, 0, 0, 0.5)"
                               >
+                                <q-card>
+                                  <q-card-section
+                                    class="bg-primary text-white"
+                                    @click="
+                                      toggleAllCheckboxes(
+                                        lexgrammFeaturesFixed.partOfSpeech,
+                                        block.partOfSpeech,
+                                        'upper'
+                                      )
+                                    "
+                                  >
+                                    <div class="text-h6">Part of speech</div>
+                                  </q-card-section>
+                                  <q-card-section
+                                    style="display: flex; flex-wrap: wrap"
+                                  >
+                                    <q-list style="width: 33.33%">
+                                      <q-item
+                                        v-for="partOfSpeech in lexgrammFeaturesFixed.partOfSpeech.slice(
+                                          0,
+                                          Math.ceil(
+                                            lexgrammFeaturesFixed.partOfSpeech
+                                              .length / 3
+                                          )
+                                        )"
+                                        :key="partOfSpeech"
+                                      >
+                                        <q-checkbox
+                                          v-model="block.partOfSpeech"
+                                          :val="partOfSpeech"
+                                          :label="partOfSpeech"
+                                        />
+                                      </q-item>
+                                    </q-list>
+                                    <q-list style="width: 33.33%">
+                                      <q-item
+                                        v-for="partOfSpeech in lexgrammFeaturesFixed.partOfSpeech.slice(
+                                          Math.ceil(
+                                            lexgrammFeaturesFixed.partOfSpeech
+                                              .length / 3
+                                          ),
+                                          Math.ceil(
+                                            (2 *
+                                              lexgrammFeaturesFixed.partOfSpeech
+                                                .length) /
+                                              3
+                                          )
+                                        )"
+                                        :key="partOfSpeech"
+                                      >
+                                        <q-checkbox
+                                          v-model="block.partOfSpeech"
+                                          :val="partOfSpeech"
+                                          :label="partOfSpeech"
+                                        />
+                                      </q-item>
+                                    </q-list>
+                                    <q-list style="width: 33.33%">
+                                      <q-item
+                                        v-for="partOfSpeech in lexgrammFeaturesFixed.partOfSpeech.slice(
+                                          Math.ceil(
+                                            (2 *
+                                              lexgrammFeaturesFixed.partOfSpeech
+                                                .length) /
+                                              3
+                                          )
+                                        )"
+                                        :key="partOfSpeech"
+                                      >
+                                        <q-checkbox
+                                          v-model="block.partOfSpeech"
+                                          :val="partOfSpeech"
+                                          :label="partOfSpeech"
+                                        />
+                                      </q-item>
+                                    </q-list>
+                                  </q-card-section>
+                                </q-card>
                               </q-popup-proxy>
                             </q-icon>
                           </template>
@@ -360,6 +440,7 @@
                           Grammar
                         </label>
                         <q-input
+                          readonly
                           outlined
                           v-model="block.grammar"
                           placeholder="Grammar characteristics"
@@ -383,6 +464,7 @@
                           Errors
                         </label>
                         <q-input
+                          readonly
                           outlined
                           v-model="block.errors"
                           placeholder="Tags"
@@ -650,9 +732,9 @@ export default {
     addLexgramBlock() {
       this.lexgramBlocks.push({
         wordform: "",
-        partOfSpeech: "",
-        grammar: "",
-        errors: "",
+        partOfSpeech: [],
+        grammar: [],
+        errors: [],
         additional: true,
         from: "1",
         to: "1",
@@ -710,17 +792,25 @@ export default {
         );
       }
     },
-    toggleAllCheckboxes(checkboxes, data) {
+    toggleAllCheckboxes(checkboxes, data, caseType = "lower") {
       const allChecked = data.length === checkboxes.length;
 
       if (allChecked) {
         data.splice(0);
       } else {
-        data.splice(
-          0,
-          data.length,
-          ...checkboxes.map((course) => course.toLowerCase())
-        );
+        if (caseType === "lower") {
+          data.splice(
+            0,
+            data.length,
+            ...checkboxes.map((item) => item.toLowerCase())
+          );
+        } else {
+          data.splice(
+            0,
+            data.length,
+            ...checkboxes.map((item) => item.toUpperCase())
+          );
+        }
       }
     },
     focusInput(field, id) {
