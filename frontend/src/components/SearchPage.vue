@@ -117,7 +117,10 @@
 
                   <div style="flex: 1 0 30%; max-width: 70%">
                     <q-card outlined style="margin-left: 30px">
-                      <q-card-section class="bg-primary text-white">
+                      <q-card-section
+                        class="bg-primary text-white"
+                        @click="toggleTextFeaturesTextboxes()"
+                      >
                         <div class="text-h6">Text features</div>
                       </q-card-section>
                       <q-card-actions
@@ -334,11 +337,102 @@
                           Part of speech
                         </label>
                         <q-input
+                          readonly
                           outlined
                           v-model="block.partOfSpeech"
                           placeholder="Part of speech"
                           dense
-                        />
+                        >
+                          <template v-slot:append>
+                            <q-icon name="menu" class="cursor-pointer">
+                              <q-popup-proxy
+                                cover
+                                transition-show="scale"
+                                transition-hide="scale"
+                                style="background-color: rgba(0, 0, 0, 0.5)"
+                              >
+                                <q-card>
+                                  <q-card-section
+                                    class="bg-primary text-white"
+                                    @click="
+                                      toggleAllCheckboxes(
+                                        lexgrammFeaturesFixed.partOfSpeech,
+                                        block.partOfSpeech,
+                                        'upper'
+                                      )
+                                    "
+                                  >
+                                    <div class="text-h6">Part of speech</div>
+                                  </q-card-section>
+                                  <q-card-section
+                                    style="display: flex; flex-wrap: wrap"
+                                  >
+                                    <q-list style="width: 33.33%">
+                                      <q-item
+                                        v-for="partOfSpeech in lexgrammFeaturesFixed.partOfSpeech.slice(
+                                          0,
+                                          Math.ceil(
+                                            lexgrammFeaturesFixed.partOfSpeech
+                                              .length / 3
+                                          )
+                                        )"
+                                        :key="partOfSpeech"
+                                      >
+                                        <q-checkbox
+                                          v-model="block.partOfSpeech"
+                                          :val="partOfSpeech"
+                                          :label="partOfSpeech"
+                                        />
+                                      </q-item>
+                                    </q-list>
+                                    <q-list style="width: 33.33%">
+                                      <q-item
+                                        v-for="partOfSpeech in lexgrammFeaturesFixed.partOfSpeech.slice(
+                                          Math.ceil(
+                                            lexgrammFeaturesFixed.partOfSpeech
+                                              .length / 3
+                                          ),
+                                          Math.ceil(
+                                            (2 *
+                                              lexgrammFeaturesFixed.partOfSpeech
+                                                .length) /
+                                              3
+                                          )
+                                        )"
+                                        :key="partOfSpeech"
+                                      >
+                                        <q-checkbox
+                                          v-model="block.partOfSpeech"
+                                          :val="partOfSpeech"
+                                          :label="partOfSpeech"
+                                        />
+                                      </q-item>
+                                    </q-list>
+                                    <q-list style="width: 33.33%">
+                                      <q-item
+                                        v-for="partOfSpeech in lexgrammFeaturesFixed.partOfSpeech.slice(
+                                          Math.ceil(
+                                            (2 *
+                                              lexgrammFeaturesFixed.partOfSpeech
+                                                .length) /
+                                              3
+                                          )
+                                        )"
+                                        :key="partOfSpeech"
+                                      >
+                                        <q-checkbox
+                                          v-model="block.partOfSpeech"
+                                          :val="partOfSpeech"
+                                          :label="partOfSpeech"
+                                        />
+                                      </q-item>
+                                    </q-list>
+                                  </q-card-section>
+                                </q-card>
+                              </q-popup-proxy>
+                            </q-icon>
+                          </template>
+                        </q-input>
                       </div>
                       <!-- Include gram select component here -->
                       <div class="col-3">
@@ -346,11 +440,23 @@
                           Grammar
                         </label>
                         <q-input
+                          readonly
                           outlined
                           v-model="block.grammar"
                           placeholder="Grammar characteristics"
                           dense
-                        />
+                        >
+                          <template v-slot:append>
+                            <q-icon name="menu" class="cursor-pointer">
+                              <q-popup-proxy
+                                cover
+                                transition-show="scale"
+                                transition-hide="scale"
+                              >
+                              </q-popup-proxy>
+                            </q-icon>
+                          </template>
+                        </q-input>
                       </div>
                       <!-- Include err select component here -->
                       <div class="col-2">
@@ -358,11 +464,23 @@
                           Errors
                         </label>
                         <q-input
+                          readonly
                           outlined
                           v-model="block.errors"
                           placeholder="Tags"
                           dense
-                        />
+                        >
+                          <template v-slot:append>
+                            <q-icon name="menu" class="cursor-pointer">
+                              <q-popup-proxy
+                                cover
+                                transition-show="scale"
+                                transition-hide="scale"
+                              >
+                              </q-popup-proxy>
+                            </q-icon>
+                          </template>
+                        </q-input>
                       </div>
                       <div class="col-1">
                         <q-btn
@@ -433,7 +551,7 @@ export default {
       lexgramBlocks: [
         {
           wordform: "",
-          partOfSpeech: "",
+          partOfSpeech: [],
           grammar: "",
           errors: "",
           additional: false,
@@ -462,6 +580,114 @@ export default {
         statuses: ["Not Annotated", "Annotated", "Checked"],
       },
 
+      lexgrammFeaturesFixed: {
+        partOfSpeech: [
+          "ADJ",
+          "ADP",
+          "ADV",
+          "AUX",
+          "CCONJ",
+          "DET",
+          "INTJ",
+          "NOUN",
+          "NUM",
+          "PART",
+          "PRON",
+          "PROPN",
+          "PUNCT",
+          "SCONJ",
+          "SYM",
+          "VERB",
+          "X",
+        ],
+        grammar: [
+          {
+            block: "Nominal Features",
+            value: [
+              {
+                name: "Gender",
+                value: ["Masc", "Fem", "Neut"],
+              },
+              {
+                name: "Animacy",
+                value: ["Anim", "Inan"],
+              },
+              {
+                name: "Number",
+                value: ["Sing", "Plur"],
+              },
+              {
+                name: "Case",
+                value: ["Nom", "Gen", "Dat", "Acc", "Ins", "Loc", "Voc", "Par"],
+              },
+            ],
+          },
+          {
+            block: "Degree and Polarity",
+            value: [
+              {
+                name: "Degree",
+                value: ["Pos", "Cmp", "Sup"],
+              },
+              {
+                name: "Polarity",
+                value: ["Neg"],
+              },
+              {
+                name: "Variant",
+                value: ["Short"],
+              },
+            ],
+          },
+          {
+            block: "Verbal Features",
+            value: [
+              {
+                name: "Aspect",
+                value: ["Perf", "AspectImp"],
+              },
+              {
+                name: "Mood",
+                value: ["Ind", "MoodImp", "Cnd"],
+              },
+              {
+                name: "Number",
+                value: ["Sing", "Plur"],
+              },
+              {
+                name: "Tense",
+                value: ["Past", "Pres", "Fut"],
+              },
+              {
+                name: "Voice",
+                value: ["Act", "Pass", "Mid"],
+              },
+            ],
+          },
+          {
+            block: "Pronouns, Determiners, Quantifiers",
+            value: {
+              name: "Person",
+              value: ["1", "2", "3"],
+            },
+          },
+          {
+            block: "Other Features",
+            value: [
+              {
+                name: "Hyph",
+                value: ["HyphYes"],
+              },
+              {
+                name: "Foreign",
+                value: ["ForeignYes"],
+              },
+            ],
+          },
+        ],
+        errors: [],
+      },
+
       showDeleteButton: true,
       searchResults: [],
     };
@@ -484,12 +710,6 @@ export default {
     },
 
     async exactSearch() {
-      console.log(
-        JSON.stringify({
-          wordform: this.exactSearchInput,
-          subcorpusData: this.subcorpusData,
-        })
-      );
       this.searchResults = [];
       const response = await fetch(serverAdress + "/documents/search/certain", {
         method: "POST",
@@ -512,12 +732,12 @@ export default {
     addLexgramBlock() {
       this.lexgramBlocks.push({
         wordform: "",
-        partOfSpeech: "",
-        grammar: "",
-        errors: "",
+        partOfSpeech: [],
+        grammar: [],
+        errors: [],
         additional: true,
-        from: this.lexgramBlocks.length,
-        to: this.lexgramBlocks.length,
+        from: "1",
+        to: "1",
       });
       if (this.lexgramBlocks.length > 1) {
         this.showDeleteButton = true;
@@ -542,17 +762,55 @@ export default {
     closeDisplaySettingsModal() {
       this.displaySettingsModal = false;
     },
-    toggleAllCheckboxes(checkboxes, data) {
+    toggleTextFeaturesTextboxes() {
+      const allChecked =
+        this.subcorpusData.genres.length ===
+          this.subcorpusTextInfoContainer.genres.length &&
+        this.subcorpusData.authorsAcademicMajors.length ===
+          this.subcorpusTextInfoContainer.authorsAcademicMajors.length &&
+        this.subcorpusData.domains.length ===
+          this.subcorpusTextInfoContainer.domains.length;
+      if (allChecked) {
+        this.subcorpusData.genres.splice(0);
+        this.subcorpusData.authorsAcademicMajors.splice(0);
+        this.subcorpusData.domains.splice(0);
+      } else {
+        this.subcorpusData.genres.splice(
+          0,
+          this.subcorpusData.genres.length,
+          ...this.subcorpusTextInfoContainer.genres
+        );
+        this.subcorpusData.authorsAcademicMajors.splice(
+          0,
+          this.subcorpusData.authorsAcademicMajors.length,
+          ...this.subcorpusTextInfoContainer.authorsAcademicMajors
+        );
+        this.subcorpusData.domains.splice(
+          0,
+          this.subcorpusData.domains.length,
+          ...this.subcorpusTextInfoContainer.domains
+        );
+      }
+    },
+    toggleAllCheckboxes(checkboxes, data, caseType = "lower") {
       const allChecked = data.length === checkboxes.length;
 
       if (allChecked) {
         data.splice(0);
       } else {
-        data.splice(
-          0,
-          data.length,
-          ...checkboxes.map((course) => course.toLowerCase())
-        );
+        if (caseType === "lower") {
+          data.splice(
+            0,
+            data.length,
+            ...checkboxes.map((item) => item.toLowerCase())
+          );
+        } else {
+          data.splice(
+            0,
+            data.length,
+            ...checkboxes.map((item) => item.toUpperCase())
+          );
+        }
       }
     },
     focusInput(field, id) {

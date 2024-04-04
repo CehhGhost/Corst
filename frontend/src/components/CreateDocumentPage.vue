@@ -12,6 +12,7 @@
             autofocus
             placeholder="Enter title"
             class="q-mb-md"
+            style="margin-top: 35px"
           />
           <q-input
             v-model="text"
