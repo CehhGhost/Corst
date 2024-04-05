@@ -13,6 +13,7 @@ import java.util.Map;
 public class LexGramTokenDTO {
     Integer from;
     Integer to;
+    Boolean additional;
     private String wordform;
     private List<String> partOfSpeech;
     private List<String> grammar;
