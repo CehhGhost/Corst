@@ -29,7 +29,9 @@ public class TokensService {
             token.setNum(tokenDTO.getNum());
             token.setPos(tokenDTO.getPos());
             token.setLemma(tokenDTO.getLemma());
-            lemmatizedSentence.append(tokenDTO.getLemma());
+            if (tokenDTO.getPos() != null && !tokenDTO.getPos().equals("PUNCT")) {
+                lemmatizedSentence.append(" ").append(tokenDTO.getLemma()).append(" ");
+            }
             try {
                 token.setAttrs(objectMapper.writeValueAsString(tokenDTO.getAttrs()));
             } catch (JsonProcessingException e) {
