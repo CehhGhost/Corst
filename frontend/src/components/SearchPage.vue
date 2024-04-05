@@ -803,31 +803,40 @@ export default {
         }),
       });
       if (response.ok) {
+        console.log(response);
         const data = await response.json();
         this.searchResults = data;
       } else {
         console.error(response);
       }
     },
+
     async lexgramSearch() {
       this.searchResults = [];
       const data = {
         lexgramBlocks: this.lexgramBlocks,
         subcorpusData: this.subcorpusData,
       };
-      console.log(data);
-      const response = fetch(serverAdress + "/documents/search/lex_gram", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      if (response.ok) {
-        const data = await response.json();
-        this.searchResults = data;
-      } else {
-        console.error(response);
+      try {
+        const response = await fetch(
+          serverAdress + "/documents/search/lex_gram",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        if (response.ok) {
+          const data = await response.json();
+          this.searchResults = data;
+        } else {
+          console.log(response);
+        }
+      } catch (error) {
+        console.log("Error in lexgramSearch");
+        console.error(error);
       }
     },
     addLexgramBlock() {
