@@ -96,6 +96,7 @@ public class SentencesService {
         Map<Integer, List<Integer>> checkMap = new HashMap<>();
         for (int i = 0; i < lexGramTokensDTO.size(); ++i) {
             var token = lexGramTokensDTO.get(i);
+            token.setWordform(token.getWordform().toLowerCase());
             if (token.getTo() < token.getFrom()) {
                 var exchange = token.getTo();
                 token.setTo(token.getFrom());
