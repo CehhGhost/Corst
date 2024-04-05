@@ -267,7 +267,7 @@
           <q-card class="rounded-borders">
             <q-card-section class="exactSearch">
               <h3 class="text-h6">Lexgramm Search</h3>
-              <q-form @submit="lexgrammSearch" class="q-gutter-md">
+              <q-form @submit="lexgramSearch" class="q-gutter-md">
                 <div>
                   <div
                     style="display: flex; flex-direction: column"
@@ -815,7 +815,8 @@ export default {
         lexgramBlocks: this.lexgramBlocks,
         subcorpusData: this.subcorpusData,
       };
-      const response = fetch(serverAdress + "/documents/search/lexgramm", {
+      console.log(data);
+      const response = fetch(serverAdress + "/documents/search/lex_gram", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
