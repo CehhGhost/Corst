@@ -13,7 +13,7 @@ public class LexGramTokenDTO {
     Integer from;
     Integer to;
     private String wordform;
-    private String partOfSpeech;
+    private Map<String, String> partOfSpeech;
     private Map<String, String> grammar;
     private Map<String, String> errors;
 }

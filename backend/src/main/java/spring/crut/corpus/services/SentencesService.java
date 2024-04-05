@@ -126,6 +126,7 @@ public class SentencesService {
                                 tokensArray[j] = false;
                             }
                             tokensArray[startingPosition] = true;
+                            positionArray[0] = true;
                             for (var position : checkMap.keySet()) {
                                 for (var token : checkMap.get(position)) {
                                     if (i + token >= 0 && i + token < tokens.size() &&
