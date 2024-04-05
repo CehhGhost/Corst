@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -13,7 +14,7 @@ public class LexGramTokenDTO {
     Integer from;
     Integer to;
     private String wordform;
-    private Map<String, String> partOfSpeech;
-    private Map<String, String> grammar;
-    private Map<String, String> errors;
+    private List<String> partOfSpeech;
+    private List<String> grammar;
+    private List<String> errors;
 }
