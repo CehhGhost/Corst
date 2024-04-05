@@ -53,6 +53,10 @@ public class TokensService {
         }
     }
 
+    public List<Token> getAllBySentenceAndSort(Sentence sentence) {
+        return tokensRepository.findAllBySentenceOrderByNum(sentence);
+    }
+
     public boolean equalsToLexGramTokenDTO(Token token, LexGramTokenDTO token1) {
         return token.getLemma().equals(token1.getWordform());
     }

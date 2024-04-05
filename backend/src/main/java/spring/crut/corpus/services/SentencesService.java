@@ -111,11 +111,12 @@ public class SentencesService {
         }
         Boolean[] tokensArray = new Boolean[lexGramTokensDTO.size()];
         Boolean[] positionArray = new Boolean[checkMap.size()];
+        var positions = checkMap.keySet().toArray();
         List<Sentence> resultSentences = new ArrayList<>();
         for (var document : documents) {
             var sentences = document.getSentences();
             for (var sentence : sentences) {
-                var tokens = sentence.getTokens();
+                var tokens = tokensService.getAllBySentenceAndSort(sentence);
                 for (int i = 0; i < tokens.size(); ++i) {
                     for (var startingPosition : checkMap.get(0)) {
                         if (tokensService.equalsToLexGramTokenDTO(tokens.get(i), lexGramTokensDTO.get(startingPosition))) {
@@ -126,20 +127,20 @@ public class SentencesService {
                             for (int j = 0; j < lexGramTokensDTO.size(); ++j) {
                                 tokensArray[j] = false;
                             }
-                            tokensArray[startingPosition] = true;
-                            positionArray[0] = true;
+                            int p = 0;
                             for (var position : checkMap.keySet()) {
                                 for (var token : checkMap.get(position)) {
-                                    if (i + token >= 0 && i + token < tokens.size() &&
-                                            tokensService.equalsToLexGramTokenDTO(tokens.get(i + token), lexGramTokensDTO.get(token))) {
-                                        positionArray[position] = true;
+                                    if (i + position >= 0 && i + position < tokens.size() &&
+                                            tokensService.equalsToLexGramTokenDTO(tokens.get(i + position), lexGramTokensDTO.get(token))) {
+                                        positionArray[p] = true;
                                         tokensArray[token] = true;
                                     }
                                 }
+                                ++p;
                             }
                             for (int j = 0; j < checkMap.size(); ++j) {
                                 if (!positionArray[j]) {
-                                    for (var token : checkMap.get(j)) {
+                                    for (var token : checkMap.get(positions[j])) {
                                         if (!tokensArray[token]) {
                                             correctSentence = false;
                                             break;
