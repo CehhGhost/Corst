@@ -482,7 +482,10 @@
                                       <q-card-section
                                         style="display: flex; flex-wrap: wrap"
                                       >
-                                        <div class="text-h4">
+                                        <div
+                                          class="text-h4"
+                                          style="height: 1px"
+                                        >
                                           {{ block_.block }}
                                         </div>
                                       </q-card-section>
@@ -491,11 +494,8 @@
                                       >
                                         <q-list>
                                           <div
-                                            class="row items-center"
-                                            style="
-                                              display: flex;
-                                              flex-wrap: wrap;
-                                            "
+                                            class="row"
+                                            style="display: flex"
                                           >
                                             <q-item
                                               v-for="blockValue in block_.value"
@@ -721,11 +721,11 @@ export default {
             value: [
               {
                 name: "Aspect",
-                value: ["Perf", "AspectImp"],
+                value: ["Perf", "Imp"],
               },
               {
                 name: "Mood",
-                value: ["Ind", "MoodImp", "Cnd"],
+                value: ["Ind", "Imp", "Cnd"],
               },
               {
                 name: "Tense",
@@ -751,11 +751,11 @@ export default {
             value: [
               {
                 name: "Hyph",
-                value: ["HyphYes"],
+                value: ["Yes"],
               },
               {
                 name: "Foreign",
-                value: ["ForeignYes"],
+                value: ["Yes"],
               },
             ],
           },
