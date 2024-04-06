@@ -836,12 +836,12 @@ export default {
     addLexgramBlock() {
       this.lexgramBlocks.push({
         wordform: "",
-        partOfSpeech: [],
+        partOfSpeech: "",
         grammar: [],
         errors: [],
         additional: true,
-        from: "1",
-        to: "1",
+        from: this.lexgramBlocks.length,
+        to: this.lexgramBlocks.length,
       });
       if (this.lexgramBlocks.length > 1) {
         this.showDeleteButton = true;
