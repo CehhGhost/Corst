@@ -38,7 +38,7 @@
                     color="primary"
                     label="Annotate"
                     class="button"
-                    @click="annotateDocument(document.id)"
+                    :to="'/annotateDocument/' + document.id"
                   />
                 </div>
                 <div class="row-auto">
@@ -57,7 +57,7 @@
                     color="negative"
                     icon="delete"
                     class="button"
-                    @click="deleteDocument(document.id)"
+                    @click="editDocument(document.id)"
                   />
                 </div>
               </div>
