@@ -1,8 +1,8 @@
 <template>
-  <h3></h3>
-  <q-page-container v-if="userStatus">
-    <q-page class="q-pa-md">
-      <div>
+  <q-page-container>
+    <q-page class="q-pa-xs" style="max-width: 1000px; margin: 0 auto">
+      <div class="q-gutter-xs">
+        <h1></h1>
         <q-btn
           push
           icon="add"
@@ -12,24 +12,30 @@
           to="/addDocument"
         />
       </div>
-      <div class="col-lg-6 col-md-8 col-sm-10">
-        <div v-for="(document, i) in documents" :key="i">
-          <q-card class="rounded-borders">
-            <q-card-section>
-              <h3 class="text-h6">{{ document.title }}</h3>
-              <div class="row q-gutter-md items-center">
-                {{ document.text }}
-              </div>
-              <q-btn
-                push
-                color="primary"
-                label="Annotate"
-                class="button"
-                :to="'/annotateDocument/' + document.id"
-              />
-            </q-card-section>
-          </q-card>
+      <div class="col-lg-4 col-md-6 col-sm-8 q-mt-xs">
+        <div v-if="documents.length === 0" class="text-center text-grey-8">
+          No documents found.
         </div>
+        <q-card
+          flat
+          bordered
+          v-else
+          v-for="(document, i) in documents"
+          :key="i"
+          style="margin-top: 20px"
+        >
+          <q-card-section>
+            <h3 class="text-h6">{{ document.title }}</h3>
+            <p class="text-body2">{{ document.text }}</p>
+            <q-btn
+              push
+              color="primary"
+              label="Annotate"
+              class="button"
+              @click="annotateDocument(document.id)"
+            />
+          </q-card-section>
+        </q-card>
       </div>
     </q-page>
   </q-page-container>
