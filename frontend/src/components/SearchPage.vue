@@ -721,11 +721,11 @@ export default {
             value: [
               {
                 name: "Aspect",
-                value: ["Perf", "Imp"],
+                value: ["Perf", "AspectImp"],
               },
               {
                 name: "Mood",
-                value: ["Ind", "Imp", "Cnd"],
+                value: ["Ind", "MoodImp", "Cnd"],
               },
               {
                 name: "Tense",
@@ -751,11 +751,11 @@ export default {
             value: [
               {
                 name: "Hyph",
-                value: ["Yes"],
+                value: ["HyphYes"],
               },
               {
                 name: "Foreign",
-                value: ["Yes"],
+                value: ["ForeignYes"],
               },
             ],
           },
