@@ -1,5 +1,5 @@
 <template>
-  <q-page-container class="q-pa-md">
+  <q-page-container class="q-pa-xs">
     <q-page class="flex">
       <div v-if="userStatus" class="create-document">
         <h2 class="q-mb-md">Add Document</h2>
