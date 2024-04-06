@@ -62,17 +62,17 @@ public class TokensService {
         if (!token.getLemma().equals(token1.getWordform())) {
             return false;
         }
-        boolean posFlag = true;
-        if (token1.getPartOfSpeech() == null || token.getPos().equals(token1.getPartOfSpeech())) {
-            for (var attr : token1.getGrammar()) {
-                if (!token.getAttrs().contains(attr)) {
-                    posFlag = false;
-                    break;
-                }
-            }
-        } else {
-            posFlag = false;
+        boolean posFlag = token1.getPartOfSpeech() == null || token1.getPartOfSpeech().isEmpty() || token.getPos().equals(token1.getPartOfSpeech());
+        if (!posFlag) {
+            return false;
         }
-        return posFlag;
+        boolean attrFlag = true;
+        for (var attr : token1.getGrammar()) {
+            if (!token.getAttrs().contains(attr)) {
+                attrFlag = false;
+                break;
+            }
+        }
+        return attrFlag;
     }
 }
