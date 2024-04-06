@@ -25,9 +25,114 @@
           style="margin-top: 20px"
         >
           <q-card-section>
-            <h3 class="text-h6" style="margin-top: 0px; margin-bottom: 10px">
-              {{ document.title }}
-            </h3>
+            <q-expansion-item>
+              <template v-slot:header>
+                <div class="q-gutter-md">
+                  <q-item-label class="text-h5">{{
+                    document.title
+                  }}</q-item-label>
+                </div>
+              </template>
+              <q-card-section
+                class="item-info"
+                style="display: flex; flex-direction: row"
+              >
+                <div class="column">
+                  <div
+                    class="info-item"
+                    style="display: flex; margin-bottom: 5px"
+                  >
+                    <span
+                      class="info-label"
+                      style="font-weight: bold; margin-right: 5px"
+                      >Created:</span
+                    >
+                    <span class="info-value">{{ document.createdAt }}</span>
+                  </div>
+                  <div
+                    class="info-item"
+                    style="display: flex; margin-bottom: 5px"
+                  >
+                    <span
+                      class="info-label"
+                      style="font-weight: bold; margin-right: 5px"
+                      >Genre:</span
+                    >
+                    <span class="info-value">{{ document.genre }}</span>
+                  </div>
+                  <div
+                    class="info-item"
+                    style="display: flex; margin-bottom: 5px"
+                  >
+                    <span
+                      class="info-label"
+                      style="font-weight: bold; margin-right: 5px"
+                      >Owner:</span
+                    >
+                    <span class="info-value">{{ document.ownerUsername }}</span>
+                  </div>
+                  <div
+                    class="info-item"
+                    style="display: flex; margin-bottom: 5px"
+                  >
+                    <span
+                      class="info-label"
+                      style="font-weight: bold; margin-right: 5px"
+                      >Status:</span
+                    >
+                    <span class="info-value">{{ document.statusNum }}</span>
+                  </div>
+                </div>
+                <div class="column" style="margin-left: 40px">
+                  <div
+                    class="info-item"
+                    style="display: flex; margin-bottom: 5px"
+                  >
+                    <span
+                      class="info-label"
+                      style="font-weight: bold; margin-right: 5px"
+                      >Gender:</span
+                    >
+                    <span class="info-value">{{ document.authorsGender }}</span>
+                  </div>
+                  <div
+                    class="info-item"
+                    style="display: flex; margin-bottom: 5px"
+                  >
+                    <span
+                      class="info-label"
+                      style="font-weight: bold; margin-right: 5px"
+                      >Course:</span
+                    >
+                    <span class="info-value">{{ document.authorsCourse }}</span>
+                  </div>
+                  <div
+                    class="info-item"
+                    style="display: flex; margin-bottom: 5px"
+                  >
+                    <span
+                      class="info-label"
+                      style="font-weight: bold; margin-right: 5px"
+                      >Domain:</span
+                    >
+                    <span class="info-value">{{ document.domain }}</span>
+                  </div>
+                  <div
+                    class="info-item"
+                    style="display: flex; margin-bottom: 5px"
+                  >
+                    <span
+                      class="info-label"
+                      style="font-weight: bold; margin-right: 5px"
+                      >Academic Major:</span
+                    >
+                    <span class="info-value">{{
+                      document.authorsAcademicMajor
+                    }}</span>
+                  </div>
+                </div>
+              </q-card-section>
+            </q-expansion-item>
             <p class="text-body2">{{ document.text }}</p>
 
             <div class="q-pa-xs">
@@ -100,7 +205,8 @@ export default {
   async mounted() {
     this.userStatus = await isLogin();
     if (this.userStatus) {
-      this.loadAllDocuments();
+      await this.loadAllDocuments();
+      console.log(this.documents);
     } else {
       this.$router.push("/");
     }
