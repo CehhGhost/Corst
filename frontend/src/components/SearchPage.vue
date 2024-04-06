@@ -354,18 +354,7 @@
                                   <q-card-section
                                     class="bg-primary text-white row items-center"
                                   >
-                                    <div
-                                      class="text-h6"
-                                      @click="
-                                        toggleAllCheckboxes(
-                                          lexgrammFeaturesFixed.partOfSpeech,
-                                          block.partOfSpeech,
-                                          'upper'
-                                        )
-                                      "
-                                    >
-                                      Part of speech
-                                    </div>
+                                    <div class="text-h6">Part of speech</div>
                                     <q-space />
                                     <q-btn
                                       icon="close"
@@ -389,7 +378,7 @@
                                         )"
                                         :key="partOfSpeech"
                                       >
-                                        <q-checkbox
+                                        <q-radio
                                           v-model="block.partOfSpeech"
                                           :val="partOfSpeech"
                                           :label="partOfSpeech"
@@ -412,7 +401,7 @@
                                         )"
                                         :key="partOfSpeech"
                                       >
-                                        <q-checkbox
+                                        <q-radio
                                           v-model="block.partOfSpeech"
                                           :val="partOfSpeech"
                                           :label="partOfSpeech"
@@ -431,7 +420,7 @@
                                         )"
                                         :key="partOfSpeech"
                                       >
-                                        <q-checkbox
+                                        <q-radio
                                           v-model="block.partOfSpeech"
                                           :val="partOfSpeech"
                                           :label="partOfSpeech"
@@ -634,7 +623,7 @@ export default {
       lexgramBlocks: [
         {
           wordform: "",
-          partOfSpeech: [],
+          partOfSpeech: "",
           grammar: [],
           errors: [],
           additional: false,
