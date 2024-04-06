@@ -12,7 +12,7 @@
           to="/addDocument"
         />
       </div>
-      <div class="col-lg-4 col-md-6 col-sm-8 q-mt-xs">
+      <div class="q-mt-xs">
         <div v-if="documents.length === 0" class="text-center text-grey-8">
           No documents found.
         </div>
@@ -25,15 +25,43 @@
           style="margin-top: 20px"
         >
           <q-card-section>
-            <h3 class="text-h6">{{ document.title }}</h3>
+            <h3 class="text-h6" style="margin-top: 0px; margin-bottom: 10px">
+              {{ document.title }}
+            </h3>
             <p class="text-body2">{{ document.text }}</p>
-            <q-btn
-              push
-              color="primary"
-              label="Annotate"
-              class="button"
-              @click="annotateDocument(document.id)"
-            />
+
+            <div class="q-pa-xs">
+              <div class="row justify-between">
+                <div class="col-auto">
+                  <q-btn
+                    unelevated
+                    color="primary"
+                    label="Annotate"
+                    class="button"
+                    @click="annotateDocument(document.id)"
+                  />
+                </div>
+                <div class="row-auto">
+                  <q-btn
+                    no-caps
+                    unelevated
+                    color="secondary"
+                    icon="edit"
+                    label="Edit"
+                    class="button"
+                    @click="deleteDocument(document.id)"
+                    style="margin-right: 10px"
+                  />
+                  <q-btn
+                    unelevated
+                    color="negative"
+                    icon="delete"
+                    class="button"
+                    @click="deleteDocument(document.id)"
+                  />
+                </div>
+              </div>
+            </div>
           </q-card-section>
         </q-card>
       </div>
