@@ -47,7 +47,9 @@
                       style="font-weight: bold; margin-right: 5px"
                       >Created:</span
                     >
-                    <span class="info-value">{{ document.createdAt }}</span>
+                    <span class="info-value">{{
+                      new Date(document.createdAt).toLocaleString()
+                    }}</span>
                   </div>
                   <div
                     class="info-item"
@@ -80,10 +82,12 @@
                       style="font-weight: bold; margin-right: 5px"
                       >Status:</span
                     >
-                    <span class="info-value">{{ document.statusNum }}</span>
+                    <span class="info-value">{{
+                      documentAdditionalInformation.statuses[document.statusNum]
+                    }}</span>
                   </div>
                 </div>
-                <div class="column" style="margin-left: 40px">
+                <div class="column" style="margin-left: 50px">
                   <div
                     class="info-item"
                     style="display: flex; margin-bottom: 5px"
@@ -93,7 +97,9 @@
                       style="font-weight: bold; margin-right: 5px"
                       >Gender:</span
                     >
-                    <span class="info-value">{{ document.authorsGender }}</span>
+                    <span class="info-value">{{
+                      document.authorsGender[0]
+                    }}</span>
                   </div>
                   <div
                     class="info-item"
@@ -184,6 +190,10 @@ export default {
       documents: [],
       responseSuccess: true,
       userStatus: false,
+
+      documentAdditionalInformation: {
+        statuses: ["Not annotated", "Annotated", "Checked"],
+      },
     };
   },
   methods: {
@@ -206,7 +216,6 @@ export default {
     this.userStatus = await isLogin();
     if (this.userStatus) {
       await this.loadAllDocuments();
-      console.log(this.documents);
     } else {
       this.$router.push("/");
     }
