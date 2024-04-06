@@ -101,7 +101,7 @@
                     icon="edit"
                     label="Edit"
                     class="button"
-                    @click="deleteDocument(document.id)"
+                    :to="'/editDocument/' + document.id"
                     style="margin-right: 10px"
                   />
                   <q-btn
@@ -109,7 +109,7 @@
                     color="negative"
                     icon="delete"
                     class="button"
-                    @click="editDocument(document.id)"
+                    @click="deleteDocument(document.id)"
                   />
                 </div>
               </div>
@@ -147,6 +147,22 @@ export default {
         if (response.ok) {
           const data = await response.json();
           this.documents = data;
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    },
+    async deleteDocument(id) {
+      try {
+        const confirmation = confirm(
+          "Are you sure you want to delete this document?"
+        );
+        if (!confirmation) return;
+        const response = await fetch(serverAdress + "/documents/delete/" + id, {
+          method: "DELETE",
+        });
+        if (response.ok) {
+          this.loadAllDocuments();
         }
       } catch (error) {
         console.error("Error:", error);
