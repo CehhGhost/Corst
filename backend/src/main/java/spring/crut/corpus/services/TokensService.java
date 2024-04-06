@@ -63,7 +63,7 @@ public class TokensService {
             return false;
         }
         boolean posFlag = true;
-        if (token.getPos().equals(token1.getPartOfSpeech())) {
+        if (token1.getPartOfSpeech() == null || token.getPos().equals(token1.getPartOfSpeech())) {
             for (var attr : token1.getGrammar()) {
                 if (!token.getAttrs().contains(attr)) {
                     posFlag = false;
