@@ -70,6 +70,8 @@ public class TokensService {
                     break;
                 }
             }
+        } else {
+            posFlag = false;
         }
         return posFlag;
     }
