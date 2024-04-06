@@ -462,7 +462,10 @@
                                   <q-card-section
                                     class="bg-primary text-white row items-center"
                                   >
-                                    <div class="text-h6">
+                                    <div
+                                      class="text-h6"
+                                      @click="block.grammar = []"
+                                    >
                                       Grammar characteristics
                                     </div>
                                     <q-space />
@@ -515,6 +518,7 @@
                                                     value, i
                                                   ) in blockValue.value"
                                                   :key="i"
+                                                  style="height: 25px"
                                                 >
                                                   <q-checkbox
                                                     v-model="block.grammar"
