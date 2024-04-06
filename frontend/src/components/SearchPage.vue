@@ -354,7 +354,12 @@
                                   <q-card-section
                                     class="bg-primary text-white row items-center"
                                   >
-                                    <div class="text-h6">Part of speech</div>
+                                    <div
+                                      class="text-h6"
+                                      @click="block.partOfSpeech = ''"
+                                    >
+                                      Part of speech
+                                    </div>
                                     <q-space />
                                     <q-btn
                                       icon="close"
