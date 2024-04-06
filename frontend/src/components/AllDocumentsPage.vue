@@ -33,105 +33,46 @@
                   }}</q-item-label>
                 </div>
               </template>
-              <q-card-section
-                class="item-info"
-                style="display: flex; flex-direction: row"
-              >
+              <q-card-section class="item-info">
                 <div class="column">
-                  <div
-                    class="info-item"
-                    style="display: flex; margin-bottom: 5px"
-                  >
-                    <span
-                      class="info-label"
-                      style="font-weight: bold; margin-right: 5px"
-                      >Created:</span
-                    >
+                  <div class="info-item">
+                    <span class="info-label">Created:</span>
                     <span class="info-value">{{
                       new Date(document.createdAt).toLocaleString()
                     }}</span>
                   </div>
-                  <div
-                    class="info-item"
-                    style="display: flex; margin-bottom: 5px"
-                  >
-                    <span
-                      class="info-label"
-                      style="font-weight: bold; margin-right: 5px"
-                      >Genre:</span
-                    >
+                  <div class="info-item">
+                    <span class="info-label">Genre:</span>
                     <span class="info-value">{{ document.genre }}</span>
                   </div>
-                  <div
-                    class="info-item"
-                    style="display: flex; margin-bottom: 5px"
-                  >
-                    <span
-                      class="info-label"
-                      style="font-weight: bold; margin-right: 5px"
-                      >Owner:</span
-                    >
+                  <div class="info-item">
+                    <span class="info-label">Owner:</span>
                     <span class="info-value">{{ document.ownerUsername }}</span>
                   </div>
-                  <div
-                    class="info-item"
-                    style="display: flex; margin-bottom: 5px"
-                  >
-                    <span
-                      class="info-label"
-                      style="font-weight: bold; margin-right: 5px"
-                      >Status:</span
-                    >
+                  <div class="info-item">
+                    <span class="info-label">Status:</span>
                     <span class="info-value">{{
                       documentAdditionalInformation.statuses[document.statusNum]
                     }}</span>
                   </div>
                 </div>
-                <div class="column" style="margin-left: 50px">
-                  <div
-                    class="info-item"
-                    style="display: flex; margin-bottom: 5px"
-                  >
-                    <span
-                      class="info-label"
-                      style="font-weight: bold; margin-right: 5px"
-                      >Gender:</span
-                    >
+                <div class="info-column">
+                  <div class="info-item">
+                    <span class="info-label">Gender:</span>
                     <span class="info-value">{{
                       document.authorsGender[0]
                     }}</span>
                   </div>
-                  <div
-                    class="info-item"
-                    style="display: flex; margin-bottom: 5px"
-                  >
-                    <span
-                      class="info-label"
-                      style="font-weight: bold; margin-right: 5px"
-                      >Course:</span
-                    >
+                  <div class="info-item">
+                    <span class="info-label">Course:</span>
                     <span class="info-value">{{ document.authorsCourse }}</span>
                   </div>
-                  <div
-                    class="info-item"
-                    style="display: flex; margin-bottom: 5px"
-                  >
-                    <span
-                      class="info-label"
-                      style="font-weight: bold; margin-right: 5px"
-                      >Domain:</span
-                    >
+                  <div class="info-item">
+                    <span class="info-label">Domain:</span>
                     <span class="info-value">{{ document.domain }}</span>
                   </div>
-                  <div
-                    class="info-item"
-                    style="display: flex; margin-bottom: 5px"
-                  >
-                    <span
-                      class="info-label"
-                      style="font-weight: bold; margin-right: 5px"
-                      >Academic Major:</span
-                    >
+                  <div class="info-item">
+                    <span class="info-label">Academic Major:</span>
                     <span class="info-value">{{
                       document.authorsAcademicMajor
                     }}</span>
@@ -222,3 +163,24 @@ export default {
   },
 };
 </script>
+
+<style>
+.item-info {
+  display: flex;
+  flex-direction: row;
+}
+
+.info-column {
+  margin-left: 50px;
+}
+
+.info-item {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.info-label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+</style>
