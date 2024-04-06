@@ -1,6 +1,6 @@
 <template>
   <q-page-container>
-    <q-page class="q-pa-md">
+    <q-page class="q-pa-sm">
       <div class="row q-gutter-md justify-center">
         <div class="col-lg-6 col-md-8 col-sm-10">
           <h3></h3>
@@ -742,17 +742,12 @@ export default {
             ],
           },
           {
-            block: "Pronouns, Determiners, Quantifiers",
+            block: "Other Features",
             value: [
               {
                 name: "Person",
                 value: ["1", "2", "3"],
               },
-            ],
-          },
-          {
-            block: "Other Features",
-            value: [
               {
                 name: "Hyph",
                 value: ["HyphYes"],
