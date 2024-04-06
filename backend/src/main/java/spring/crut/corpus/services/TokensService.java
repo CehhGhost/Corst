@@ -57,22 +57,20 @@ public class TokensService {
         return tokensRepository.findAllBySentenceOrderByNum(sentence);
     }
 
-    // TODO продумать, как работать с грамматикой и тегами ошибок
+    // TODO продумать, как работать и тегами ошибок
     public boolean equalsToLexGramTokenDTO(Token token, LexGramTokenDTO token1) {
         if (!token.getLemma().equals(token1.getWordform())) {
             return false;
         }
-        boolean posFlag = false;
-        for (var pos : token1.getPartOfSpeech()) {
-            if (pos.equals(token.getPos())) {
-                posFlag = true;
-                break;
+        boolean posFlag = true;
+        if (token.getPos().equals(token1.getPartOfSpeech())) {
+            for (var attr : token1.getGrammar()) {
+                if (!token.getAttrs().contains(attr)) {
+                    posFlag = false;
+                    break;
+                }
             }
         }
-        if (!posFlag) {
-            return false;
-        }
-
-        return true;
+        return posFlag;
     }
 }
