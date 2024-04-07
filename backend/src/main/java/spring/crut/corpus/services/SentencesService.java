@@ -195,10 +195,13 @@ public class SentencesService {
 
     @Transactional
     public void deleteSentences(List<Sentence> sentences) {
-        for (var sentence : sentences) {
-            tokensService.deleteTokens(sentence.getTokens());
-            sentencesRepository.deleteById(sentence.getId());
-        }
+        sentencesRepository.deleteAll(sentences);
+    }
+
+    @Transactional
+    public void deleteSentencesByTheirDocument(Document document) {
+        var sentences = sentencesRepository.findAllByDocument(document);
+        this.deleteSentences(sentences);
     }
 
     static class LemmatizedWordform {
