@@ -59,16 +59,15 @@ public class DocumentsService {
         if (!documentsRepository.existsById(id)) {
             throw new IllegalArgumentException("No such document with that id!");
         }
+        var document = documentsRepository.findById(id).orElseThrow();
+        var sentences = document.getSentences();
+        document.getSentences().removeAll(sentences);
+        sentencesService.deleteSentencesByTheirDocument(document);
         updateDocumentDTO.setAuthorsGender(updateDocumentDTO.getAuthorsGender().toUpperCase());
-        var oldDocument = documentsRepository.findById(id).orElseThrow();
-        var owner = oldDocument.getOwner();
-        var createdAt = oldDocument.getCreatedAt();
-        var status = oldDocument.getStatus();
-        this.deleteDocument(id);
-        var document = modelMapper.map(updateDocumentDTO, Document.class);
-        document.setOwner(owner);
-        document.setCreatedAt(createdAt);
-        document.setStatus(status);
+        document.setText(updateDocumentDTO.getText());
+        document.setTitle(updateDocumentDTO.getTitle());
+        document.setAuthorsGender(Gender.valueOf(updateDocumentDTO.getAuthorsGender()));
+
         this.setInfoAndSentences(document, updateDocumentDTO);
     }
 
