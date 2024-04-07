@@ -130,6 +130,7 @@ export default {
         recogito.on("deleteAnnotation", (annotation) => {
           //this.deleteAnnotation(annotation, sentence.id);
         });
+        recogito.loadAnnotations(url); // TODO: Add URL
         this.recogitoInstances.push(recogito);
       });
     },
