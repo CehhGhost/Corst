@@ -36,7 +36,7 @@ public class ArticlesService {
     }
 
     public List<Article> getAllArticles() {
-        return articlesRepository.findAll(Sort.by("date"));
+        return articlesRepository.findAll(Sort.by("date").descending());
     }
 
     public void deleteArticleById(Integer id) {
