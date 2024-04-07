@@ -34,7 +34,7 @@ public class ArticlesController {
         }
         return ResponseEntity.ok(articlesDTO);
     }
-    @GetMapping("{/id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getArticleById(@PathVariable Integer id) {
         return ResponseEntity.ok(modelMapper.map(articlesService.getArticleById(id), ArticleDTO.class));
     }
