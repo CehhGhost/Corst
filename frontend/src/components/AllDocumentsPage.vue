@@ -10,6 +10,7 @@
           label="Add Document"
           class="button"
           to="/addDocument"
+          size="large"
         />
       </div>
       <div class="q-mt-xs">
