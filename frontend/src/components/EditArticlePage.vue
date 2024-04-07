@@ -66,18 +66,21 @@ export default {
         alert("Please fill all fields");
         return;
       }
-      const response = await fetch(serverAdress + "/articles/edit", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("corst_token"),
-        },
-        body: JSON.stringify({
-          date: this.date.toString().replace(/\//g, "-"),
-          textRus: this.textRus,
-          textEng: this.textEng,
-        }),
-      });
+      const response = await fetch(
+        serverAdress + "/articles/" + this.$route.params.id,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("corst_token"),
+          },
+          body: JSON.stringify({
+            date: this.date.toString().replace(/\//g, "-"),
+            textRus: this.textRus,
+            textEng: this.textEng,
+          }),
+        }
+      );
       if (response.ok) {
         this.$router.push("/news");
       } else {
