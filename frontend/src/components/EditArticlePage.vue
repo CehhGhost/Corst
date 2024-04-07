@@ -59,9 +59,7 @@ export default {
       );
       if (response.ok) {
         const article = await response.json();
-        this.date = article.date;
-        this.textRus = article.textRus;
-        this.textEng = article.textEng;
+        return article;
       } else {
         console.error(response);
       }
@@ -76,8 +74,8 @@ export default {
         alert("Please fill all fields");
         return;
       }
-      const response = await fetch(serverAdress + "/articles/create", {
-        method: "POST",
+      const response = await fetch(serverAdress + "/articles/edit", {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + localStorage.getItem("corst_token"),
@@ -94,13 +92,19 @@ export default {
         console.error(response);
       }
     },
+    parseArtice(data) {
+      this.date = data.date;
+      this.textRus = data.textRus;
+      this.textEng = data.textEng;
+    },
   },
   async mounted() {
     this.userStatus = await isLogin();
     if (!this.userStatus) {
       this.$router.push("/");
     } else {
-      this.loadArticle();
+      const article = await this.loadArticle();
+      await this.parseArtice(article);
     }
   },
 };
