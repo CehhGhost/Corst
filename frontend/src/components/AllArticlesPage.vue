@@ -28,9 +28,10 @@
           >
             <q-card-section>
               <h3 class="text-h6">{{ article.date.split(" ")[0] }}</h3>
-              <div class="row q-gutter-xs items-center">
-                {{ article.textRus }}
-              </div>
+              <div
+                class="row q-gutter-xs items-center"
+                v-html="article.textRus"
+              ></div>
 
               <div class="q-pa-xs">
                 <div class="row justify-between">
