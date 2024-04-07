@@ -238,9 +238,9 @@
           </q-dialog>
           <q-card class="rounded-borders">
             <q-card-section class="exactSearch">
-              <h3 class="text-h6">Exact Search</h3>
+              <h3 class="text-h6" style="margin: 0px">Exact Search</h3>
               <q-form @submit="exactSearch" class="q-gutter-md">
-                <div class="row q-gutter-md items-center">
+                <div class="row q-gutter-md items-center align-items-start">
                   <div class="col">
                     <q-input
                       v-model="exactSearchInput"
