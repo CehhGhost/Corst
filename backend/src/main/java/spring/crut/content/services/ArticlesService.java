@@ -1,6 +1,7 @@
 package spring.crut.content.services;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class ArticlesService {
     }
 
     public List<Article> getAllArticles() {
-        return articlesRepository.findAll();
+        return articlesRepository.findAll(Sort.by("date"));
     }
 
     public void deleteArticleById(Integer id) {
