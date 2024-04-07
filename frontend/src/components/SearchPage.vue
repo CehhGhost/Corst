@@ -1,6 +1,6 @@
 <template>
   <q-page-container>
-    <q-page class="q-pa-md">
+    <q-page class="q-pa-sm">
       <div class="row q-gutter-md justify-center">
         <div class="col-lg-6 col-md-8 col-sm-10">
           <h3></h3>
@@ -462,7 +462,10 @@
                                   <q-card-section
                                     class="bg-primary text-white row items-center"
                                   >
-                                    <div class="text-h6">
+                                    <div
+                                      class="text-h6"
+                                      @click="block.grammar = []"
+                                    >
                                       Grammar characteristics
                                     </div>
                                     <q-space />
@@ -515,6 +518,7 @@
                                                     value, i
                                                   ) in blockValue.value"
                                                   :key="i"
+                                                  style="height: 25px"
                                                 >
                                                   <q-checkbox
                                                     v-model="block.grammar"
@@ -721,11 +725,11 @@ export default {
             value: [
               {
                 name: "Aspect",
-                value: ["Perf", "Imp"],
+                value: ["Perf", "AspectImp"],
               },
               {
                 name: "Mood",
-                value: ["Ind", "Imp", "Cnd"],
+                value: ["Ind", "MoodImp", "Cnd"],
               },
               {
                 name: "Tense",
@@ -738,24 +742,19 @@ export default {
             ],
           },
           {
-            block: "Pronouns, Determiners, Quantifiers",
+            block: "Other Features",
             value: [
               {
                 name: "Person",
                 value: ["1", "2", "3"],
               },
-            ],
-          },
-          {
-            block: "Other Features",
-            value: [
               {
                 name: "Hyph",
-                value: ["Yes"],
+                value: ["HyphYes"],
               },
               {
                 name: "Foreign",
-                value: ["Yes"],
+                value: ["ForeignYes"],
               },
             ],
           },
@@ -836,12 +835,12 @@ export default {
     addLexgramBlock() {
       this.lexgramBlocks.push({
         wordform: "",
-        partOfSpeech: [],
+        partOfSpeech: "",
         grammar: [],
         errors: [],
         additional: true,
-        from: "1",
-        to: "1",
+        from: this.lexgramBlocks.length,
+        to: this.lexgramBlocks.length,
       });
       if (this.lexgramBlocks.length > 1) {
         this.showDeleteButton = true;

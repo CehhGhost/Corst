@@ -1,9 +1,9 @@
 <template>
-  <q-page-container class="q-pa-xs">
+  <q-page-container class="q-pa-md">
     <q-page class="flex">
       <div v-if="userStatus" class="create-document">
-        <h2 class="q-mb-md">Add Document</h2>
-        <q-form @submit="addDocument" class="q-gutter-md">
+        <h2 class="q-mb-md">Edit Document</h2>
+        <q-form @submit="saveDocument" class="q-gutter-md">
           <q-input
             v-model="title"
             outlined
@@ -83,7 +83,7 @@
           </div>
           <q-btn
             type="submit"
-            label="Add Document"
+            label="Save Document"
             color="primary"
             class="q-mt-md"
           />
@@ -148,6 +148,7 @@ export default {
     };
   },
   methods: {
+    async saveDocument() {},
     async getDocumentInfo() {
       try {
         const response = await fetch(serverAdress + "/info/document", {
@@ -162,7 +163,37 @@ export default {
         console.error("Error:", error);
       }
     },
+    async getDocument() {
+      try {
+        const response = await fetch(
+          serverAdress + "/documents/" + this.$route.params.id,
+          {
+            method: "GET",
+          }
+        );
+        this.responseSuccess = response.ok;
+        if (response.ok) {
+          const data = await response.json();
+          return data;
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    },
+
     parseData(data) {
+      this.title = data.title;
+      this.text = data.text;
+      this.genre = data.genre;
+      this.domain = data.domain;
+      this.authorsCourse = data.authorsCourse;
+      this.authorsAcademicMajor = data.authorsAcademicMajor;
+      this.authorsGender =
+        data.authorsGender[0].toUpperCase() +
+        data.authorsGender.slice(1).toLowerCase();
+    },
+
+    parseInfo(data) {
       this.genres = data.genres;
       this.domains = data.domains;
       this.authorsCourses = data.courses;
@@ -180,7 +211,7 @@ export default {
         this.filteredAuthorsAcademicMajors.push(this.authorsAcademicMajors[i]);
       }
     },
-    async addDocument() {
+    async changeDocument() {
       this.userStatus = await isLogin();
       if (!this.userStatus) {
         this.$router.push("/login");
@@ -197,33 +228,6 @@ export default {
         alert("Please fill all fields");
         return;
       }
-      await fetch(serverAdress + "/documents/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("corst_token"),
-        },
-        // TODO Экранировать кавычки
-        body: JSON.stringify({
-          title: this.title,
-          text: this.text.replace(/"/g, "'"),
-          authorsGender: this.authorsGender,
-          genre: this.genre,
-          domain: this.domain,
-          authorsCourse: this.authorsCourse,
-          authorsAcademicMajor: this.authorsAcademicMajor,
-        }),
-      })
-        .then((response) => {
-          if (response.ok) {
-            this.$router.push("/documents");
-          } else {
-            console.error(response);
-          }
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
     },
     createValue(val, done) {
       if (val.length > 0) {
@@ -288,8 +292,10 @@ export default {
 
     try {
       const data = await this.getDocumentInfo();
+      const document = await this.getDocument();
       if (this.responseSuccess) {
-        this.parseData(data);
+        await this.parseInfo(data);
+        await this.parseData(document);
       }
     } catch (error) {
       console.error("Error:", error);

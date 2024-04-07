@@ -43,6 +43,10 @@ const routes = [
     path: "/annotateDocument/:id",
     component: () => import("../views/DocumentAnnotationView.vue"),
   },
+  {
+    path: "/editDocument/:id",
+    component: () => import("../views/EditDocumentView.vue"),
+  },
   // Error route
   {
     path: "/:catchAll(.*)*",
