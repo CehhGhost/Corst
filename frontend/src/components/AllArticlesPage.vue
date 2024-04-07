@@ -92,6 +92,24 @@ export default {
         console.error(error);
       }
     },
+    async deleteArticle(id) {
+      try {
+        const confirmation = confirm(
+          "Are you sure you want to delete this article?"
+        );
+        if (!confirmation) return;
+        const response = await fetch(serverAdress + "/articles/" + id, {
+          method: "DELETE",
+        });
+        if (response.ok) {
+          this.loadAllArticles();
+        } else {
+          console.error(response);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
   async mounted() {
     this.userStatus = await isLogin();
