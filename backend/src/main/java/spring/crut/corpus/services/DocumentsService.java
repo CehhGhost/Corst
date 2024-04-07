@@ -1,22 +1,17 @@
 package spring.crut.corpus.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 import spring.crut.administration.security.CrutUserDetails;
 import spring.crut.corpus.dto.*;
 import spring.crut.corpus.enums.Gender;
 import spring.crut.corpus.models.Document;
 import spring.crut.corpus.repositories.DocumentsRepository;
-import com.fasterxml.jackson.core.type.TypeReference;
 import spring.crut.corpus.enums.Status;
 import spring.crut.corpus.services.info.AcademicMajorsService;
 import spring.crut.corpus.services.info.CoursesService;
@@ -47,11 +42,13 @@ public class DocumentsService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CrutUserDetails userDetails = (CrutUserDetails) authentication.getPrincipal();
         document.setOwner(userDetails.getUser());
-
         document.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         document.setStatus(Status.NOT_ANNOTATED);
-
-        this.setInfoAndSentences(document, createDocumentDTO);
+        document.setSentences(new ArrayList<>());
+        document = documentsRepository.save(document);
+        sentencesService.createSentences(document);
+        this.setInfo(document, createDocumentDTO);
+        documentsRepository.save(document);
     }
 
     @Transactional
@@ -60,26 +57,25 @@ public class DocumentsService {
             throw new IllegalArgumentException("No such document with that id!");
         }
         var document = documentsRepository.findById(id).orElseThrow();
-        var sentences = document.getSentences();
-        document.getSentences().removeAll(sentences);
-        sentencesService.deleteSentencesByTheirDocument(document);
+        if (!document.getText().equals(updateDocumentDTO.getText())) {
+            document.getSentences().removeAll(document.getSentences());
+            sentencesService.deleteSentencesByTheirDocument(document);
+            document.setText(updateDocumentDTO.getText());
+            document = documentsRepository.save(document);
+            sentencesService.createSentences(document);
+        }
         updateDocumentDTO.setAuthorsGender(updateDocumentDTO.getAuthorsGender().toUpperCase());
-        document.setText(updateDocumentDTO.getText());
         document.setTitle(updateDocumentDTO.getTitle());
         document.setAuthorsGender(Gender.valueOf(updateDocumentDTO.getAuthorsGender()));
-
-        this.setInfoAndSentences(document, updateDocumentDTO);
+        this.setInfo(document, updateDocumentDTO);
+        documentsRepository.save(document);
     }
 
-    public void setInfoAndSentences(Document document, CreateUpdateDocumentDTO createUpdateDocumentDTO) {
-        document.setSentences(new ArrayList<>());
+    public void setInfo(Document document, CreateUpdateDocumentDTO createUpdateDocumentDTO) {
         document.setAuthorsAcademicMajor(academicMajorsService.create(createUpdateDocumentDTO.getAuthorsAcademicMajor()));
         document.setAuthorsCourse(coursesService.create(createUpdateDocumentDTO.getAuthorsCourse()));
         document.setDomain(domainsService.create(createUpdateDocumentDTO.getDomain()));
         document.setGenre(genresService.create(createUpdateDocumentDTO.getGenre()));
-        document = documentsRepository.save(document);
-        sentencesService.createSentences(document);
-        documentsRepository.save(document);
     }
 
     public List<Document> specifySubcorpus(SubcorpusDataDTO subcorpusDataDTO) {
