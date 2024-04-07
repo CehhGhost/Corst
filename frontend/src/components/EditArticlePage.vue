@@ -1,5 +1,5 @@
 <template>
-  <div class="create-article" v-if="userStatus">
+  <div class="create-article" style="margin-top: 70px" v-if="userStatus">
     <h2>Edit Article</h2>
     <q-form @submit="submitForm" class="form">
       <q-input filled v-model="date" mask="date" :rules="['date']">
