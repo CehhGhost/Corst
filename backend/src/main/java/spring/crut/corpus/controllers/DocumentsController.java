@@ -35,6 +35,7 @@ public class DocumentsController {
     }
     @PutMapping("/update/{id}")
     // TODO подумать насчет изменения документов без необходимых прав
+    // TODO стоит задуматься над аннотациями
     public ResponseEntity<HttpStatus> updateDocumentById(@PathVariable Integer id, @RequestBody CreateUpdateDocumentDTO documentDTO) {
         documentsService.updateDocument(id, documentDTO);
         return ResponseEntity.ok(HttpStatus.OK);
