@@ -35,19 +35,11 @@ import { serverAdress } from "../global/globalVaribles.js";
 import { isLogin } from "../global/globalFunctions.js";
 
 export default {
-  setup() {
-    const currentDate = new Date();
-    const year = currentDate.getFullYear();
-    const month = String(currentDate.getMonth() + 1).padStart(2, "0");
-    const day = String(currentDate.getDate()).padStart(2, "0");
-    return {
-      date: ref(`${year}/${month}/${day}`),
-    };
-  },
   data() {
     return {
       textRus: "",
       textEng: "",
+      date: null,
 
       userStatus: false,
     };
