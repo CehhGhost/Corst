@@ -1,5 +1,5 @@
 <template>
-  <div class="create-article" v-if="userStatus">
+  <div class="create-article" style="margin-top: 70px" v-if="userStatus">
     <h2>Edit Article</h2>
     <q-form @submit="submitForm" class="form">
       <q-input filled v-model="date" mask="date" :rules="['date']">
@@ -35,19 +35,11 @@ import { serverAdress } from "../global/globalVaribles.js";
 import { isLogin } from "../global/globalFunctions.js";
 
 export default {
-  setup() {
-    const currentDate = new Date();
-    const year = currentDate.getFullYear();
-    const month = String(currentDate.getMonth() + 1).padStart(2, "0");
-    const day = String(currentDate.getDate()).padStart(2, "0");
-    return {
-      date: ref(`${year}/${month}/${day}`),
-    };
-  },
   data() {
     return {
       textRus: "",
       textEng: "",
+      date: null,
 
       userStatus: false,
     };
@@ -74,18 +66,21 @@ export default {
         alert("Please fill all fields");
         return;
       }
-      const response = await fetch(serverAdress + "/articles/edit", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("corst_token"),
-        },
-        body: JSON.stringify({
-          date: this.date.toString().replace(/\//g, "-"),
-          textRus: this.textRus,
-          textEng: this.textEng,
-        }),
-      });
+      const response = await fetch(
+        serverAdress + "/articles/" + this.$route.params.id,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("corst_token"),
+          },
+          body: JSON.stringify({
+            date: this.date.toString().replace(/\//g, "-"),
+            textRus: this.textRus,
+            textEng: this.textEng,
+          }),
+        }
+      );
       if (response.ok) {
         this.$router.push("/news");
       } else {

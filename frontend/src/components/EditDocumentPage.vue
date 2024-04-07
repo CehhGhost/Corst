@@ -148,7 +148,9 @@ export default {
     };
   },
   methods: {
-    async saveDocument() {},
+    async saveDocument() {
+      //TODO захардкодить
+    },
     async getDocumentInfo() {
       try {
         const response = await fetch(serverAdress + "/info/document", {
