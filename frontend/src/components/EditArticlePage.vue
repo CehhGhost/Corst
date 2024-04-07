@@ -59,7 +59,6 @@ export default {
       );
       if (response.ok) {
         const article = await response.json();
-        console.log(article);
         this.date = article.date;
         this.textRus = article.textRus;
         this.textEng = article.textEng;
@@ -101,7 +100,7 @@ export default {
     if (!this.userStatus) {
       this.$router.push("/");
     } else {
-      await this.loadArticle();
+      this.loadArticle();
     }
   },
 };
