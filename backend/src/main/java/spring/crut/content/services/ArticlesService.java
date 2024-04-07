@@ -20,7 +20,7 @@ public class ArticlesService {
     public Article getArticleById(Integer id) {
         Optional<Article> article = articlesRepository.findById(id);
         if (article.isEmpty()) {
-            throw new IllegalArgumentException("Wrong id for dish");
+            throw new IllegalArgumentException("No articles with such id!");
         }
         return article.get();
     }
@@ -35,7 +35,21 @@ public class ArticlesService {
     }
 
     public List<Article> getAllArticles() {
-        var articles = articlesRepository.findAll();
-        return articles;
+        return articlesRepository.findAll();
+    }
+
+    public void deleteArticleById(Integer id) {
+        articlesRepository.deleteById(id);
+    }
+
+    public void updateArticleById(Integer id, Article newArticle) {
+        if (!articlesRepository.existsById(id)) {
+            throw new IllegalArgumentException("No articles with such id!");
+        }
+        var article = articlesRepository.getById(id);
+        article.setTextEng(newArticle.getTextEng());
+        article.setTextRus(newArticle.getTextRus());
+        article.setDate(newArticle.getDate());
+        articlesRepository.save(article);
     }
 }

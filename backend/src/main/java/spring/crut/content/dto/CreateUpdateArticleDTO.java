@@ -9,7 +9,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateArticleDTO {
+public class CreateUpdateArticleDTO {
     private String textRus;
     private String textEng;
     private Date date;

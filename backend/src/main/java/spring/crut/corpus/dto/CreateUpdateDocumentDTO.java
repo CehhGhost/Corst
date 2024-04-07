@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateDocumentDTO {
+public class CreateUpdateDocumentDTO {
     private String title;
     private String text;
     private String genre;

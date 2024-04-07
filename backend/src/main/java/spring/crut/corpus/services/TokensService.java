@@ -75,4 +75,8 @@ public class TokensService {
         }
         return attrFlag;
     }
+
+    public void deleteTokens(List<Token> tokens) {
+        tokensRepository.deleteAll(tokens);
+    }
 }
