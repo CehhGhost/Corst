@@ -29,7 +29,7 @@ public class Sentence {
     private String lemmatizedText;
 
     @OneToMany
-    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
+    @Cascade({org.hibernate.annotations.CascadeType.DELETE, org.hibernate.annotations.CascadeType.SAVE_UPDATE, })
     private List<Token> tokens;
 
     @ManyToOne

@@ -8,7 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import spring.crut.administration.security.CrutUserDetails;
-import spring.crut.corpus.dto.CreateDocumentDTO;
+import spring.crut.corpus.dto.CreateUpdateDocumentDTO;
 import spring.crut.corpus.dto.CertainSearchDTO;
 import spring.crut.corpus.dto.DocumentDTO;
 import spring.crut.corpus.dto.LexGramSearchDTO;
@@ -29,13 +29,14 @@ public class DocumentsController {
     private final SentencesService sentencesService;
 
     @PostMapping("/create")
-    public ResponseEntity<HttpStatus> createDocument(@RequestBody CreateDocumentDTO documentDTO) {
-        documentDTO.setAuthorsGender(documentDTO.getAuthorsGender().toUpperCase());
-        var document = modelMapper.map(documentDTO, Document.class);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CrutUserDetails userDetails = (CrutUserDetails) authentication.getPrincipal();
-        document.setOwner(userDetails.getUser());
-        documentsService.createDocument(document, documentDTO);
+    public ResponseEntity<HttpStatus> createDocument(@RequestBody CreateUpdateDocumentDTO documentDTO) {
+        documentsService.createDocument(documentDTO);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+    @PutMapping("/update/{id}")
+    // TODO подумать насчет изменения документов без необходимых прав
+    public ResponseEntity<HttpStatus> updateDocument(@PathVariable Integer id, @RequestBody CreateUpdateDocumentDTO documentDTO) {
+        documentsService.updateDocument(id, documentDTO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @DeleteMapping("/delete/{id}")
@@ -73,7 +74,7 @@ public class DocumentsController {
         documentsService.setAttrsForTokensInDocumentDTO(documentDTO);
         return ResponseEntity.ok(documentDTO);
     }
-    @PutMapping("/{id}/set_status/{status}")
+    @PatchMapping ("/{id}/set_status/{status}")
     public ResponseEntity<?> updateStatusForDocument(@PathVariable Integer id, @PathVariable Integer status) {
         documentsService.setStatusById(id, status);
         return ResponseEntity.ok(HttpStatus.OK);

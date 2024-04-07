@@ -6,10 +6,14 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+import spring.crut.administration.security.CrutUserDetails;
 import spring.crut.corpus.dto.*;
+import spring.crut.corpus.enums.Gender;
 import spring.crut.corpus.models.Document;
 import spring.crut.corpus.repositories.DocumentsRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -28,43 +32,55 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DocumentsService {
     private final DocumentsRepository documentsRepository;
-    private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
     private final SentencesService sentencesService;
-    private final ModelMapper modelMapper;
     private final TokensService tokensService;
     private final AcademicMajorsService academicMajorsService;
     private final CoursesService coursesService;
     private final DomainsService domainsService;
     private final GenresService genresService;
+    private final ModelMapper modelMapper;
+
     @Transactional
-    public void createDocument(Document document, CreateDocumentDTO createDocumentDTO) {
-        document.setSentences(new ArrayList<>());
+    public void createDocument(CreateUpdateDocumentDTO createDocumentDTO) {
+        createDocumentDTO.setAuthorsGender(createDocumentDTO.getAuthorsGender().toUpperCase());
+        var document = modelMapper.map(createDocumentDTO, Document.class);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CrutUserDetails userDetails = (CrutUserDetails) authentication.getPrincipal();
+        document.setOwner(userDetails.getUser());
+
         document.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         document.setStatus(Status.NOT_ANNOTATED);
-        document.setAuthorsAcademicMajor(academicMajorsService.create(createDocumentDTO.getAuthorsAcademicMajor()));
-        document.setAuthorsCourse(coursesService.create(createDocumentDTO.getAuthorsCourse()));
-        document.setDomain(domainsService.create(createDocumentDTO.getDomain()));
-        document.setGenre(genresService.create(createDocumentDTO.getGenre()));
-        document = documentsRepository.save(document);
-        String natashaServiceUrl = "http://127.0.0.1:5000/analyse";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> requestEntity = new HttpEntity<>("{\"text\": \"" + document.getText() + "\"}", headers);
-        ResponseEntity<String> responseEntity = restTemplate.exchange(natashaServiceUrl, HttpMethod.POST, requestEntity, String.class);
-        String responseBody = responseEntity.getBody();
+        this.setInfoAndSentences(document, createDocumentDTO);
+    }
 
-        SentenceResponse sentences;
-        try {
-            sentences = objectMapper.readValue(
-                    responseBody,
-                    new TypeReference<>(){}
-            );
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+    @Transactional
+    public void updateDocument(Integer id, CreateUpdateDocumentDTO updateDocumentDTO) {
+        if (!documentsRepository.existsById(id)) {
+            throw new IllegalArgumentException("No such document with that id!");
         }
-        sentencesService.createSentences(sentences.getSentences(), document);
+        updateDocumentDTO.setAuthorsGender(updateDocumentDTO.getAuthorsGender().toUpperCase());
+        var oldDocument = documentsRepository.findById(id).orElseThrow();
+        var owner = oldDocument.getOwner();
+        var createdAt = oldDocument.getCreatedAt();
+        var status = oldDocument.getStatus();
+        this.deleteDocument(id);
+        var document = modelMapper.map(updateDocumentDTO, Document.class);
+        document.setOwner(owner);
+        document.setCreatedAt(createdAt);
+        document.setStatus(status);
+        this.setInfoAndSentences(document, updateDocumentDTO);
+    }
+
+    public void setInfoAndSentences(Document document, CreateUpdateDocumentDTO createUpdateDocumentDTO) {
+        document.setSentences(new ArrayList<>());
+        document.setAuthorsAcademicMajor(academicMajorsService.create(createUpdateDocumentDTO.getAuthorsAcademicMajor()));
+        document.setAuthorsCourse(coursesService.create(createUpdateDocumentDTO.getAuthorsCourse()));
+        document.setDomain(domainsService.create(createUpdateDocumentDTO.getDomain()));
+        document.setGenre(genresService.create(createUpdateDocumentDTO.getGenre()));
+        document = documentsRepository.save(document);
+        sentencesService.createSentences(document);
+        documentsRepository.save(document);
     }
 
     public List<Document> specifySubcorpus(SubcorpusDataDTO subcorpusDataDTO) {
@@ -134,17 +150,5 @@ public class DocumentsService {
                 (subcorpusDataDTO.getStatuses() == null || subcorpusDataDTO.getStatuses().isEmpty() || subcorpusDataDTO.getStatuses().contains(document.getStatus().name())) &&
                 (subcorpusDataDTO.getPeriodFrom() == null || subcorpusDataDTO.getPeriodFrom() <= documentCreatedAtYear) &&
                 (subcorpusDataDTO.getPeriodTo() == null || documentCreatedAtYear <= subcorpusDataDTO.getPeriodTo());
-    }
-
-    public static class SentenceResponse {
-        private List<CreateSentenceDTO> sentences;
-
-        public List<CreateSentenceDTO> getSentences() {
-            return sentences;
-        }
-
-        public void setSentences(List<CreateSentenceDTO> sentences) {
-            this.sentences = sentences;
-        }
     }
 }

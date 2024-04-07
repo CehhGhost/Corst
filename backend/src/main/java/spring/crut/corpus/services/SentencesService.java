@@ -2,6 +2,7 @@ package spring.crut.corpus.services;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -15,7 +16,6 @@ import spring.crut.corpus.dto.CreateSentenceDTO;
 import spring.crut.corpus.dto.LexGramTokenDTO;
 import spring.crut.corpus.models.Document;
 import spring.crut.corpus.models.Sentence;
-import spring.crut.corpus.repositories.DocumentsRepository;
 import spring.crut.corpus.repositories.SentencesRepository;
 
 import java.util.ArrayList;
@@ -29,13 +29,29 @@ import java.util.Map;
 public class SentencesService {
     private final SentencesRepository sentencesRepository;
     private final TokensService tokensService;
-    private final DocumentsRepository documentsRepository;
     private final ModelMapper modelMapper;
     private final RestTemplate restTemplate;
 
     private final ObjectMapper objectMapper;
     @Transactional
-    public void createSentences(List<CreateSentenceDTO> sentenceDTOList, Document document) {
+    public void createSentences(Document document) {
+        String natashaServiceUrl = "http://127.0.0.1:5000/analyse";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> requestEntity = new HttpEntity<>("{\"text\": \"" + document.getText() + "\"}", headers);
+        ResponseEntity<String> responseEntity = restTemplate.exchange(natashaServiceUrl, HttpMethod.POST, requestEntity, String.class);
+        String responseBody = responseEntity.getBody();
+
+        SentenceResponse sentences;
+        try {
+            sentences = objectMapper.readValue(
+                    responseBody,
+                    new TypeReference<>(){}
+            );
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        var sentenceDTOList = sentences.getSentences();
         for (var sentenceDTO : sentenceDTOList) {
             Sentence sentence = new Sentence();
             sentence.setText(sentenceDTO.getText());
@@ -45,7 +61,6 @@ public class SentencesService {
             sentence = sentencesRepository.save(sentence);
             document.getSentences().add(sentence);
             tokensService.createTokens(sentenceDTO.getTokens(), sentence);
-            documentsRepository.save(document);
         }
     }
 
@@ -178,6 +193,14 @@ public class SentencesService {
         return sentence.get();
     }
 
+    @Transactional
+    public void deleteSentences(List<Sentence> sentences) {
+        for (var sentence : sentences) {
+            tokensService.deleteTokens(sentence.getTokens());
+            sentencesRepository.deleteById(sentence.getId());
+        }
+    }
+
     static class LemmatizedWordform {
         @JsonProperty("lemmatized_string")
         private String text;
@@ -188,6 +211,18 @@ public class SentencesService {
 
         public void setText(String text) {
             this.text = text;
+        }
+    }
+
+    public static class SentenceResponse {
+        private List<CreateSentenceDTO> sentences;
+
+        public List<CreateSentenceDTO> getSentences() {
+            return sentences;
+        }
+
+        public void setSentences(List<CreateSentenceDTO> sentences) {
+            this.sentences = sentences;
         }
     }
 }
