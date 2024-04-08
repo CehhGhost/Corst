@@ -20,11 +20,8 @@ public class Annotation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "jsonb", name = "annotation_info")
+    @Column(name = "annotation_info", columnDefinition = "TEXT")
     String annotationInfo;
-
-    @Column(name = "comment", columnDefinition = "TEXT")
-    String comment;
 
     @ManyToMany
     @JoinTable(name = "_error_tags_annotations",
@@ -37,6 +34,6 @@ public class Annotation {
     private User owner;
 
     @ManyToOne
-    @JoinColumn(name = "sentence_id", referencedColumnName = "id")
+    @JoinColumn(name = "sentence_id", referencedColumnName = "id", nullable = false)
     private Sentence sentence;
 }
