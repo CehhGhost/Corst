@@ -90,13 +90,22 @@
 
             <div class="q-pa-xs">
               <div class="row justify-between">
-                <div class="col-auto">
+                <div class="row-auto">
                   <q-btn
                     unelevated
                     color="primary"
                     label="Annotate"
                     class="button"
                     :to="'/annotateDocument/' + document.id"
+                  />
+                  <q-btn
+                    v-if="document.text.length < limit"
+                    flat
+                    color="primary"
+                    label="Show More"
+                    icon="visibility"
+                    class="button"
+                    :to="'/documents/' + document.id"
                   />
                 </div>
                 <div class="row-auto">
