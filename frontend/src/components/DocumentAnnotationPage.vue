@@ -98,7 +98,7 @@ export default {
             "/set_status/" +
             this.options.indexOf(this.documentStatus),
           {
-            method: "PUT",
+            method: "PATCH",
             headers: {
               "Content-Type": "application/json",
             },
@@ -120,17 +120,19 @@ export default {
           mode: "pre",
         });
         recogito.on("createAnnotation", (annotation) => {
+          console.log("create");
           console.log(annotation);
           //this.sendAnnotation(annotation, sentence.id);
         });
         recogito.on("updateAnnotation", (annotation) => {
+          console.log("update");
           console.log(annotation);
           //this.updateAnnotation(annotation, sentence.id);
         });
         recogito.on("deleteAnnotation", (annotation) => {
           //this.deleteAnnotation(annotation, sentence.id);
         });
-        recogito.loadAnnotations(url); // TODO: Add URL
+        // recogito.loadAnnotations(url); // TODO: Add URL
         this.recogitoInstances.push(recogito);
       });
     },
@@ -141,7 +143,7 @@ export default {
       }
       try {
         const response = await fetch(
-          serverAdress + "/documents/" + this.$route.params.id,
+          serverAdress + "/documents/" + sentenceId,
           {
             method: "POST",
             headers: {
@@ -167,7 +169,7 @@ export default {
       }
       try {
         const response = await fetch(
-          serverAdress + "/documents/" + this.$route.params.id,
+          serverAdress + "/documents/" + sentenceId,
           {
             method: "PUT",
             headers: {
@@ -189,7 +191,7 @@ export default {
     async deleteAnnotation(annotation, sentenceId) {
       try {
         const response = await fetch(
-          serverAdress + "/documents/" + this.$route.params.id,
+          serverAdress + "/documents/" + sentenceId,
           {
             method: "DELETE",
             headers: {
