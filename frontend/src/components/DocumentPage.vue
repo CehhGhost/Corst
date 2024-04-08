@@ -4,7 +4,25 @@
     <q-page class="q-pa-xs" style="max-width: 1000px; margin: 0 auto">
       <div v-if="responseSuccess">
         <h3 class="row q-mb-md">{{ document.title }}</h3>
-        <div class="row"></div>
+        <div class="row-auto" style="margin-bottom: 10px">
+          <q-btn
+            unelevated
+            color="primary"
+            label="Annotate"
+            class="button"
+            :to="'/annotateDocument/' + document.id"
+          />
+          <q-btn
+            no-caps
+            unelevated
+            color="secondary"
+            icon="edit"
+            label="Edit"
+            class="button"
+            :to="'/editDocument/' + document.id"
+            style="margin-left: 10px"
+          />
+        </div>
         <q-card class="rounded-borders q-mb-xs">
           <q-card-section class="row items-center">
             <div>{{ document.text }}</div>
@@ -17,7 +35,7 @@
         <q-btn
           push
           color="secondary"
-          label="Back"
+          label="Go to all documents"
           class="q-mt-md"
           to="/documents"
         />
