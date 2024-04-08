@@ -14,123 +14,135 @@
         />
       </div>
       <div class="q-mt-xs">
-        <div v-if="documents.length === 0" class="text-center text-grey-8">
-          No documents found.
+        <div v-if="!loadingComplete" class="text-center text-grey-8">
+          Loading...
+          <q-spinner color="primary" size="3em" :thickness="2" />
         </div>
-        <q-card
-          flat
-          bordered
-          v-else
-          v-for="(document, i) in documents"
-          :key="i"
-          style="margin-top: 20px"
-        >
-          <q-card-section>
-            <q-expansion-item>
-              <template v-slot:header>
-                <div class="q-gutter-md">
-                  <q-item-label class="text-h5">{{
-                    document.title
-                  }}</q-item-label>
-                </div>
-              </template>
-              <q-card-section class="item-info">
-                <div class="column">
-                  <div class="info-item">
-                    <span class="info-label">Created:</span>
-                    <span class="info-value">{{
-                      new Date(document.createdAt).toLocaleString()
-                    }}</span>
+        <div v-else>
+          <div v-if="documents.length === 0" class="text-center text-grey-8">
+            No documents found.
+          </div>
+          <q-card
+            flat
+            bordered
+            v-else
+            v-for="(document, i) in documents"
+            :key="i"
+            style="margin-top: 20px"
+          >
+            <q-card-section>
+              <q-expansion-item>
+                <template v-slot:header>
+                  <div class="q-gutter-md">
+                    <q-item-label class="text-h5">{{
+                      document.title
+                    }}</q-item-label>
                   </div>
-                  <div class="info-item">
-                    <span class="info-label">Genre:</span>
-                    <span class="info-value">{{ document.genre }}</span>
+                </template>
+                <q-card-section class="item-info">
+                  <div class="column">
+                    <div class="info-item">
+                      <span class="info-label">Created:</span>
+                      <span class="info-value">{{
+                        new Date(document.createdAt).toLocaleString()
+                      }}</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">Genre:</span>
+                      <span class="info-value">{{ document.genre }}</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">Owner:</span>
+                      <span class="info-value">{{
+                        document.ownerUsername
+                      }}</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">Status:</span>
+                      <span class="info-value">{{
+                        documentAdditionalInformation.statuses[
+                          document.statusNum
+                        ]
+                      }}</span>
+                    </div>
                   </div>
-                  <div class="info-item">
-                    <span class="info-label">Owner:</span>
-                    <span class="info-value">{{ document.ownerUsername }}</span>
+                  <div class="info-column">
+                    <div class="info-item">
+                      <span class="info-label">Gender:</span>
+                      <span class="info-value">{{
+                        document.authorsGender[0]
+                      }}</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">Course:</span>
+                      <span class="info-value">{{
+                        document.authorsCourse
+                      }}</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">Domain:</span>
+                      <span class="info-value">{{ document.domain }}</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">Academic Major:</span>
+                      <span class="info-value">{{
+                        document.authorsAcademicMajor
+                      }}</span>
+                    </div>
                   </div>
-                  <div class="info-item">
-                    <span class="info-label">Status:</span>
-                    <span class="info-value">{{
-                      documentAdditionalInformation.statuses[document.statusNum]
-                    }}</span>
-                  </div>
-                </div>
-                <div class="info-column">
-                  <div class="info-item">
-                    <span class="info-label">Gender:</span>
-                    <span class="info-value">{{
-                      document.authorsGender[0]
-                    }}</span>
-                  </div>
-                  <div class="info-item">
-                    <span class="info-label">Course:</span>
-                    <span class="info-value">{{ document.authorsCourse }}</span>
-                  </div>
-                  <div class="info-item">
-                    <span class="info-label">Domain:</span>
-                    <span class="info-value">{{ document.domain }}</span>
-                  </div>
-                  <div class="info-item">
-                    <span class="info-label">Academic Major:</span>
-                    <span class="info-value">{{
-                      document.authorsAcademicMajor
-                    }}</span>
-                  </div>
-                </div>
-              </q-card-section>
-            </q-expansion-item>
-            <p v-if="document.text.length <= limit" class="text-body2">
-              {{ document.text }}
-            </p>
-            <p v-else class="text-body2">
-              {{ truncateText(document.text, limit) }}
-            </p>
+                </q-card-section>
+              </q-expansion-item>
+              <p v-if="document.text.length <= limit" class="text-body2">
+                {{ document.text }}
+              </p>
+              <p v-else class="text-body2">
+                {{ truncateText(document.text, limit) }}
+              </p>
 
-            <div class="q-pa-xs">
-              <div class="row justify-between">
-                <div class="row-auto">
-                  <q-btn
-                    unelevated
-                    color="primary"
-                    label="Annotate"
-                    class="button"
-                    :to="'/annotateDocument/' + document.id"
-                  />
-                  <q-btn
-                    v-if="document.text.length < limit"
-                    flat
-                    color="primary"
-                    label="Show More"
-                    icon="visibility"
-                    class="button"
-                    :to="'/documents/' + document.id"
-                  />
-                </div>
-                <div class="row-auto">
-                  <q-btn
-                    no-caps
-                    unelevated
-                    color="secondary"
-                    icon="edit"
-                    label="Edit"
-                    class="button"
-                    :to="'/editDocument/' + document.id"
-                    style="margin-right: 10px"
-                  />
-                  <q-btn
-                    unelevated
-                    color="negative"
-                    icon="delete"
-                    class="button"
-                    @click="deleteDocument(document.id)"
-                  />
+              <div class="q-pa-xs">
+                <div class="row justify-between">
+                  <div class="row-auto">
+                    <q-btn
+                      unelevated
+                      color="primary"
+                      label="Annotate"
+                      class="button"
+                      :to="'/annotateDocument/' + document.id"
+                    />
+                    <q-btn
+                      v-if="document.text.length > limit"
+                      flat
+                      color="primary"
+                      label="Show More"
+                      icon="visibility"
+                      class="button"
+                      :to="'/documents/' + document.id"
+                    />
+                  </div>
+                  <div class="row-auto">
+                    <q-btn
+                      no-caps
+                      unelevated
+                      color="secondary"
+                      icon="edit"
+                      label="Edit"
+                      class="button"
+                      :to="'/editDocument/' + document.id"
+                      style="margin-right: 10px"
+                    />
+                    <q-btn
+                      unelevated
+                      color="negative"
+                      icon="delete"
+                      class="button"
+                      @click="deleteDocument(document.id)"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-          </q-card-section>
-        </q-card>
+            </q-card-section>
+          </q-card>
+        </div>
       </div>
     </q-page>
   </q-page-container>
@@ -145,6 +157,7 @@ export default {
     return {
       documents: [],
       responseSuccess: true,
+      loadingComplete: false,
       userStatus: false,
       limit: 3000,
 
@@ -197,6 +210,7 @@ export default {
     this.userStatus = await isLogin();
     if (this.userStatus) {
       await this.loadAllDocuments();
+      this.loadingComplete = true;
     } else {
       this.$router.push("/");
     }
