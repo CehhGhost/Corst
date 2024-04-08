@@ -197,17 +197,6 @@ export default {
         alert("Please fill all fields");
         return;
       }
-      console.log(
-        JSON.stringify({
-          title: this.title,
-          text: this.text.replace(/"/g, "'"),
-          authorsGender: this.authorsGender,
-          genre: this.genre,
-          domain: this.domain,
-          authorsCourse: this.authorsCourse,
-          authorsAcademicMajor: this.authorsAcademicMajor,
-        })
-      );
       await fetch(serverAdress + "/documents/create", {
         method: "POST",
         headers: {
