@@ -110,7 +110,6 @@
                       :to="'/annotateDocument/' + document.id"
                     />
                     <q-btn
-                      v-if="document.text.length > limit"
                       flat
                       color="primary"
                       label="Show More"
