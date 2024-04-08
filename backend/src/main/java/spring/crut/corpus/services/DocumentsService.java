@@ -1,5 +1,8 @@
 package spring.crut.corpus.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
@@ -22,6 +25,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +38,7 @@ public class DocumentsService {
     private final DomainsService domainsService;
     private final GenresService genresService;
     private final ModelMapper modelMapper;
+    private final ObjectMapper objectMapper;
 
     @Transactional
     public void createDocument(CreateUpdateDocumentDTO createDocumentDTO) {
@@ -106,6 +111,27 @@ public class DocumentsService {
             throw new IllegalArgumentException("No such document!");
         }
         return document.get();
+    }
+
+    @Transactional
+    public List<AnnotationDTO> getAnnotationsByTheirDocumentId(Long documentId) {
+        var document = this.getDocumentByID(documentId);
+        List<AnnotationDTO> annotationDTOs = new ArrayList<>();
+        for (var sentence : document.getSentences()) {
+            for (var annotation : sentence.getAnnotations()) {
+                Map<String, Object> annotationInfo = null;
+                try {
+                    annotationInfo = objectMapper.readValue(annotation.getAnnotationInfo(), new TypeReference<>() {});
+                    objectMapper.writeValueAsString(annotationInfo);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
+                AnnotationDTO annotationDTO = new AnnotationDTO();
+                annotationDTO.setInfo(annotationInfo);
+                annotationDTOs.add(annotationDTO);
+            }
+        }
+        return annotationDTOs;
     }
 
     public void setAttrsForTokensInDocumentDTO(DocumentDTO documentDTO) {

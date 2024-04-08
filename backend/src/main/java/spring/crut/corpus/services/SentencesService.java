@@ -10,6 +10,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+import spring.crut.corpus.dto.AnnotationDTO;
 import spring.crut.corpus.dto.SearchSentenceDTO;
 import spring.crut.corpus.dto.CreateSentenceDTO;
 
@@ -32,7 +33,6 @@ public class SentencesService {
     private final TokensService tokensService;
     private final ModelMapper modelMapper;
     private final RestTemplate restTemplate;
-
     private final ObjectMapper objectMapper;
     @Transactional
     public void createSentences(Document document) {
@@ -110,6 +110,7 @@ public class SentencesService {
             var sentenceDTO = modelMapper.map(sentence, SearchSentenceDTO.class);
             sentenceDTO.setDocumentTitle(sentence.getDocument().getTitle());
             tokensService.setAttrsForTokensDTO(sentenceDTO.getTokens(), sentence.getTokens());
+            sentenceDTO.setAnnotations(getAnnotationsByTheirSentenceId(sentence.getId()));
             sentencesDTO.add(sentenceDTO);
         }
         return sentencesDTO;
@@ -193,6 +194,7 @@ public class SentencesService {
             var sentenceDTO = modelMapper.map(sentence, SearchSentenceDTO.class);
             sentenceDTO.setDocumentTitle(sentence.getDocument().getTitle());
             tokensService.setAttrsForTokensDTO(sentenceDTO.getTokens(), sentence.getTokens());
+            sentenceDTO.setAnnotations(getAnnotationsByTheirSentenceId(sentence.getId()));
             sentencesDTO.add(sentenceDTO);
         }
         return sentencesDTO;
@@ -218,13 +220,11 @@ public class SentencesService {
     }
 
     @Transactional
-    public void setAnnotationForSentenceById(Annotation annotation, Long sentenceId) {
-        var sentence = this.getSentenceById(sentenceId);
+    public void setAnnotationForSentence(Annotation annotation, Sentence sentence) {
         if (sentence.getAnnotations() == null) {
             sentence.setAnnotations(new ArrayList<>());
         }
         sentence.getAnnotations().add(annotation);
-        annotation.setSentence(sentence);
         sentencesRepository.save(sentence);
     }
 
@@ -233,6 +233,25 @@ public class SentencesService {
         var sentence = annotation.getSentence();
         sentence.getAnnotations().remove(annotation);
         sentencesRepository.save(sentence);
+    }
+
+    @Transactional
+    public List<AnnotationDTO> getAnnotationsByTheirSentenceId(Long sentenceId) {
+        var sentence = this.getSentenceById(sentenceId);
+        List<AnnotationDTO> annotationDTOs = new ArrayList<>();
+        for (var annotation : sentence.getAnnotations()) {
+            Map<String, Object> annotationInfo = null;
+            try {
+                annotationInfo = objectMapper.readValue(annotation.getAnnotationInfo(), new TypeReference<>() {});
+                objectMapper.writeValueAsString(annotationInfo);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+            AnnotationDTO annotationDTO = new AnnotationDTO();
+            annotationDTO.setInfo(annotationInfo);
+            annotationDTOs.add(annotationDTO);
+        }
+        return annotationDTOs;
     }
 
     static class LemmatizedWordform {

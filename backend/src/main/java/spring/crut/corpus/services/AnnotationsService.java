@@ -36,18 +36,16 @@ public class AnnotationsService {
             throw new RuntimeException(e);
         }
         Annotation annotation = new Annotation();
-
-
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CrutUserDetails userDetails = (CrutUserDetails) authentication.getPrincipal();
         annotation.setOwner(userDetails.getUser());
         annotation.setAnnotationInfo(json);
         var errorTagsNames = extractErrorTags(createUpdateAnnotationDTO.getInfo());
         annotation.setErrorTags(errorTagsService.getAllByNames(errorTagsNames).stream().toList());
+        var sentence = sentencesService.getSentenceById(createUpdateAnnotationDTO.getSentenceId());
+        annotation.setSentence(sentence);
         annotationsRepository.save(annotation);
-
-        sentencesService.setAnnotationForSentenceById(annotation, createUpdateAnnotationDTO.getSentenceId());
+        sentencesService.setAnnotationForSentence(annotation, sentence);
     }
     private List<String> extractErrorTags(Map<String, Object> annotationMap) {
         List<Map<String, Object>> bodyList = (List<Map<String, Object>>) annotationMap.get("body");
@@ -80,45 +78,5 @@ public class AnnotationsService {
         }
         sentencesService.removeAnnotation(annotation.get());
         annotationsRepository.delete(annotation.get());
-    }
-
-    @Transactional
-    public List<AnnotationDTO> getAnnotationsByTheirDocumentId(Long documentId) {
-        var document = documentsService.getDocumentByID(documentId);
-        List<AnnotationDTO> annotationDTOs = new ArrayList<>();
-        for (var sentence : document.getSentences()) {
-            for (var annotation : sentence.getAnnotations()) {
-                Map<String, Object> annotationInfo = null;
-                try {
-                    annotationInfo = objectMapper.readValue(annotation.getAnnotationInfo(), new TypeReference<>() {});
-                    objectMapper.writeValueAsString(annotationInfo);
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-                AnnotationDTO annotationDTO = new AnnotationDTO();
-                annotationDTO.setInfo(annotationInfo);
-                annotationDTOs.add(annotationDTO);
-            }
-        }
-        return annotationDTOs;
-    }
-
-    @Transactional
-    public List<AnnotationDTO> getAnnotationsByTheirSentenceId(Long sentenceId) {
-        var sentence = sentencesService.getSentenceById(sentenceId);
-        List<AnnotationDTO> annotationDTOs = new ArrayList<>();
-        for (var annotation : sentence.getAnnotations()) {
-            Map<String, Object> annotationInfo = null;
-            try {
-                annotationInfo = objectMapper.readValue(annotation.getAnnotationInfo(), new TypeReference<>() {});
-                objectMapper.writeValueAsString(annotationInfo);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
-            AnnotationDTO annotationDTO = new AnnotationDTO();
-            annotationDTO.setInfo(annotationInfo);
-            annotationDTOs.add(annotationDTO);
-        }
-        return annotationDTOs;
     }
 }
