@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.crut.administration.security.CrutUserDetails;
 import spring.crut.corpus.dto.AnnotationDTO;
+import spring.crut.corpus.dto.CreateUpdateAnnotationDTO;
 import spring.crut.corpus.models.Annotation;
 import spring.crut.corpus.repositories.AnnotationsRepository;
 import spring.crut.corpus.services.info.ErrorTagsService;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +26,12 @@ public class AnnotationsService {
     private final ErrorTagsService errorTagsService;
     private final ObjectMapper objectMapper;
     private final SentencesService sentencesService;
+    private final DocumentsService documentsService;
     @Transactional
-    public void createAnnotation(AnnotationDTO annotationDTO) {
+    public void createAnnotation(CreateUpdateAnnotationDTO createUpdateAnnotationDTO) {
         String json = null;
         try {
-            json = objectMapper.writeValueAsString(annotationDTO.getInfo());
+            json = objectMapper.writeValueAsString(createUpdateAnnotationDTO.getInfo());
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -40,11 +43,11 @@ public class AnnotationsService {
         CrutUserDetails userDetails = (CrutUserDetails) authentication.getPrincipal();
         annotation.setOwner(userDetails.getUser());
         annotation.setAnnotationInfo(json);
-        var errorTagsNames = extractErrorTags(annotationDTO.getInfo());
+        var errorTagsNames = extractErrorTags(createUpdateAnnotationDTO.getInfo());
         annotation.setErrorTags(errorTagsService.getAllByNames(errorTagsNames).stream().toList());
         annotationsRepository.save(annotation);
 
-        sentencesService.setAnnotationForSentenceById(annotation, annotationDTO.getSentenceId());
+        sentencesService.setAnnotationForSentenceById(annotation, createUpdateAnnotationDTO.getSentenceId());
     }
     private List<String> extractErrorTags(Map<String, Object> annotationMap) {
         List<Map<String, Object>> bodyList = (List<Map<String, Object>>) annotationMap.get("body");
@@ -77,5 +80,45 @@ public class AnnotationsService {
         }
         sentencesService.removeAnnotation(annotation.get());
         annotationsRepository.delete(annotation.get());
+    }
+
+    @Transactional
+    public List<AnnotationDTO> getAnnotationsByTheirDocumentId(Long documentId) {
+        var document = documentsService.getDocumentByID(documentId);
+        List<AnnotationDTO> annotationDTOs = new ArrayList<>();
+        for (var sentence : document.getSentences()) {
+            for (var annotation : sentence.getAnnotations()) {
+                Map<String, Object> annotationInfo = null;
+                try {
+                    annotationInfo = objectMapper.readValue(annotation.getAnnotationInfo(), new TypeReference<>() {});
+                    objectMapper.writeValueAsString(annotationInfo);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
+                AnnotationDTO annotationDTO = new AnnotationDTO();
+                annotationDTO.setInfo(annotationInfo);
+                annotationDTOs.add(annotationDTO);
+            }
+        }
+        return annotationDTOs;
+    }
+
+    @Transactional
+    public List<AnnotationDTO> getAnnotationsByTheirSentenceId(Long sentenceId) {
+        var sentence = sentencesService.getSentenceById(sentenceId);
+        List<AnnotationDTO> annotationDTOs = new ArrayList<>();
+        for (var annotation : sentence.getAnnotations()) {
+            Map<String, Object> annotationInfo = null;
+            try {
+                annotationInfo = objectMapper.readValue(annotation.getAnnotationInfo(), new TypeReference<>() {});
+                objectMapper.writeValueAsString(annotationInfo);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+            AnnotationDTO annotationDTO = new AnnotationDTO();
+            annotationDTO.setInfo(annotationInfo);
+            annotationDTOs.add(annotationDTO);
+        }
+        return annotationDTOs;
     }
 }
