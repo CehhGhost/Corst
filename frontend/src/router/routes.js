@@ -52,7 +52,7 @@ const routes = [
     component: () => import("../views/EditArticleView.vue"),
   },
   {
-    path: "/document/:id",
+    path: "/documents/:id",
     component: () => import("../views/DocumentView.vue"),
   },
   // Error route
