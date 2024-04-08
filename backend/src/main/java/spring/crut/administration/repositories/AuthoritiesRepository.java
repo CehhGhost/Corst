@@ -7,6 +7,6 @@ import spring.crut.administration.models.Authority;
 import java.util.Optional;
 
 @Repository
-public interface AuthoritiesRepository extends JpaRepository<Authority, Integer> {
+public interface AuthoritiesRepository extends JpaRepository<Authority, Long> {
     Optional<Authority> findByName(String name);
 }

@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import spring.crut.corpus.models.Document;
 
 @Repository
-public interface DocumentsRepository extends JpaRepository<Document, Integer> {
+public interface DocumentsRepository extends JpaRepository<Document, Long> {
 }

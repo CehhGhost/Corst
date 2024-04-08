@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DocumentDTO {
-    private Integer id;
+    private Long id;
     private String title;
     private String text;
     private String genre;

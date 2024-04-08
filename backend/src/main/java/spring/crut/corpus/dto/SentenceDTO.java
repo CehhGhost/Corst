@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SentenceDTO {
-    private Integer id;
+    private Long id;
     private String text;
     private Integer num;
     private List<TokenDTO> tokens;

@@ -12,7 +12,7 @@ import java.util.List;
 public class SearchSentenceDTO {
     private String documentTitle;
 
-    private Integer id;
+    private Long id;
     private String text;
     private Integer num;
     private List<TokenDTO> tokens;

@@ -25,7 +25,7 @@ public class RolesController {
         return ResponseEntity.ok(rolesService.getAllRoles());
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<HttpStatus> setAuthoritiesForRole(@PathVariable Integer id, @RequestBody List<AuthorityDTO> authoritiesDTO) {
+    public ResponseEntity<HttpStatus> setAuthoritiesForRole(@PathVariable Long id, @RequestBody List<AuthorityDTO> authoritiesDTO) {
         List<Authority> authorities = new ArrayList<>();
         for (var authorityDTO : authoritiesDTO) {
             authorities.add(modelMapper.map(authorityDTO, Authority.class));
@@ -40,7 +40,7 @@ public class RolesController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<HttpStatus> deleteRole(@PathVariable Integer id) {
+    public ResponseEntity<HttpStatus> deleteRole(@PathVariable Long id) {
         rolesService.deleteRole(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }

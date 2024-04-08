@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import spring.crut.content.models.Section;
 
 @Repository
-public interface SectionsRepository extends JpaRepository<Section, Integer> {
+public interface SectionsRepository extends JpaRepository<Section, Long> {
 }

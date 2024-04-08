@@ -35,16 +35,16 @@ public class ArticlesController {
         return ResponseEntity.ok(articlesDTO);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<?> getArticleById(@PathVariable Integer id) {
+    public ResponseEntity<?> getArticleById(@PathVariable Long id) {
         return ResponseEntity.ok(modelMapper.map(articlesService.getArticleById(id), ArticleDTO.class));
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteArticleById(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteArticleById(@PathVariable Long id) {
         articlesService.deleteArticleById(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateArticleById(@PathVariable Integer id, @RequestBody CreateUpdateArticleDTO articleDTO) {
+    public ResponseEntity<?> updateArticleById(@PathVariable Long id, @RequestBody CreateUpdateArticleDTO articleDTO) {
         var article = modelMapper.map(articleDTO, Article.class);
         articlesService.updateArticleById(id, article);
         return ResponseEntity.ok(HttpStatus.OK);

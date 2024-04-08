@@ -7,7 +7,7 @@ import spring.crut.administration.models.User;
 import java.util.Optional;
 
 @Repository
-public interface UsersRepository extends JpaRepository<User, Integer> {
+public interface UsersRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
     Boolean existsUserByUsername(String username);
 }

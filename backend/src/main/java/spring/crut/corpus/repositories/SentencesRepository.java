@@ -9,6 +9,6 @@ import spring.crut.corpus.models.Token;
 import java.util.List;
 
 @Repository
-public interface SentencesRepository extends JpaRepository<Sentence, Integer> {
+public interface SentencesRepository extends JpaRepository<Sentence, Long> {
     List<Sentence> findAllByDocument(Document document);
 }

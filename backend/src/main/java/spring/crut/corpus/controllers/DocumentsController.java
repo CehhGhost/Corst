@@ -36,12 +36,12 @@ public class DocumentsController {
     @PutMapping("/update/{id}")
     // TODO подумать насчет изменения документов без необходимых прав
     // TODO стоит задуматься над аннотациями
-    public ResponseEntity<HttpStatus> updateDocumentById(@PathVariable Integer id, @RequestBody CreateUpdateDocumentDTO documentDTO) {
+    public ResponseEntity<HttpStatus> updateDocumentById(@PathVariable Long id, @RequestBody CreateUpdateDocumentDTO documentDTO) {
         documentsService.updateDocument(id, documentDTO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<HttpStatus> deleteDocumentById(@PathVariable Integer id) {
+    public ResponseEntity<HttpStatus> deleteDocumentById(@PathVariable Long id) {
         documentsService.deleteDocument(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
@@ -68,7 +68,7 @@ public class DocumentsController {
         return ResponseEntity.ok(documentsDTO);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<?> getDocumentByID(@PathVariable Integer id) {
+    public ResponseEntity<?> getDocumentByID(@PathVariable Long id) {
         Document document = documentsService.getDocumentByID(id);
         var documentDTO = modelMapper.map(document, DocumentDTO.class);
         documentDTO.setStatusNum(Status.valueOf(document.getStatus().name()).ordinal());
@@ -76,7 +76,7 @@ public class DocumentsController {
         return ResponseEntity.ok(documentDTO);
     }
     @PatchMapping ("/{id}/set_status/{status}")
-    public ResponseEntity<?> updateStatusForDocumentById(@PathVariable Integer id, @PathVariable Integer status) {
+    public ResponseEntity<?> updateStatusForDocumentById(@PathVariable Long id, @PathVariable Integer status) {
         documentsService.setStatusById(id, status);
         return ResponseEntity.ok(HttpStatus.OK);
     }

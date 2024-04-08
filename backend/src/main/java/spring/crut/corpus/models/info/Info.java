@@ -14,7 +14,7 @@ public class Info {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String name;
     @Override
     public String toString() {

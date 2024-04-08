@@ -9,8 +9,8 @@ import spring.crut.administration.models.Role;
 import java.util.Optional;
 
 @Repository
-public interface RolesRepository extends JpaRepository<Role, Integer> {
+public interface RolesRepository extends JpaRepository<Role, Long> {
     Optional<Role> findByName(String name);
     @Query("SELECT r FROM Role r LEFT JOIN FETCH r.authorities WHERE r.id = :roleId")
-    Optional<Role> findByIdWithAuthorities(@Param("roleId") Integer roleId);
+    Optional<Role> findByIdWithAuthorities(@Param("roleId") Long roleId);
 }
