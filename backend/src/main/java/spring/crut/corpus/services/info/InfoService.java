@@ -1,13 +1,14 @@
 package spring.crut.corpus.services.info;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import spring.crut.corpus.models.info.Info;
 import spring.crut.corpus.repositories.info.InfoRepository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public abstract class InfoService <T extends Info, R extends InfoRepository<T>> {
     @Autowired
@@ -41,4 +42,18 @@ public abstract class InfoService <T extends Info, R extends InfoRepository<T>> 
     }
 
     protected abstract T createInfo(String name);
+
+    @Transactional
+    public Set<T> getAllByNames(List<String> errorTagsNames) {
+        Set<T> result = new HashSet<>();
+        for (var name : errorTagsNames) {
+            name = name.toLowerCase();
+            var info = repository.findByName(name);
+            if (info.isEmpty()) {
+                throw new IllegalArgumentException("No info with such name!");
+            }
+            result.add(info.get());
+        }
+        return result;
+    }
 }
