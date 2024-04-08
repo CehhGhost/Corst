@@ -2,8 +2,54 @@
   <q-page-container>
     <h3></h3>
     <q-page class="q-pa-xs" style="max-width: 1000px; margin: 0 auto">
-      <div v-if="responseSuccess">
+      <div v-if="responseSuccess && document != null">
         <h3 class="row q-mb-md">{{ document.title }}</h3>
+        <q-card style="width: fit-content">
+          <q-card-section class="item-info">
+            <div class="column">
+              <div class="info-item">
+                <span class="info-label">Created:</span>
+                <span class="info-value">{{
+                  new Date(document.createdAt).toLocaleString()
+                }}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Genre:</span>
+                <span class="info-value">{{ document.genre }}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Owner:</span>
+                <span class="info-value">{{ document.ownerUsername }}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Status:</span>
+                <span class="info-value">{{
+                  documentAdditionalInformation.statuses[document.statusNum]
+                }}</span>
+              </div>
+            </div>
+            <div class="info-column">
+              <div class="info-item">
+                <span class="info-label">Gender:</span>
+                <span class="info-value">{{ document.authorsGender[0] }}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Course:</span>
+                <span class="info-value">{{ document.authorsCourse }}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Domain:</span>
+                <span class="info-value">{{ document.domain }}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Academic Major:</span>
+                <span class="info-value">{{
+                  document.authorsAcademicMajor
+                }}</span>
+              </div>
+            </div>
+          </q-card-section>
+        </q-card>
         <div class="row-auto" style="margin-bottom: 15px">
           <q-btn
             unelevated
@@ -25,7 +71,7 @@
         </div>
         <q-card flat bordered class="rounded-borders q-mb-xs">
           <q-card-section class="row items-center">
-            <div>{{ document.text }}</div>
+            <span class="info-value">{{ document.text }}</span>
           </q-card-section>
         </q-card>
       </div>
@@ -51,8 +97,12 @@ import { isLogin } from "../global/globalFunctions.js";
 export default {
   data() {
     return {
-      document: this.loadDocument(),
+      document: null,
       responseSuccess: true,
+
+      documentAdditionalInformation: {
+        statuses: ["Not annotated", "Annotated", "Checked"],
+      },
     };
   },
   methods: {
@@ -79,3 +129,30 @@ export default {
   },
 };
 </script>
+
+<style>
+.item-info {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 15px;
+}
+
+.info-column {
+  margin-left: 50px;
+}
+
+.info-item {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.info-label {
+  font-weight: bold;
+  margin-right: 5px;
+  font-size: 16px;
+}
+
+.info-value {
+  font-size: 16px;
+}
+</style>
