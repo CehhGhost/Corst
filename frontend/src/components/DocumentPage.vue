@@ -4,7 +4,7 @@
     <q-page class="q-pa-xs" style="max-width: 1000px; margin: 0 auto">
       <div v-if="responseSuccess">
         <h3 class="row q-mb-md">{{ document.title }}</h3>
-        <div class="row-auto" style="margin-bottom: 10px">
+        <div class="row-auto" style="margin-bottom: 15px">
           <q-btn
             unelevated
             color="primary"
@@ -23,7 +23,7 @@
             style="margin-left: 10px"
           />
         </div>
-        <q-card class="rounded-borders q-mb-xs">
+        <q-card flat bordered class="rounded-borders q-mb-xs">
           <q-card-section class="row items-center">
             <div>{{ document.text }}</div>
           </q-card-section>
