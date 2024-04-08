@@ -22,7 +22,7 @@ public class UsersService {
         usersRepository.save(user);
     }
 
-    public void setRoleForUser(Integer id, String roleName) {
+    public void setRoleForUser(Long id, String roleName) {
         var role = rolesRepository.findByName(roleName);
         if (role.isEmpty()) {
             throw new IllegalArgumentException("There is no such role");
@@ -40,7 +40,7 @@ public class UsersService {
         rolesRepository.save(role.get());
     }
 
-    public void changePasswordForUser(Integer id, String oldPassword, String newPassword) {
+    public void changePasswordForUser(Long id, String oldPassword, String newPassword) {
         var user = usersRepository.findById(id);
         if (user.isEmpty()) {
             throw new IllegalArgumentException("There is no such user");

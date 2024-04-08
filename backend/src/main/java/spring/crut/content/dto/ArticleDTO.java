@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ArticleDTO {
-    private String id;
+    private Long id;
     private String textRus;
     private String textEng;
     private String date;

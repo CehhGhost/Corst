@@ -7,5 +7,5 @@ import spring.crut.content.models.Article;
 import java.util.List;
 
 @Repository
-public interface ArticlesRepository extends JpaRepository<Article, Integer> {
+public interface ArticlesRepository extends JpaRepository<Article, Long> {
 }

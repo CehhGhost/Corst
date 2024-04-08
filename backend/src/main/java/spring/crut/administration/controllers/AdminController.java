@@ -35,12 +35,12 @@ public class AdminController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @PutMapping("/set_role/{id}")
-    public ResponseEntity<HttpStatus> setRoleForUser(@PathVariable Integer id, @RequestBody Map<String, String> requestBody) {
+    public ResponseEntity<HttpStatus> setRoleForUser(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {
         usersService.setRoleForUser(id, requestBody.get("role"));
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @PutMapping("/change_password/{id}")
-    public ResponseEntity<HttpStatus> changePasswordForUser(@PathVariable Integer id, @RequestBody Map<String, String> requestBody) {
+    public ResponseEntity<HttpStatus> changePasswordForUser(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {
         usersService.changePasswordForUser(id, requestBody.get("oldPassword"), requestBody.get("newPassword"));
         return ResponseEntity.ok(HttpStatus.OK);
     }

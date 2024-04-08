@@ -19,7 +19,7 @@ public class RolesService {
     private final RolesRepository rolesRepository;
     private final AuthoritiesRepository authoritiesRepository;
 
-    public void setAuthorities(Integer id, List<Authority> authorities) {
+    public void setAuthorities(Long id, List<Authority> authorities) {
         var role = rolesRepository.findById(id);
         if (role.isEmpty()) {
             throw new IllegalArgumentException("There is no such role");
@@ -50,7 +50,7 @@ public class RolesService {
         rolesRepository.save(role);
     }
 
-    public void deleteRole(Integer id) {
+    public void deleteRole(Long id) {
         var role = rolesRepository.findById(id);
         if (role.isEmpty()) {
             throw new IllegalArgumentException("There is no such role");
@@ -66,7 +66,7 @@ public class RolesService {
     }
 
     @Transactional
-    public Role getRoleWithAuthorities(Integer id) {
+    public Role getRoleWithAuthorities(Long id) {
         return rolesRepository.findByIdWithAuthorities(id).orElseThrow(() -> new RuntimeException("Role not found"));
     }
 }

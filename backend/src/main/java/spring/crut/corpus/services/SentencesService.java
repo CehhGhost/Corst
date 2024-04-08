@@ -185,7 +185,7 @@ public class SentencesService {
         return sentencesDTO;
     }
 
-    public Sentence getSentenceById(Integer id) {
+    public Sentence getSentenceById(Long id) {
         var sentence = sentencesRepository.findById(id);
         if (sentence.isEmpty()) {
             throw new IllegalArgumentException("No such sentence with this id!");

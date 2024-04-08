@@ -18,7 +18,7 @@ import java.util.Optional;
 public class ArticlesService {
     private final ArticlesRepository articlesRepository;
 
-    public Article getArticleById(Integer id) {
+    public Article getArticleById(Long id) {
         Optional<Article> article = articlesRepository.findById(id);
         if (article.isEmpty()) {
             throw new IllegalArgumentException("No articles with such id!");
@@ -39,11 +39,11 @@ public class ArticlesService {
         return articlesRepository.findAll(Sort.by("date").descending());
     }
 
-    public void deleteArticleById(Integer id) {
+    public void deleteArticleById(Long id) {
         articlesRepository.deleteById(id);
     }
 
-    public void updateArticleById(Integer id, Article newArticle) {
+    public void updateArticleById(Long id, Article newArticle) {
         if (!articlesRepository.existsById(id)) {
             throw new IllegalArgumentException("No articles with such id!");
         }

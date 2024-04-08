@@ -27,7 +27,7 @@ public class Document {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "title")
     private String title;
@@ -65,10 +65,6 @@ public class Document {
     @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id", nullable = false)
     private User owner;
-
-    @OneToMany
-    @Cascade(org.hibernate.annotations.CascadeType.DELETE)
-    private List<Annotation> annotations;
 
     @OneToMany
     @Cascade({org.hibernate.annotations.CascadeType.DELETE, org.hibernate.annotations.CascadeType.SAVE_UPDATE})

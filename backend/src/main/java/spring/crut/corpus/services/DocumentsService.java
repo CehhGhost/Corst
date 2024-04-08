@@ -52,7 +52,7 @@ public class DocumentsService {
     }
 
     @Transactional
-    public void updateDocument(Integer id, CreateUpdateDocumentDTO updateDocumentDTO) {
+    public void updateDocument(Long id, CreateUpdateDocumentDTO updateDocumentDTO) {
         if (!documentsRepository.existsById(id)) {
             throw new IllegalArgumentException("No such document with that id!");
         }
@@ -89,7 +89,7 @@ public class DocumentsService {
         return specifiedDocuments;
     }
 
-    public void deleteDocument(Integer id) {
+    public void deleteDocument(Long id) {
         if (!documentsRepository.existsById(id)) {
             throw new IllegalArgumentException("No such document with that id!");
         }
@@ -100,7 +100,7 @@ public class DocumentsService {
         return documentsRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
-    public Document getDocumentByID(Integer id) {
+    public Document getDocumentByID(Long id) {
         var document = documentsRepository.findById(id);
         if (document.isEmpty()) {
             throw new IllegalArgumentException("No such document!");
@@ -114,7 +114,7 @@ public class DocumentsService {
         }
     }
 
-    public void setStatusById(Integer id, Integer status) {
+    public void setStatusById(Long id, Integer status) {
         var values = Status.values();
         if (status < 0 || status >= values.length) {
             throw new IllegalArgumentException("wrong status!");

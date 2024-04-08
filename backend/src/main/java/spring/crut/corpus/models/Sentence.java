@@ -17,15 +17,15 @@ public class Sentence {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column(name = "text")
+    @Column(name = "text", columnDefinition = "TEXT")
     private String text;
 
     @Column(name = "num")
     private Integer num;
 
-    @Column(name = "lemmatized_text")
+    @Column(name = "lemmatized_text", columnDefinition = "TEXT")
     private String lemmatizedText;
 
     @OneToMany
@@ -35,4 +35,8 @@ public class Sentence {
     @ManyToOne
     @JoinColumn(name = "document_id", referencedColumnName = "id", nullable = false)
     private Document document;
+
+    @OneToMany
+    @Cascade({org.hibernate.annotations.CascadeType.DELETE, org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+    private List<Annotation> annotations;
 }

@@ -8,6 +8,6 @@ import spring.crut.corpus.models.Token;
 import java.util.List;
 
 @Repository
-public interface TokensRepository extends JpaRepository<Token, Integer> {
+public interface TokensRepository extends JpaRepository<Token, Long> {
     List<Token> findAllBySentenceOrderByNum(Sentence sentence);
 }
