@@ -20,11 +20,12 @@
           </div>
           <q-dialog v-model="displaySubcorpusModal">
             <q-card style="width: 800px; max-width: 90vw">
-              <q-card-section class="row items-center q-pb-none">
+              <q-card-section class="row items-center q-pb-sm">
                 <label class="text-h6">Specify Subcorpus</label>
                 <q-space />
                 <q-btn icon="close" flat round dense v-close-popup />
               </q-card-section>
+              <q-separator />
               <q-card-section class="row items-center">
                 <hr />
                 <div
@@ -236,6 +237,46 @@
               </q-card-section>
             </q-card>
           </q-dialog>
+
+          <q-dialog v-model="displaySettingsModal">
+            <q-card style="width: 400px; max-width: 50vw">
+              <q-card-section class="row items-center q-pb-sm">
+                <q-toolbar>
+                  <q-toolbar-title class="text-h6"
+                    >Display Options</q-toolbar-title
+                  >
+                  <q-space />
+                  <q-btn flat round dense icon="close" v-close-popup />
+                </q-toolbar>
+              </q-card-section>
+              <q-separator />
+              <q-card-section>
+                <div class="row justify-between items-center">
+                  <span style="font-size: 18px">Matches per page</span>
+                  <q-select
+                    outlined
+                    style="width: 90px"
+                    v-model="displayOptionsSettings.matchesPerPage"
+                    :options="displayOptionsSettingsOptions.matchesPerPage"
+                  />
+                </div>
+                <div class="row justify-between items-center">
+                  <span style="font-size: 18px"
+                    >Sentences in expanded context</span
+                  >
+                  <q-select
+                    outlined
+                    style="width: 90px"
+                    v-model="displayOptionsSettings.sentencesInExpandedContext"
+                    :options="
+                      displayOptionsSettingsOptions.sentencesInExpandedContext
+                    "
+                  />
+                </div>
+              </q-card-section>
+            </q-card>
+          </q-dialog>
+
           <q-card class="rounded-borders">
             <q-card-section class="exactSearch">
               <h3 class="text-h6" style="margin: 0px">Exact Search</h3>
@@ -659,6 +700,16 @@ export default {
         authorsCourses: [],
         authorsAcademicMajors: [],
         statuses: ["Not Annotated", "Annotated", "Checked"],
+      },
+
+      displayOptionsSettings: {
+        matchesPerPage: 50,
+        sentencesInExpandedContext: 2,
+      },
+
+      displayOptionsSettingsOptions: {
+        matchesPerPage: [10, 20, 50, 100, 250, 500, 1000],
+        sentencesInExpandedContext: [1, 2, 3],
       },
 
       lexgrammFeaturesFixed: {
