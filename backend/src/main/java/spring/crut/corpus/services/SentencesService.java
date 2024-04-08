@@ -82,7 +82,13 @@ public class SentencesService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> requestEntity = new HttpEntity<>("{\"text\": \"" + wordform + "\"}", headers);
+        String jsonText = null;
+        try {
+            jsonText = objectMapper.writeValueAsString(Map.of("text", wordform));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        HttpEntity<String> requestEntity = new HttpEntity<>(jsonText, headers);
         ResponseEntity<String> responseEntity = restTemplate.exchange(natashaServiceUrl, HttpMethod.POST, requestEntity, String.class);
         String responseBody = responseEntity.getBody();
         LemmatizedWordform lemmatizedWordform;
