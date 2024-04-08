@@ -228,6 +228,13 @@ public class SentencesService {
         sentencesRepository.save(sentence);
     }
 
+    @Transactional
+    public void removeAnnotation(Annotation annotation) {
+        var sentence = annotation.getSentence();
+        sentence.getAnnotations().remove(annotation);
+        sentencesRepository.save(sentence);
+    }
+
     static class LemmatizedWordform {
         @JsonProperty("lemmatized_string")
         private String text;
