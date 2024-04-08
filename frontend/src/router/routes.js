@@ -41,7 +41,7 @@ const routes = [
   },
   {
     path: "/annotateDocument/:id",
-    component: () => import("../views/DocumentAnnotationView.vue"),
+    component: () => import("../views/AnnotateDocumentView.vue"),
   },
   {
     path: "/editDocument/:id",
@@ -50,6 +50,10 @@ const routes = [
   {
     path: "/editArticle/:id",
     component: () => import("../views/EditArticleView.vue"),
+  },
+  {
+    path: "/documents/:id",
+    component: () => import("../views/DocumentView.vue"),
   },
   // Error route
   {

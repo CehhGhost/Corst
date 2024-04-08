@@ -1,5 +1,5 @@
 <script setup>
-import DocumentAnnotationPage from "../components/DocumentAnnotationPage.vue";
+import DocumentAnnotationPage from "../components/AnnotateDocumentPage.vue";
 import NavBar from "../components/NavBar.vue";
 import FooterBar from "../components/FooterBar.vue";
 </script>
