@@ -14,6 +14,7 @@ import spring.crut.corpus.dto.SearchSentenceDTO;
 import spring.crut.corpus.dto.CreateSentenceDTO;
 
 import spring.crut.corpus.dto.LexGramTokenDTO;
+import spring.crut.corpus.models.Annotation;
 import spring.crut.corpus.models.Document;
 import spring.crut.corpus.models.Sentence;
 import spring.crut.corpus.repositories.SentencesRepository;
@@ -38,7 +39,13 @@ public class SentencesService {
         String natashaServiceUrl = "http://127.0.0.1:5000/analyse";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> requestEntity = new HttpEntity<>("{\"text\": \"" + document.getText() + "\"}", headers);
+        String jsonText = null;
+        try {
+            jsonText = objectMapper.writeValueAsString(Map.of("text", document.getText()));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        HttpEntity<String> requestEntity = new HttpEntity<>(jsonText, headers);
         ResponseEntity<String> responseEntity = restTemplate.exchange(natashaServiceUrl, HttpMethod.POST, requestEntity, String.class);
         String responseBody = responseEntity.getBody();
 
@@ -202,6 +209,17 @@ public class SentencesService {
     public void deleteSentencesByTheirDocument(Document document) {
         var sentences = sentencesRepository.findAllByDocument(document);
         this.deleteSentences(sentences);
+    }
+
+    @Transactional
+    public void setAnnotationForSentenceById(Annotation annotation, Long sentenceId) {
+        var sentence = this.getSentenceById(sentenceId);
+        if (sentence.getAnnotations() == null) {
+            sentence.setAnnotations(new ArrayList<>());
+        }
+        sentence.getAnnotations().add(annotation);
+        annotation.setSentence(sentence);
+        sentencesRepository.save(sentence);
     }
 
     static class LemmatizedWordform {
