@@ -51,6 +51,10 @@ const routes = [
     path: "/editArticle/:id",
     component: () => import("../views/EditArticleView.vue"),
   },
+  {
+    path: "/document/:id",
+    component: () => import("../views/DocumentView.vue"),
+  },
   // Error route
   {
     path: "/:catchAll(.*)*",
