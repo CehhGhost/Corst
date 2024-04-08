@@ -1,7 +1,7 @@
 <template>
   <q-page-container>
     <h3></h3>
-    <q-page class="q-pa-xs" style="max-width: 1000px; margin: 0 auto">
+    <q-page class="q-pa-xs" style="max-width: 1200px; margin: 0 auto">
       <div
         v-if="!loadingComplete || document == null"
         class="text-center text-grey-8"
@@ -12,7 +12,7 @@
       <div v-else>
         <div v-if="responseSuccess && document != 'error'">
           <h3 class="row q-mb-md">{{ document.title }}</h3>
-          <q-card style="width: fit-content">
+          <q-card flat style="width: fit-content">
             <q-card-section class="item-info">
               <div class="column">
                 <div class="info-item">
@@ -81,7 +81,7 @@
           </div>
           <q-card flat bordered class="rounded-borders q-mb-xs">
             <q-card-section class="row items-center">
-              <span class="info-value">{{ document.text }}</span>
+              <span class="info-value"> {{ document.text }} </span>
             </q-card-section>
           </q-card>
         </div>
@@ -168,5 +168,6 @@ export default {
 
 .info-value {
   font-size: 16px;
+  white-space: pre-line;
 }
 </style>

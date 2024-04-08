@@ -16,49 +16,55 @@
         </div>
       </div>
       <div class="col-lg-6 col-md-8 col-sm-10">
-        <div v-if="articles.length === 0" class="text-center text-grey-8">
-          No articles found.
+        <div v-if="!loadingComplete" class="text-center text-grey-8">
+          Loading...
+          <q-spinner color="primary" size="3em" :thickness="2" />
         </div>
-        <div v-else v-for="(article, i) in articles" :key="i">
-          <q-card
-            class="rounded-borders"
-            style="margin-top: 20px"
-            flat
-            bordered
-          >
-            <q-card-section>
-              <h3 class="text-h6">{{ article.date.split(" ")[0] }}</h3>
-              <div
-                class="row q-gutter-xs items-center"
-                v-html="article.textRus"
-              ></div>
+        <div v-else>
+          <div v-if="articles.length === 0" class="text-center text-grey-8">
+            No articles found.
+          </div>
+          <div v-else v-for="(article, i) in articles" :key="i">
+            <q-card
+              class="rounded-borders"
+              style="margin-top: 20px"
+              flat
+              bordered
+            >
+              <q-card-section>
+                <h3 class="text-h6">{{ article.date.split(" ")[0] }}</h3>
+                <div
+                  class="row q-gutter-xs items-center"
+                  v-html="article.textRus"
+                ></div>
 
-              <div class="q-pa-xs">
-                <div class="row justify-between">
-                  <div class="col-auto"></div>
-                  <div class="row-auto">
-                    <q-btn
-                      no-caps
-                      unelevated
-                      color="secondary"
-                      icon="edit"
-                      label="Edit"
-                      class="button"
-                      style="margin-right: 10px"
-                      :to="'/editArticle/' + article.id"
-                    />
-                    <q-btn
-                      unelevated
-                      color="negative"
-                      icon="delete"
-                      class="button"
-                      @click="deleteArticle(article.id)"
-                    />
+                <div class="q-pa-xs">
+                  <div class="row justify-between">
+                    <div class="col-auto"></div>
+                    <div class="row-auto">
+                      <q-btn
+                        no-caps
+                        unelevated
+                        color="secondary"
+                        icon="edit"
+                        label="Edit"
+                        class="button"
+                        style="margin-right: 10px"
+                        :to="'/editArticle/' + article.id"
+                      />
+                      <q-btn
+                        unelevated
+                        color="negative"
+                        icon="delete"
+                        class="button"
+                        @click="deleteArticle(article.id)"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </q-card-section>
-          </q-card>
+              </q-card-section>
+            </q-card>
+          </div>
         </div>
       </div>
     </q-page>
@@ -74,6 +80,7 @@ export default {
     return {
       articles: [],
 
+      loadingComplete: false,
       userStatus: false,
     };
   },
@@ -114,7 +121,8 @@ export default {
   },
   async mounted() {
     this.userStatus = await isLogin();
-    this.loadAllArticles();
+    await this.loadAllArticles();
+    this.loadingComplete = true;
   },
 };
 </script>
