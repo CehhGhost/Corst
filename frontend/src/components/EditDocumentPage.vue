@@ -149,7 +149,46 @@ export default {
   },
   methods: {
     async saveDocument() {
-      //TODO захардкодить
+      this.userStatus = await isLogin();
+      if (!this.userStatus) {
+        this.$router.push("/login");
+      }
+      if (
+        !this.title ||
+        !this.text ||
+        !this.authorsGender ||
+        !this.genre ||
+        !this.domain ||
+        !this.authorsCourse ||
+        !this.authorsAcademicMajor
+      ) {
+        alert("Please fill all fields");
+        return;
+      }
+      const response = await fetch(
+        serverAdress + "/documents/" + this.$route.params.id,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("corst_token"),
+          },
+          body: JSON.stringify({
+            title: this.title,
+            text: this.text,
+            genre: this.genre,
+            domain: this.domain,
+            authorsCourse: this.authorsCourse,
+            authorsAcademicMajor: this.authorsAcademicMajor,
+            authorsGender: this.authorsGender,
+          }),
+        }
+      );
+      if (response.ok) {
+        this.$router.push("/documents/" + this.$route.params.id);
+      } else {
+        console.error(response);
+      }
     },
     async getDocumentInfo() {
       try {
