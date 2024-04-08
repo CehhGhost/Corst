@@ -166,7 +166,7 @@ export default {
         return;
       }
       const response = await fetch(
-        serverAdress + "/documents/" + this.$route.params.id,
+        serverAdress + "/documents/update/" + this.$route.params.id,
         {
           method: "PUT",
           headers: {
@@ -185,7 +185,7 @@ export default {
         }
       );
       if (response.ok) {
-        this.$router.push("/documents/" + this.$route.params.id);
+        this.$router.push("/documents");
       } else {
         console.error(response);
       }
