@@ -81,7 +81,12 @@
                 </div>
               </q-card-section>
             </q-expansion-item>
-            <p class="text-body2">{{ document.text }}</p>
+            <p v-if="document.text.length <= limit" class="text-body2">
+              {{ document.text }}
+            </p>
+            <p v-else class="text-body2">
+              {{ truncateText(document.text, limit) }}
+            </p>
 
             <div class="q-pa-xs">
               <div class="row justify-between">
@@ -132,6 +137,7 @@ export default {
       documents: [],
       responseSuccess: true,
       userStatus: false,
+      limit: 3000,
 
       documentAdditionalInformation: {
         statuses: ["Not annotated", "Annotated", "Checked"],
@@ -167,6 +173,14 @@ export default {
         }
       } catch (error) {
         console.error("Error:", error);
+      }
+    },
+
+    truncateText(text, limit) {
+      if (text.length <= limit) {
+        return text;
+      } else {
+        return text.substring(0, limit) + "...";
       }
     },
   },

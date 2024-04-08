@@ -17,7 +17,7 @@
       </div>
       <div class="col-lg-6 col-md-8 col-sm-10">
         <div v-if="articles.length === 0" class="text-center text-grey-8">
-          No documents found.
+          No articles found.
         </div>
         <div v-else v-for="(article, i) in articles" :key="i">
           <q-card
