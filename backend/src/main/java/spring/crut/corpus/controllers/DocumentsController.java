@@ -8,16 +8,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import spring.crut.administration.security.CrutUserDetails;
-import spring.crut.corpus.dto.CreateUpdateDocumentDTO;
-import spring.crut.corpus.dto.CertainSearchDTO;
-import spring.crut.corpus.dto.DocumentDTO;
-import spring.crut.corpus.dto.LexGramSearchDTO;
+import spring.crut.corpus.dto.*;
 import spring.crut.corpus.enums.Status;
 import spring.crut.corpus.models.Document;
 import spring.crut.corpus.services.DocumentsService;
 import spring.crut.corpus.services.SentencesService;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -63,6 +62,7 @@ public class DocumentsController {
             documentDTO.setOwnerUsername(document.getOwner().getUsername());
             documentDTO.setStatusNum(Status.valueOf(document.getStatus().name()).ordinal());
             documentsService.setAttrsForTokensInDocumentDTO(documentDTO);
+            documentDTO.getSentences().sort(Comparator.comparing(SentenceDTO::getNum));
             documentsDTO.add(documentDTO);
         }
         return ResponseEntity.ok(documentsDTO);
@@ -73,6 +73,7 @@ public class DocumentsController {
         var documentDTO = modelMapper.map(document, DocumentDTO.class);
         documentDTO.setStatusNum(Status.valueOf(document.getStatus().name()).ordinal());
         documentsService.setAttrsForTokensInDocumentDTO(documentDTO);
+        documentDTO.getSentences().sort(Comparator.comparing(SentenceDTO::getNum));
         return ResponseEntity.ok(documentDTO);
     }
     @PatchMapping ("/{id}/set_status/{status}")
