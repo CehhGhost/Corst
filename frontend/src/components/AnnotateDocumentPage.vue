@@ -76,6 +76,7 @@ export default {
         this.responseSuccess = response.ok;
         if (response.ok) {
           const data = await response.json();
+          console.log(data);
           this.document = data;
           this.documentStatus = this.options[this.document.statusNum];
         } else {

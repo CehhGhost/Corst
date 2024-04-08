@@ -41,7 +41,7 @@ const routes = [
   },
   {
     path: "/annotateDocument/:id",
-    component: () => import("../views/DocumentAnnotationView.vue"),
+    component: () => import("../views/AnnotateDocumentView.vue"),
   },
   {
     path: "/editDocument/:id",
