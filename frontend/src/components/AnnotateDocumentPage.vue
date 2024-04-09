@@ -305,11 +305,6 @@ export default {
         ? ["Не аннотирован", "Аннотирован", "Проверен"]
         : ["Not annotated", "Annotated", "Checked"];
     },
-
-    showTooltip(token) {
-      console.log("token");
-      console.log(token);
-    },
   },
   async mounted() {
     if (localStorage.getItem("corst_locale")) {
