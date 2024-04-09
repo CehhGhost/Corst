@@ -7,7 +7,7 @@
           push
           icon="add"
           color="primary"
-          label="Add Document"
+          :label="$t('add_document')"
           class="button"
           to="/addDocument"
           size="large"
@@ -15,12 +15,12 @@
       </div>
       <div class="q-mt-xs">
         <div v-if="!loadingComplete" class="text-center text-grey-8">
-          Loading...
+          {{ $t("loading") }}
           <q-spinner color="primary" size="3em" :thickness="2" />
         </div>
         <div v-else>
           <div v-if="documents.length === 0" class="text-center text-grey-8">
-            No documents found.
+            {{ $t("no_documents_found") }}
           </div>
           <q-card
             flat
@@ -42,23 +42,23 @@
                 <q-card-section class="item-info">
                   <div class="column">
                     <div class="info-item">
-                      <span class="info-label">Created:</span>
+                      <span class="info-label"> {{ $t("created_at") }}: </span>
                       <span class="info-value">{{
                         new Date(document.createdAt).toLocaleString()
                       }}</span>
                     </div>
                     <div class="info-item">
-                      <span class="info-label">Genre:</span>
+                      <span class="info-label"> {{ $t("genre") }}: </span>
                       <span class="info-value">{{ document.genre }}</span>
                     </div>
                     <div class="info-item">
-                      <span class="info-label">Owner:</span>
+                      <span class="info-label"> {{ $t("owner") }}: </span>
                       <span class="info-value">{{
                         document.ownerUsername
                       }}</span>
                     </div>
                     <div class="info-item">
-                      <span class="info-label">Status:</span>
+                      <span class="info-label"> {{ $t("status") }}: </span>
                       <span class="info-value">{{
                         documentAdditionalInformation.statuses[
                           document.statusNum
@@ -68,23 +68,27 @@
                   </div>
                   <div class="info-column">
                     <div class="info-item">
-                      <span class="info-label">Gender:</span>
+                      <span class="info-label"> {{ $t("gender") }}: </span>
                       <span class="info-value">{{
                         document.authorsGender[0]
                       }}</span>
                     </div>
                     <div class="info-item">
-                      <span class="info-label">Course:</span>
+                      <span class="info-label">
+                        {{ $t("authors_course") }}:
+                      </span>
                       <span class="info-value">{{
                         document.authorsCourse
                       }}</span>
                     </div>
                     <div class="info-item">
-                      <span class="info-label">Domain:</span>
+                      <span class="info-label"> {{ $t("domain") }}: </span>
                       <span class="info-value">{{ document.domain }}</span>
                     </div>
                     <div class="info-item">
-                      <span class="info-label">Academic Major:</span>
+                      <span class="info-label">
+                        {{ $t("authors_academic_major") }}:
+                      </span>
                       <span class="info-value">{{
                         document.authorsAcademicMajor
                       }}</span>
@@ -105,14 +109,14 @@
                     <q-btn
                       unelevated
                       color="primary"
-                      label="Annotate"
+                      :label="$t('annotate')"
                       class="button"
                       :to="'/annotateDocument/' + document.id"
                     />
                     <q-btn
                       flat
                       color="primary"
-                      label="Show More"
+                      :label="$t('show_more')"
                       icon="visibility"
                       class="button"
                       :to="'/documents/' + document.id"
@@ -124,7 +128,7 @@
                       unelevated
                       color="secondary"
                       icon="edit"
-                      label="Edit"
+                      :label="$t('edit')"
                       class="button"
                       :to="'/editDocument/' + document.id"
                       style="margin-right: 10px"
@@ -182,9 +186,10 @@ export default {
     },
     async deleteDocument(id) {
       try {
-        const confirmation = confirm(
-          "Are you sure you want to delete this document?"
-        );
+        const confirmation =
+          this.$i18n.locale === "ru"
+            ? confirm("Вы уверены, что хотите удалить документ?")
+            : confirm("Are you sure you want to delete the document?");
         if (!confirmation) return;
         const response = await fetch(serverAdress + "/documents/delete/" + id, {
           method: "DELETE",

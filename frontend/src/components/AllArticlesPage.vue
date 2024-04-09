@@ -107,9 +107,9 @@ export default {
           return;
         }
         const confirmation =
-          this.$i18n.locale === "en"
-            ? confirm("Are you sure you want to delete this article?")
-            : confirm("Вы уверены, что хотите удалить эту статью?");
+          this.$i18n.locale === "ru"
+            ? confirm("Вы уверены, что хотите удалить статью?")
+            : confirm("Are you sure you want to delete the article?");
         if (!confirmation) return;
         const response = await fetch(serverAdress + "/articles/" + id, {
           method: "DELETE",
