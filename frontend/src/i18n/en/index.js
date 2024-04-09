@@ -15,4 +15,7 @@ export default {
   authors_academic_major: "Academic major",
   annotate: "Annotate",
   show_more: "Show more",
+  document_status: "Document status",
+  error: "Error",
+  error_loading_document: "Error loading document",
 };

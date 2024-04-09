@@ -15,4 +15,7 @@ export default {
   authors_academic_major: "Академическая специальность",
   annotate: "Аннотировать",
   show_more: "Показать больше",
+  document_status: "Статус документа",
+  error: "Ошибка",
+  error_loading_document: "Ошибка при загрузке документа",
 };

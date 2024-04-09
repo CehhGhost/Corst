@@ -8,21 +8,21 @@
           <q-card-section class="item-info">
             <div class="column">
               <div class="info-item">
-                <span class="info-label">Created:</span>
+                <span class="info-label"> {{ $t("created_at") }}: </span>
                 <span class="info-value">{{
                   new Date(document.createdAt).toLocaleString()
                 }}</span>
               </div>
               <div class="info-item">
-                <span class="info-label">Genre:</span>
+                <span class="info-label"> {{ $t("genre") }}: </span>
                 <span class="info-value">{{ document.genre }}</span>
               </div>
               <div class="info-item">
-                <span class="info-label">Owner:</span>
+                <span class="info-label"> {{ $t("owner") }}: </span>
                 <span class="info-value">{{ document.ownerUsername }}</span>
               </div>
               <div class="info-item">
-                <span class="info-label">Status:</span>
+                <span class="info-label"> {{ $t("status") }}: </span>
                 <span class="info-value">{{
                   options[document.statusNum]
                 }}</span>
@@ -30,19 +30,21 @@
             </div>
             <div class="info-column">
               <div class="info-item">
-                <span class="info-label">Gender:</span>
+                <span class="info-label"> {{ $t("gender") }}: </span>
                 <span class="info-value">{{ document.authorsGender }}</span>
               </div>
               <div class="info-item">
-                <span class="info-label">Course:</span>
+                <span class="info-label"> {{ $t("authors_course") }}: </span>
                 <span class="info-value">{{ document.authorsCourse }}</span>
               </div>
               <div class="info-item">
-                <span class="info-label">Domain:</span>
+                <span class="info-label"> {{ $t("domain") }}: </span>
                 <span class="info-value">{{ document.domain }}</span>
               </div>
               <div class="info-item">
-                <span class="info-label">Academic Major:</span>
+                <span class="info-label">
+                  {{ $t("authors_academic_major") }}:
+                </span>
                 <span class="info-value">{{
                   document.authorsAcademicMajor
                 }}</span>
@@ -51,7 +53,9 @@
           </q-card-section>
         </q-card>
         <div class="row items-center">
-          <span class="text-h6">Document status</span>
+          <span class="text-h6" style="font-weight: bold">
+            {{ $t("document_status") }}:
+          </span>
           <q-select
             outlined
             v-model="documentStatus"
@@ -78,8 +82,12 @@
         </q-card>
       </div>
       <div v-else>
-        <h1 class="text-h3">Error</h1>
-        <p>Failed to load document</p>
+        <h1 class="text-h3">
+          {{ $t("error") }}
+        </h1>
+        <p>
+          {{ $t("error_loading_document") }}
+        </p>
         <q-btn
           push
           color="secondary"
@@ -106,8 +114,7 @@ export default {
       loadingComplete: false,
       recogitoInstances: [],
       documentStatus: "Not annotated",
-      options: ["Not annotated", "Annotated", "Checked"],
-
+      options: this.statuses(),
       userStatus: false,
     };
   },
@@ -131,7 +138,6 @@ export default {
         this.responseSuccess = response.ok;
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
           this.document = data;
           this.documentStatus = this.options[this.document.statusNum];
         } else {
@@ -263,6 +269,12 @@ export default {
       } catch (error) {
         console.error("Error:", error);
       }
+    },
+
+    statuses() {
+      return this.$i18n.locale === "ru"
+        ? ["Не аннотирован", "Аннотирован", "Проверен"]
+        : ["Not annotated", "Annotated", "Checked"];
     },
   },
   async mounted() {

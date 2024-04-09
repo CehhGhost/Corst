@@ -165,7 +165,7 @@ export default {
       limit: 3000,
 
       documentAdditionalInformation: {
-        statuses: ["Not annotated", "Annotated", "Checked"],
+        statuses: statuses(),
       },
     };
   },
@@ -208,6 +208,12 @@ export default {
       } else {
         return text.substring(0, limit) + "...";
       }
+    },
+
+    statuses() {
+      return this.$i18n.locale === "ru"
+        ? ["Не аннотирован", "Аннотирован", "Проверен"]
+        : ["Not annotated", "Annotated", "Checked"];
     },
   },
   async mounted() {
