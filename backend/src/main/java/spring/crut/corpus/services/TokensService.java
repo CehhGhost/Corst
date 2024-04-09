@@ -14,6 +14,7 @@ import spring.crut.corpus.models.Token;
 import spring.crut.corpus.repositories.TokensRepository;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -67,13 +68,32 @@ public class TokensService {
             return false;
         }
         boolean attrFlag = true;
-        for (var attr : token1.getGrammar()) {
-            if (!token.getAttrs().contains(attr)) {
-                attrFlag = false;
+        Map<String, String> tokenAttrs = null;
+        try {
+            tokenAttrs = objectMapper.readValue(token.getAttrs(), new TypeReference<>() {});
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        boolean gramFlag = false;
+        for (var grammar : token1.getGrammar()) {
+            gramFlag = false;
+            for (var feature : grammar.getValue()) {
+                gramFlag = false;
+                for (var value : feature.getValue()) {
+                    if (tokenAttrs.get(feature.getName()).equals(value)) {
+                        gramFlag = true;
+                        break;
+                    }
+                }
+                if (!gramFlag) {
+                    break;
+                }
+            }
+            if (!gramFlag) {
                 break;
             }
         }
-        return attrFlag;
+        return gramFlag;
     }
 
     public void deleteTokens(List<Token> tokens) {
