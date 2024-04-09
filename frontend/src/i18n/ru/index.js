@@ -23,4 +23,8 @@ export default {
   text_in_russian: "Текст на русском",
   text_in_english: "Текст на английском",
   submit: "Отправить",
+  title: "Название",
+  text: "Текст",
+  enter_title: "Введите название",
+  enter_text: "Введите текст",
 };

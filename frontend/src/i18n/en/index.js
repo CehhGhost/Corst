@@ -23,4 +23,8 @@ export default {
   text_in_russian: "Text in Russian",
   text_in_english: "Text in English",
   submit: "Submit",
+  title: "Title",
+  text: "Text",
+  enter_title: "Enter title",
+  enter_text: "Enter text",
 };
