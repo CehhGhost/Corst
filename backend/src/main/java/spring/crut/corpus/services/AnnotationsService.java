@@ -44,6 +44,7 @@ public class AnnotationsService {
         annotation.setErrorTags(errorTagsService.getAllByNames(errorTagsNames).stream().toList());
         var sentence = sentencesService.getSentenceById(createUpdateAnnotationDTO.getSentenceId());
         annotation.setSentence(sentence);
+        annotation.setStringId(((String) createUpdateAnnotationDTO.getInfo().get("id")).replace("#", ""));
         annotationsRepository.save(annotation);
         sentencesService.setAnnotationForSentence(annotation, sentence);
     }
@@ -62,8 +63,9 @@ public class AnnotationsService {
         return errorTagsNames;
     }
 
-    public Annotation getAnnotationById(Long id) {
-        var annotation = annotationsRepository.findById(id);
+    @Transactional
+    public Annotation getAnnotationById(String id) {
+        var annotation = annotationsRepository.findByStringId(id);
         if (annotation.isEmpty()) {
             throw new IllegalArgumentException("No such annotation with this id!");
         }
@@ -71,8 +73,8 @@ public class AnnotationsService {
     }
 
     @Transactional
-    public void deleteAnnotationById(Long id) {
-        var annotation = annotationsRepository.findById(id);
+    public void deleteAnnotationById(String id) {
+        var annotation = annotationsRepository.findByStringId(id);
         if (annotation.isEmpty()) {
             throw new IllegalArgumentException("No such annotation with this id!");
         }
@@ -81,8 +83,8 @@ public class AnnotationsService {
     }
 
     @Transactional
-    public void updateAnnotationById(Long id, CreateUpdateAnnotationDTO createUpdateAnnotationDTO) {
-        var annotation = annotationsRepository.findById(id);
+    public void updateAnnotationById(String id, CreateUpdateAnnotationDTO createUpdateAnnotationDTO) {
+        var annotation = annotationsRepository.findByStringId(id);
         if (annotation.isEmpty()) {
             throw new IllegalArgumentException("No such annotation with this id!");
         }
