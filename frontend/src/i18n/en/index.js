@@ -31,4 +31,7 @@ export default {
   footer_text: "© HSE School of Linguistics. All rights reserved.",
   edit_document: "Edit document",
   save: "Save",
+  username: "Username",
+  password: "Password",
+  login: "Login",
 };

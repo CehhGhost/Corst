@@ -31,4 +31,8 @@ export default {
   footer_text: "© Школа Лингвистики НИУ ВШЭ. Все права защищены.",
   edit_document: "Редактирование документа",
   save: "Сохранить",
+  username: "Имя пользователя",
+  password: "Пароль",
+  login: "Вход",
+  login_button: "Войти",
 };
