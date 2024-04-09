@@ -81,7 +81,30 @@
                   v-for="(token, i) in sentence.tokens"
                   :key="i"
                   :label="token.text"
-                />
+                >
+                  <q-tooltip
+                    anchor="top middle"
+                    self="bottom middle"
+                    :offset="[10, 10]"
+                  >
+                    <div>
+                      <div>
+                        <span class="tooltip-header">Lemma: </span>
+                        <span class="tooltip-info">{{ token.lemma }}</span>
+                      </div>
+                      <div>
+                        <span class="tooltip-header">POS: </span>
+                        <span class="tooltip-info">{{ token.pos }}</span>
+                      </div>
+                      <div v-for="(attr, i) in token.attrs" :key="i">
+                        <div>
+                          <span class="tooltip-header">{{ i }}: </span>
+                          <span class="tooltip-info">{{ attr }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </q-tooltip>
+                </q-chip>
               </q-card-section>
             </q-expansion-item>
           </q-card-section>
@@ -282,6 +305,11 @@ export default {
         ? ["Не аннотирован", "Аннотирован", "Проверен"]
         : ["Not annotated", "Annotated", "Checked"];
     },
+
+    showTooltip(token) {
+      console.log("token");
+      console.log(token);
+    },
   },
   async mounted() {
     if (localStorage.getItem("corst_locale")) {
@@ -330,5 +358,15 @@ export default {
 .info-value {
   font-size: 16px;
   white-space: pre-line;
+}
+
+.tooltip-header {
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.tooltip-info {
+  font-weight: normal;
+  font-size: 12px;
 }
 </style>

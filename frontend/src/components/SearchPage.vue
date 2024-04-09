@@ -867,7 +867,6 @@ export default {
         }),
       });
       if (response.ok) {
-        console.log(response);
         const data = await response.json();
         this.searchResults = data;
       } else {
@@ -881,6 +880,7 @@ export default {
         lexgramBlocks: this.lexgramBlocks,
         subcorpusData: this.subcorpusData,
       };
+      console.log(data);
       try {
         const response = await fetch(
           serverAdress + "/documents/search/lex_gram",
@@ -925,7 +925,6 @@ export default {
     },
     openSubcorpusModal() {
       this.displaySubcorpusModal = true;
-      console.log(this.displaySubcorpusModal);
     },
     openDisplaySettingsModal() {
       this.displaySettingsModal = true;
