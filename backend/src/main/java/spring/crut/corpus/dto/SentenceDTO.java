@@ -13,6 +13,5 @@ public class SentenceDTO {
     private Long id;
     private String text;
     private Integer num;
-    private List<AnnotationDTO> annotations;
     private List<TokenDTO> tokens;
 }
