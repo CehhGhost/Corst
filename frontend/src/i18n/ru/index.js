@@ -1,7 +1,6 @@
-// This is just an example,
-// so you can safely delete all default props below
-
 export default {
-  failed: 'Action failed',
-  success: 'Action was successful'
-}
+  add_article: "Добавить статью",
+  loading: "Загрузка...",
+  no_articles_found: "Статей не найдено",
+  edit: "Изменить",
+};
