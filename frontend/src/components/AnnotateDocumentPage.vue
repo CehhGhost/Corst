@@ -181,7 +181,7 @@ export default {
         recogito.on("updateAnnotation", (annotation) => {
           console.log("update");
           console.log(annotation);
-          //this.updateAnnotation(annotation, sentence.id);
+          this.updateAnnotation(annotation, sentence.id);
         });
         recogito.on("deleteAnnotation", (annotation) => {
           this.deleteAnnotation(annotation, sentence.id);
@@ -222,16 +222,19 @@ export default {
         this.$router.push("/login");
       }
       try {
-        const response = await fetch(serverAdress + "/annotations/", {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            sentenceId: sentenceId,
-            annotation: annotation,
-          }),
-        });
+        const response = await fetch(
+          serverAdress + "/annotations/" + annotation.id.slice(1),
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              sentenceId: sentenceId,
+              annotation: annotation,
+            }),
+          }
+        );
         if (!response.ok) {
           console.error(response);
         }
@@ -242,7 +245,7 @@ export default {
     async deleteAnnotation(annotation, sentenceId) {
       try {
         const response = await fetch(
-          serverAdress + "/documents/" + sentenceId,
+          serverAdress + "/annotations/" + annotation.id.slice(1),
           {
             method: "DELETE",
             headers: {
