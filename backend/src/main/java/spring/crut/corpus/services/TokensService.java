@@ -91,7 +91,7 @@ public class TokensService {
         boolean gramFlag = false;
         for (var gram : grammars.keySet()) {
             for (var feature : grammars.get(gram)) {
-                if (attrs.get(gram).equals(feature)) {
+                if (attrs.containsKey(gram) && attrs.get(gram).equals(feature)) {
                     gramFlag = true;
                     break;
                 }
