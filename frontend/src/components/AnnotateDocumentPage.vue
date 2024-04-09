@@ -278,6 +278,9 @@ export default {
     },
   },
   async mounted() {
+    if (localStorage.getItem("corst_locale")) {
+      this.$i18n.locale = localStorage.getItem("corst_locale");
+    }
     this.userStatus = await isLogin();
     if (!this.userStatus) {
       this.$router.push("/");

@@ -994,6 +994,9 @@ export default {
     },
   },
   async mounted() {
+    if (localStorage.getItem("corst_locale")) {
+      this.$i18n.locale = localStorage.getItem("corst_locale");
+    }
     await this.getSubcorpusTextInfo().then((data) => {
       this.subcorpusTextInfoContainer.genres = data.genres;
       this.subcorpusTextInfoContainer.domains = data.domains;

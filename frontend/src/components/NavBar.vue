@@ -66,6 +66,24 @@
       </div>
       <div v-else>
         <q-btn
+          v-if="$i18n.locale === 'ru'"
+          flat
+          dense
+          label="RU"
+          active-class="text-white"
+          class="text-white"
+          @click="switchLanguage('en')"
+        ></q-btn>
+        <q-btn
+          v-else
+          flat
+          dense
+          label="EN"
+          active-class="text-white"
+          class="text-white"
+          @click="switchLanguage('ru')"
+        />
+        <q-btn
           flat
           dense
           to="/addDocument"
@@ -115,6 +133,15 @@ export default {
       location.reload();
       this.isLogin = false;
     },
+    switchLanguage(locale) {
+      this.$i18n.locale = locale;
+      localStorage.setItem("corst_locale", locale);
+    },
+  },
+  mounted() {
+    if (localStorage.getItem("corst_locale")) {
+      this.$i18n.locale = localStorage.getItem("corst_locale");
+    }
   },
 };
 </script>
