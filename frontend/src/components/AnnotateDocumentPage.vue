@@ -188,7 +188,9 @@ export default {
         recogito.on("deleteAnnotation", (annotation) => {
           //this.deleteAnnotation(annotation, sentence.id);
         });
-        // recogito.loadAnnotations(url); // TODO: Add URL
+        recogito.loadAnnotations(
+          serverAdress + "/annotations/get_by_sentence/" + sentence.id
+        );
         this.recogitoInstances.push(recogito);
       });
     },
@@ -198,19 +200,16 @@ export default {
         this.$router.push("/login");
       }
       try {
-        const response = await fetch(
-          serverAdress + "/documents/" + sentenceId,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              sentenceId: sentenceId,
-              annotation: annotation,
-            }),
-          }
-        );
+        const response = await fetch(serverAdress + "/annotations/create", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            sentenceId: sentenceId,
+            info: annotation,
+          }),
+        });
         if (!response.ok) {
           console.error(response);
         }
