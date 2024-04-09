@@ -231,7 +231,7 @@ export default {
             },
             body: JSON.stringify({
               sentenceId: sentenceId,
-              annotation: annotation,
+              info: annotation,
             }),
           }
         );
