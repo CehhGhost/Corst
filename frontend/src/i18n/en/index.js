@@ -27,4 +27,5 @@ export default {
   text: "Text",
   enter_title: "Enter title",
   enter_text: "Enter text",
+  edit_article: "Edit article",
 };

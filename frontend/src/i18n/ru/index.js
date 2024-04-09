@@ -27,4 +27,5 @@ export default {
   text: "Текст",
   enter_title: "Введите название",
   enter_text: "Введите текст",
+  edit_article: "Редактирование статьи",
 };
