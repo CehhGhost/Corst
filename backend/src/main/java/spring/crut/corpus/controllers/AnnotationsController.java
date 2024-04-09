@@ -13,6 +13,7 @@ import spring.crut.corpus.dto.CreateUpdateAnnotationDTO;
 import spring.crut.corpus.models.Annotation;
 import spring.crut.corpus.services.AnnotationsService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +55,11 @@ public class AnnotationsController {
     @GetMapping("/get_by_sentence/{id}")
     public ResponseEntity<?> getAnnotationsBySentenceId(@PathVariable Long id) {
         List<AnnotationDTO> annotations = annotationsService.getAnnotationsBySentenceId(id);
-        return ResponseEntity.ok(annotations);
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (var annotation : annotations) {
+            result.add(annotation.getInfo());
+        }
+        return ResponseEntity.ok(result);
     }
     @GetMapping("/get_by_document/{id}")
     public ResponseEntity<?> getAnnotationsByDocumentId(@PathVariable Long id) {
