@@ -71,8 +71,19 @@
           :key="i"
           class="rounded-borders q-mb-md"
         >
-          <q-card-section class="row items-center">
-            <div :id="'a-card-' + sentence.id">{{ sentence.text }}</div>
+          <q-card-section class="row">
+            <q-expansion-item expand-icon-toggle>
+              <template v-slot:header>
+                <div :id="'a-card-' + sentence.id">{{ sentence.text }}</div>
+              </template>
+              <q-card-section class="row items-center">
+                <q-chip
+                  v-for="(token, i) in sentence.tokens"
+                  :key="i"
+                  :label="token.text"
+                />
+              </q-card-section>
+            </q-expansion-item>
           </q-card-section>
         </q-card>
       </div>
