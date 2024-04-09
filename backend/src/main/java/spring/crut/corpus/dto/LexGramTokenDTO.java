@@ -16,6 +16,6 @@ public class LexGramTokenDTO {
     Boolean additional;
     private String wordform;
     private String partOfSpeech;
-    private List<String> grammar;
     private List<String> errors;
+    private List<GrammarBlockDTO> grammar;
 }
