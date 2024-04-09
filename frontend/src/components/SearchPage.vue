@@ -641,7 +641,7 @@
               <q-card class="rounded-borders" style="margin-top: 10px">
                 <q-card-section>
                   <div class="row q-gutter-md items-center">
-                    <div class="col-3">
+                    <div>
                       <!-- TODO Уточнить, что должно быть в названии -->
                       <h3 class="text-h6">{{ result.documentTitle }}</h3>
                       <p>{{ result.text }}</p>

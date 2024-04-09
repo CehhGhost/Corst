@@ -68,7 +68,12 @@
           class="rounded-borders q-mb-md"
         >
           <q-card-section class="row items-center">
-            <div :id="'a-card-' + sentence.id">{{ sentence.text }}</div>
+            <div class="row" :id="'a-card-' + sentence.id">
+              <div v-for="(token, i) in sentence.tokens" :key="i">
+                <span v-if="token.pos == 'PUNCT'">{{ token.text }}</span>
+                <span v-else style="margin-left: 3px">{{ token.text }}</span>
+              </div>
+            </div>
           </q-card-section>
         </q-card>
       </div>
