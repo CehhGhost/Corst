@@ -64,6 +64,10 @@ public class AnnotationsController {
     @GetMapping("/get_by_document/{id}")
     public ResponseEntity<?> getAnnotationsByDocumentId(@PathVariable Long id) {
         List<AnnotationDTO> annotations = annotationsService.getAnnotationsByDocumentId(id);
-        return ResponseEntity.ok(annotations);
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (var annotation : annotations) {
+            result.add(annotation.getInfo());
+        }
+        return ResponseEntity.ok(result);
     }
 }
