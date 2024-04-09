@@ -18,4 +18,9 @@ export default {
   document_status: "Document status",
   error: "Error",
   error_loading_document: "Error loading document",
+  create_document: "Create document",
+  create_article: "Create article",
+  text_in_russian: "Text in Russian",
+  text_in_english: "Text in English",
+  submit: "Submit",
 };

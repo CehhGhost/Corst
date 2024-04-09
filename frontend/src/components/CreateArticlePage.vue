@@ -1,6 +1,8 @@
 <template>
   <div class="create-article" style="margin-top: 70px" v-if="userStatus">
-    <h2>Create Article</h2>
+    <h3>
+      {{ $t("create_article") }}
+    </h3>
     <q-form @submit="submitForm" class="form">
       <q-input filled v-model="date" mask="date" :rules="['date']">
         <template v-slot:append>
@@ -19,11 +21,16 @@
           </q-icon>
         </template>
       </q-input>
-      <div class="text-label">Text in Russian:</div>
+      <div class="text-label">{{ $t("text_in_russian") }}:</div>
       <q-editor v-model="textRus" />
-      <div class="text-label">Text in English:</div>
+      <div class="text-label">{{ $t("text_in_english") }}:</div>
       <q-editor v-model="textEng" />
-      <q-btn type="submit" label="Submit" color="primary" class="submit-btn" />
+      <q-btn
+        type="submit"
+        :label="$t('submit')"
+        color="primary"
+        class="submit-btn"
+      />
     </q-form>
     <h1></h1>
   </div>
@@ -59,7 +66,8 @@ export default {
         this.$router.push("/login");
       }
       if (!this.textRus || !this.textEng) {
-        alert("Please fill all fields");
+        if (this.$i18n.locale == "ru") alert("Пожалуйста, заполните все поля");
+        else alert("Please fill all fields");
         return;
       }
       const response = await fetch(serverAdress + "/articles/create", {
@@ -96,7 +104,7 @@ export default {
   margin: 0 auto;
 }
 
-.create-article h2 {
+.create-article h3 {
   text-align: center;
 }
 
@@ -108,5 +116,7 @@ export default {
 
 .submit-btn {
   margin-top: 20px;
+  margin-bottom: 10px;
+  margin-left: 10px;
 }
 </style>

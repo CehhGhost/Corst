@@ -18,4 +18,9 @@ export default {
   document_status: "Статус документа",
   error: "Ошибка",
   error_loading_document: "Ошибка при загрузке документа",
+  create_document: "Добавление документа",
+  create_article: "Добавление статьи",
+  text_in_russian: "Текст на русском",
+  text_in_english: "Текст на английском",
+  submit: "Отправить",
 };

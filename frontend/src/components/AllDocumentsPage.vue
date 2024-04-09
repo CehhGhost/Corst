@@ -165,7 +165,7 @@ export default {
       limit: 3000,
 
       documentAdditionalInformation: {
-        statuses: statuses(),
+        statuses: this.statuses(),
       },
     };
   },
