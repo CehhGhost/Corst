@@ -178,7 +178,7 @@ export default {
         recogito.on("createAnnotation", (annotation) => {
           console.log("create");
           console.log(annotation);
-          //this.sendAnnotation(annotation, sentence.id);
+          this.sendAnnotation(annotation, sentence.id);
         });
         recogito.on("updateAnnotation", (annotation) => {
           console.log("update");
@@ -204,6 +204,7 @@ export default {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("corst_token"),
           },
           body: JSON.stringify({
             sentenceId: sentenceId,
