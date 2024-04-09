@@ -16,6 +16,7 @@ import spring.crut.corpus.services.AnnotationsService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/annotations")
@@ -29,8 +30,8 @@ public class AnnotationsController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<?> getAnnotationById(@PathVariable Long id) {
-        Annotation annotation = annotationsService.getAnnotationById(id);
+    public ResponseEntity<?> getAnnotationById(@PathVariable UUID id) {
+        Annotation annotation = annotationsService.getAnnotationById(id.toString());
         Map<String, Object> annotationInfo = null;
         try {
             annotationInfo = objectMapper.readValue(annotation.getAnnotationInfo(), new TypeReference<>() {});
@@ -43,13 +44,13 @@ public class AnnotationsController {
         return ResponseEntity.ok(annotationInfo);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteAnnotationById(@PathVariable Long id) {
-        annotationsService.deleteAnnotationById(id);
+    public ResponseEntity<?> deleteAnnotationById(@PathVariable UUID id) {
+        annotationsService.deleteAnnotationById(id.toString());
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateAnnotationsById(@PathVariable Long id, @RequestBody CreateUpdateAnnotationDTO createUpdateAnnotationDTO) {
-        annotationsService.updateAnnotationById(id, createUpdateAnnotationDTO);
+    public ResponseEntity<?> updateAnnotationsById(@PathVariable UUID id, @RequestBody CreateUpdateAnnotationDTO createUpdateAnnotationDTO) {
+        annotationsService.updateAnnotationById(id.toString(), createUpdateAnnotationDTO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @GetMapping("/get_by_sentence/{id}")

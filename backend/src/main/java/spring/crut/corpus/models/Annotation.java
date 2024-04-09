@@ -23,6 +23,9 @@ public class Annotation {
     @Column(name = "annotation_info", columnDefinition = "TEXT")
     String annotationInfo;
 
+    @Column(name = "string_id")
+    String stringId;
+
     @ManyToMany
     @JoinTable(name = "_error_tags_annotations",
             joinColumns = @JoinColumn(name = "annotation_id"),
