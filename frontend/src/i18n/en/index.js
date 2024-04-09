@@ -29,4 +29,6 @@ export default {
   enter_text: "Enter text",
   edit_article: "Edit article",
   footer_text: "© HSE School of Linguistics. All rights reserved.",
+  edit_document: "Edit document",
+  save: "Save",
 };

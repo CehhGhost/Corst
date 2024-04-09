@@ -2,32 +2,34 @@
   <q-page-container class="q-pa-md">
     <q-page class="flex">
       <div v-if="userStatus" class="create-document">
-        <h2 class="q-mb-md">Edit Document</h2>
+        <h3 class="q-mb-md">
+          {{ $t("edit_document") }}
+        </h3>
         <q-form @submit="saveDocument" class="q-gutter-md">
           <q-input
             v-model="title"
             outlined
-            label="Title"
+            :label="$t('title')"
             dense
             autofocus
-            placeholder="Enter title"
+            :placeholder="$t('enter_title')"
             class="q-mb-md"
             style="margin-top: 35px"
           />
           <q-input
             v-model="text"
             outlined
-            label="Content"
+            :label="$t('text')"
             type="textarea"
             dense
-            placeholder="Enter content"
+            :placeholder="$t('enter_text')"
             class="q-mb-md"
           />
           <q-select
-            label="Gender"
+            :label="$t('gender')"
             v-model="authorsGender"
             outlined
-            :options="authorsGenders"
+            :options="authorsGendersLoc"
           />
           <div class="row">
             <q-select
@@ -35,7 +37,7 @@
               v-model="genre"
               use-input
               use-chips
-              label="Genre"
+              :label="$t('genre')"
               input-debounce="0"
               @new-value="createValue"
               :options="filteredGenres"
@@ -46,7 +48,7 @@
               outlined
               v-model="domain"
               use-input
-              label="Domain"
+              :label="$t('domain')"
               use-chips
               input-debounce="0"
               @new-value="createValue"
@@ -61,7 +63,7 @@
               v-model="authorsCourse"
               use-input
               use-chips
-              label="Course"
+              :label="$t('authors_course')"
               input-debounce="0"
               @new-value="createValue"
               :options="filteredAuthorsCourses"
@@ -73,7 +75,7 @@
               v-model="authorsAcademicMajor"
               use-input
               use-chips
-              label="Academic Major"
+              :label="$t('authors_academic_major')"
               input-debounce="0"
               @new-value="createValue"
               :options="filteredAuthorsAcademicMajors"
@@ -83,7 +85,7 @@
           </div>
           <q-btn
             type="submit"
-            label="Save Document"
+            :label="$t('save')"
             color="primary"
             class="q-mt-md"
           />
@@ -92,29 +94,6 @@
     </q-page>
   </q-page-container>
 </template>
-
-<style scoped>
-.create-document {
-  width: 750px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.create-document h2 {
-  text-align: center;
-}
-
-.form {
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.submit-btn {
-  margin-top: 20px;
-}
-</style>
 
 <script>
 import { serverAdress } from "../global/globalVaribles.js";
@@ -141,6 +120,7 @@ export default {
       filteredAuthorsAcademicMajors: [],
 
       authorsGender: null,
+      authorsGendersLoc: this.getLocaleGenders(),
       authorsGenders: ["Male", "Female", "Unknown"],
 
       userStatus: false,
@@ -162,8 +142,17 @@ export default {
         !this.authorsCourse ||
         !this.authorsAcademicMajor
       ) {
-        alert("Please fill all fields");
-        return;
+        if (this.$i18n.locale == "ru") {
+          alert("Пожалуйста, заполните все поля");
+        } else {
+          alert("Please fill all fields");
+        }
+      }
+      if (this.$i18n.locale == "ru") {
+        this.authorsGender =
+          this.authorsGenders[
+            this.authorsGendersLoc.indexOf(this.authorsGender)
+          ];
       }
       const response = await fetch(
         serverAdress + "/documents/update/" + this.$route.params.id,
@@ -232,6 +221,12 @@ export default {
       this.authorsGender =
         data.authorsGender[0].toUpperCase() +
         data.authorsGender.slice(1).toLowerCase();
+      if (this.$i18n.locale == "ru") {
+        this.authorsGender =
+          this.authorsGendersLoc[
+            this.authorsGenders.indexOf(this.authorsGender)
+          ];
+      }
     },
 
     parseInfo(data) {
@@ -324,6 +319,13 @@ export default {
         }
       });
     },
+    getLocaleGenders() {
+      if (this.$i18n.locale == "ru") {
+        return ["Мужской", "Женский", "Неизвестно"];
+      } else {
+        return ["Male", "Female", "Unknown"];
+      }
+    },
   },
   async mounted() {
     this.userStatus = await isLogin();
@@ -344,3 +346,26 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.create-document {
+  width: 750px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.create-document h3 {
+  text-align: center;
+}
+
+.form {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.submit-btn {
+  margin-top: 20px;
+}
+</style>
