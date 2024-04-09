@@ -11,9 +11,9 @@ import java.util.List;
 @NoArgsConstructor
 public class SearchSentenceDTO {
     private String documentTitle;
-
     private Long id;
     private String text;
     private Integer num;
+    private List<AnnotationDTO> annotations;
     private List<TokenDTO> tokens;
 }

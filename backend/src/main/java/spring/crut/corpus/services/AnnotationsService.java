@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.crut.administration.security.CrutUserDetails;
 import spring.crut.corpus.dto.AnnotationDTO;
+import spring.crut.corpus.dto.CreateUpdateAnnotationDTO;
 import spring.crut.corpus.models.Annotation;
 import spring.crut.corpus.repositories.AnnotationsRepository;
 import spring.crut.corpus.services.info.ErrorTagsService;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,27 +26,26 @@ public class AnnotationsService {
     private final ErrorTagsService errorTagsService;
     private final ObjectMapper objectMapper;
     private final SentencesService sentencesService;
+    private final DocumentsService documentsService;
     @Transactional
-    public void createAnnotation(AnnotationDTO annotationDTO) {
+    public void createAnnotation(CreateUpdateAnnotationDTO createUpdateAnnotationDTO) {
         String json = null;
         try {
-            json = objectMapper.writeValueAsString(annotationDTO.getInfo());
+            json = objectMapper.writeValueAsString(createUpdateAnnotationDTO.getInfo());
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
         Annotation annotation = new Annotation();
-
-
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CrutUserDetails userDetails = (CrutUserDetails) authentication.getPrincipal();
         annotation.setOwner(userDetails.getUser());
         annotation.setAnnotationInfo(json);
-        var errorTagsNames = extractErrorTags(annotationDTO.getInfo());
+        var errorTagsNames = extractErrorTags(createUpdateAnnotationDTO.getInfo());
         annotation.setErrorTags(errorTagsService.getAllByNames(errorTagsNames).stream().toList());
+        var sentence = sentencesService.getSentenceById(createUpdateAnnotationDTO.getSentenceId());
+        annotation.setSentence(sentence);
         annotationsRepository.save(annotation);
-
-        sentencesService.setAnnotationForSentenceById(annotation, annotationDTO.getSentenceId());
+        sentencesService.setAnnotationForSentence(annotation, sentence);
     }
     private List<String> extractErrorTags(Map<String, Object> annotationMap) {
         List<Map<String, Object>> bodyList = (List<Map<String, Object>>) annotationMap.get("body");

@@ -9,6 +9,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AnnotationDTO {
+public class CreateUpdateAnnotationDTO {
+    private Long sentenceId;
     private Map<String, Object> info;
 }

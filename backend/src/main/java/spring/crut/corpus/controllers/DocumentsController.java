@@ -73,6 +73,9 @@ public class DocumentsController {
         var documentDTO = modelMapper.map(document, DocumentDTO.class);
         documentDTO.setStatusNum(Status.valueOf(document.getStatus().name()).ordinal());
         documentsService.setAttrsForTokensInDocumentDTO(documentDTO);
+        for (var sentence : documentDTO.getSentences()) {
+            sentence.setAnnotations(sentencesService.getAnnotationsByTheirSentenceId(sentence.getId()));
+        }
         documentDTO.getSentences().sort(Comparator.comparing(SentenceDTO::getNum));
         return ResponseEntity.ok(documentDTO);
     }
