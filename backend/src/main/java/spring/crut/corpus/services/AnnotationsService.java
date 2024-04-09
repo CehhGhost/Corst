@@ -79,4 +79,24 @@ public class AnnotationsService {
         sentencesService.removeAnnotation(annotation.get());
         annotationsRepository.delete(annotation.get());
     }
+
+    @Transactional
+    public void updateAnnotationById(Long id, CreateUpdateAnnotationDTO createUpdateAnnotationDTO) {
+        var annotation = annotationsRepository.findById(id);
+        if (annotation.isEmpty()) {
+            throw new IllegalArgumentException("No such annotation with this id!");
+        }
+        String json = null;
+        try {
+            json = objectMapper.writeValueAsString(createUpdateAnnotationDTO.getInfo());
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        annotation.get().setAnnotationInfo(json);
+        var errorTags = annotation.get().getErrorTags();
+        errorTags.clear();
+        var errorTagsNames = extractErrorTags(createUpdateAnnotationDTO.getInfo());
+        errorTags.addAll(errorTagsService.getAllByNames(errorTagsNames).stream().toList());
+        annotationsRepository.save(annotation.get());
+    }
 }

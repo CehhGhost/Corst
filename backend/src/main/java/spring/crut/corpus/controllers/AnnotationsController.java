@@ -31,4 +31,9 @@ public class AnnotationsController {
         annotationsService.deleteAnnotationById(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateAnnotationsById(@PathVariable Long id, @RequestBody CreateUpdateAnnotationDTO createUpdateAnnotationDTO) {
+        annotationsService.updateAnnotationById(id, createUpdateAnnotationDTO);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 }
