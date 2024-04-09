@@ -110,7 +110,6 @@ public class SentencesService {
             var sentenceDTO = modelMapper.map(sentence, SearchSentenceDTO.class);
             sentenceDTO.setDocumentTitle(sentence.getDocument().getTitle());
             tokensService.setAttrsForTokensDTO(sentenceDTO.getTokens(), sentence.getTokens());
-            sentenceDTO.setAnnotations(getAnnotationsByTheirSentenceId(sentence.getId()));
             sentencesDTO.add(sentenceDTO);
         }
         return sentencesDTO;
@@ -194,7 +193,6 @@ public class SentencesService {
             var sentenceDTO = modelMapper.map(sentence, SearchSentenceDTO.class);
             sentenceDTO.setDocumentTitle(sentence.getDocument().getTitle());
             tokensService.setAttrsForTokensDTO(sentenceDTO.getTokens(), sentence.getTokens());
-            sentenceDTO.setAnnotations(getAnnotationsByTheirSentenceId(sentence.getId()));
             sentencesDTO.add(sentenceDTO);
         }
         return sentencesDTO;
