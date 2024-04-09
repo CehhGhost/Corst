@@ -35,4 +35,11 @@ export default {
   password: "Пароль",
   login: "Вход",
   login_button: "Войти",
+  home: "Главная",
+  news: "Новости",
+  search: "Поиск",
+  statistics: "Статистика",
+  help: "Помощь",
+  logout: "Выйти",
+  all_documents: "Все документы",
 };

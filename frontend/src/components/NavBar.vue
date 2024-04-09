@@ -17,7 +17,7 @@
         class="text-white"
         style="margin-right: 1%"
       >
-        Home
+        {{ $t("home") }}
       </q-btn>
       <q-btn
         flat
@@ -27,7 +27,7 @@
         class="text-white"
         style="margin-right: 1%"
       >
-        News
+        {{ $t("news") }}
       </q-btn>
       <q-btn
         flat
@@ -37,7 +37,7 @@
         class="text-white"
         style="margin-right: 1%"
       >
-        Search
+        {{ $t("search") }}
       </q-btn>
       <q-btn
         flat
@@ -47,10 +47,10 @@
         class="text-white"
         style="margin-right: 1%"
       >
-        Statistics
+        {{ $t("statistics") }}
       </q-btn>
       <q-btn flat dense to="/help" active-class="text-white" class="text-white">
-        Help
+        {{ $t("help") }}
       </q-btn>
       <q-space />
       <div v-if="!checkLogin()">
@@ -61,7 +61,7 @@
           active-class="text-white"
           class="text-white"
         >
-          Login
+          {{ $t("login_button") }}
         </q-btn>
       </div>
       <div v-else>
@@ -72,7 +72,7 @@
           active-class="text-white"
           class="text-white"
         >
-          New Document
+          {{ $t("add_document") }}
         </q-btn>
         <q-btn
           flat
@@ -81,7 +81,7 @@
           active-class="text-white"
           class="text-white"
         >
-          All Documents
+          {{ $t("all_documents") }}
         </q-btn>
         <q-btn
           flat
@@ -90,7 +90,7 @@
           class="text-white"
           @click="logout()"
         >
-          Logout
+          {{ $t("logout") }}
         </q-btn>
       </div>
     </q-toolbar>
@@ -99,7 +99,6 @@
 
 <script>
 import router from "src/router";
-import { isLogin } from "src/global/globalFunctions";
 
 export default {
   name: "AppHeader",

@@ -34,4 +34,6 @@ export default {
   username: "Username",
   password: "Password",
   login: "Login",
+  login_button: "Login",
+  home: "Home",
 };
