@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import spring.crut.config.GrammarMapHolder;
 import spring.crut.corpus.dto.LexGramTokenDTO;
 import spring.crut.corpus.dto.TokenDTO;
 
@@ -13,6 +14,8 @@ import spring.crut.corpus.models.Sentence;
 import spring.crut.corpus.models.Token;
 import spring.crut.corpus.repositories.TokensRepository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +24,7 @@ import java.util.Map;
 public class TokensService {
     private final TokensRepository tokensRepository;
     private final ObjectMapper objectMapper;
+    private final GrammarMapHolder grammarMapHolder;
     @Transactional
     public void createTokens(List<TokenDTO> tokenDTOList, Sentence sentence) {
         StringBuilder lemmatizedSentence = new StringBuilder();
@@ -67,30 +71,31 @@ public class TokensService {
         if (!posFlag) {
             return false;
         }
-        boolean attrFlag = true;
-        Map<String, String> tokenAttrs = null;
-        try {
-            tokenAttrs = objectMapper.readValue(token.getAttrs(), new TypeReference<>() {});
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
         if (token1.getGrammar() == null || token1.getGrammar().isEmpty()) {
             return true;
         }
+        Map<String, List<String>> grammars = new HashMap<>();
+        Map<String, String> attrs = null;
+        try {
+            attrs = objectMapper.readValue(token.getAttrs(), new TypeReference<>() {});
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        for (var gram : token1.getGrammar()) {
+            var key = grammarMapHolder.getGrammarMap().get(gram);
+            if (!grammars.containsKey(key)) {
+                grammars.put(key, new ArrayList<>());
+            }
+            grammars.get(key).add(gram);
+        }
         boolean gramFlag = false;
-        for (var grammar : token1.getGrammar()) {
-            gramFlag = false;
-            for (var feature : grammar.getValue()) {
-                gramFlag = false;
-                for (var value : feature.getValue()) {
-                    if (tokenAttrs.get(feature.getName()).equals(value)) {
-                        gramFlag = true;
-                        break;
-                    }
-                }
-                if (!gramFlag) {
+        for (var gram : grammars.keySet()) {
+            for (var feature : grammars.get(gram)) {
+                if (attrs.get(gram).equals(feature)) {
+                    gramFlag = true;
                     break;
                 }
+                gramFlag = false;
             }
             if (!gramFlag) {
                 break;
