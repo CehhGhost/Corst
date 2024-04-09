@@ -74,6 +74,9 @@ public class TokensService {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+        if (token1.getGrammar() == null || token1.getGrammar().isEmpty()) {
+            return true;
+        }
         boolean gramFlag = false;
         for (var grammar : token1.getGrammar()) {
             gramFlag = false;
