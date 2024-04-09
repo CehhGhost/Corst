@@ -99,4 +99,12 @@ public class AnnotationsService {
         errorTags.addAll(errorTagsService.getAllByNames(errorTagsNames).stream().toList());
         annotationsRepository.save(annotation.get());
     }
+
+    public List<AnnotationDTO> getAnnotationsBySentenceId(Long id) {
+        return sentencesService.getAnnotationsByTheirSentenceId(id);
+    }
+
+    public List<AnnotationDTO> getAnnotationsByDocumentId(Long id) {
+        return documentsService.getAnnotationsByTheirDocumentId(id);
+    }
 }
