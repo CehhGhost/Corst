@@ -7,12 +7,12 @@
           <div class="col-3">
             <q-btn-group vertical style="margin-bottom: 20px">
               <q-btn
-                label="Specify Subcorpus"
+                :label="$t('specify_subcorpus')"
                 color="primary"
                 @click="displaySubcorpusModal = true"
               />
               <q-btn
-                label="Display Options"
+                :label="$t('display_options')"
                 color="primary"
                 @click="displaySettingsModal = true"
               />
@@ -21,7 +21,9 @@
           <q-dialog v-model="displaySubcorpusModal">
             <q-card style="width: 800px; max-width: 90vw">
               <q-card-section class="row items-center q-pb-sm">
-                <label class="text-h6">Specify Subcorpus</label>
+                <label class="text-h6">
+                  {{ $t("specify_subcorpus") }}
+                </label>
                 <q-space />
                 <q-btn icon="close" flat round dense v-close-popup />
               </q-card-section>
@@ -35,20 +37,22 @@
                   <div style="flex: 1 0 30%; max-width: 30%">
                     <q-card outlined>
                       <q-card-section class="bg-primary text-white">
-                        <div class="text-h6">Period</div>
+                        <div class="text-h6">
+                          {{ $t("period") }}
+                        </div>
                       </q-card-section>
                       <q-card-actions>
                         <div class="row">
                           <q-input
                             v-model="subcorpusData.periodFrom"
-                            label="From"
+                            :label="$t('from')"
                             placeholder="2014"
                             outlined
                             style="width: 48%; margin-right: 4%"
                           />
                           <q-input
                             v-model="subcorpusData.periodTo"
-                            label="To"
+                            :label="$t('to')"
                             placeholder="2015"
                             outlined
                             style="width: 48%"
@@ -67,7 +71,9 @@
                           )
                         "
                       >
-                        <div class="text-h6">Author Gender</div>
+                        <div class="text-h6">
+                          {{ $t("authors_gender") }}
+                        </div>
                       </q-card-section>
                       <q-card-actions>
                         <div
@@ -95,7 +101,9 @@
                           )
                         "
                       >
-                        <div class="text-h6">Authors course</div>
+                        <div class="text-h6">
+                          {{ $t("authors_course") }}
+                        </div>
                       </q-card-section>
                       <q-card-actions
                         style="flex-direction: column; align-items: flex-start"
@@ -122,7 +130,9 @@
                         class="bg-primary text-white"
                         @click="toggleTextFeaturesTextboxes()"
                       >
-                        <div class="text-h6">Text features</div>
+                        <div class="text-h6">
+                          {{ $t("text_features") }}
+                        </div>
                       </q-card-section>
                       <q-card-actions
                         style="flex-direction: row; align-items: flex-start"
@@ -135,7 +145,7 @@
                                 subcorpusData.genres
                               )
                             "
-                            >Type of assignment
+                            >{{ $t("type_of_assignment") }}
                           </label>
                           <div
                             style="display: flex; flex-direction: column"
@@ -159,7 +169,8 @@
                                 subcorpusData.authorsAcademicMajors
                               )
                             "
-                            >Academic major
+                          >
+                            {{ $t("authors_academic_major_2") }}
                           </label>
                           <div
                             style="display: flex; flex-direction: column"
@@ -183,7 +194,8 @@
                                 subcorpusData.domains
                               )
                             "
-                            >Domain
+                          >
+                            {{ $t("domain") }}
                           </label>
                           <div
                             style="display: flex; flex-direction: column"
@@ -215,7 +227,9 @@
                           )
                         "
                       >
-                        <div class="text-h6">Text status</div>
+                        <div class="text-h6">
+                          {{ $t("status") }}
+                        </div>
                       </q-card-section>
                       <q-card-actions>
                         <div
@@ -242,9 +256,9 @@
             <q-card style="width: 400px; max-width: 50vw">
               <q-card-section class="row items-center q-pb-sm">
                 <q-toolbar>
-                  <q-toolbar-title class="text-h6"
-                    >Display Options</q-toolbar-title
-                  >
+                  <q-toolbar-title class="text-h6">
+                    {{ $t("display_options_2") }}
+                  </q-toolbar-title>
                   <q-space />
                   <q-btn flat round dense icon="close" v-close-popup />
                 </q-toolbar>
@@ -252,7 +266,9 @@
               <q-separator />
               <q-card-section>
                 <div class="row justify-between items-center">
-                  <span style="font-size: 18px">Matches per page</span>
+                  <span style="font-size: 18px">
+                    {{ $t("matches_per_page") }}
+                  </span>
                   <q-select
                     outlined
                     style="width: 90px"
@@ -261,9 +277,9 @@
                   />
                 </div>
                 <div class="row justify-between items-center">
-                  <span style="font-size: 18px"
-                    >Sentences in expanded context</span
-                  >
+                  <span style="font-size: 18px">
+                    {{ $t("sentences_in_expanded_context") }}
+                  </span>
                   <q-select
                     outlined
                     style="width: 90px"
@@ -279,13 +295,15 @@
 
           <q-card class="rounded-borders">
             <q-card-section class="exactSearch">
-              <h3 class="text-h6" style="margin: 0px">Exact Search</h3>
+              <h3 class="text-h6" style="margin: 0px">
+                {{ $t("exact_search") }}
+              </h3>
               <q-form @submit="exactSearch" class="q-gutter-md">
                 <div class="row q-gutter-md items-center align-items-start">
                   <div class="col">
                     <q-input
                       v-model="exactSearchInput"
-                      placeholder="Exact search"
+                      :placeholder="$t('exact_search')"
                       outlined
                     />
                   </div>
@@ -295,7 +313,7 @@
                       type="submit"
                       icon="search"
                       color="primary"
-                      label="Search"
+                      :label="$t('search')"
                       size="large"
                       dense
                     />
@@ -307,7 +325,9 @@
           <h4></h4>
           <q-card class="rounded-borders">
             <q-card-section class="exactSearch">
-              <h3 class="text-h6">Lexgramm Search</h3>
+              <h3 class="text-h6">
+                {{ $t("lexgram_search") }}
+              </h3>
               <q-form @submit="lexgramSearch" class="q-gutter-md">
                 <div>
                   <div
@@ -329,7 +349,7 @@
                           unelevated
                           no-caps
                           color="teal"
-                          label="From"
+                          :label="$t('from_2')"
                           @click="focusInput('from', index)"
                         />
                         <q-input
@@ -345,7 +365,7 @@
                           unelevated
                           no-caps
                           color="teal"
-                          label="to"
+                          :label="$t('to_2')"
                           @click="focusInput('to', index)"
                         />
                         <q-input
@@ -363,24 +383,24 @@
                     <div class="row align-items-end" style="margin-top: 17px">
                       <div class="col-3">
                         <label v-if="!showDeleteButton || !index > 0">
-                          Wordform
+                          {{ $t("wordform") }}
                         </label>
                         <q-input
                           outlined
                           v-model="block.wordform"
-                          placeholder="Wordform"
+                          :placeholder="$t('wordform')"
                           dense
                         />
                       </div>
                       <div class="col-3">
                         <label v-if="!showDeleteButton || !index > 0">
-                          Part of speech
+                          {{ $t("part_of_speech") }}
                         </label>
                         <q-input
                           readonly
                           outlined
                           v-model="block.partOfSpeech"
-                          placeholder="Part of speech"
+                          :placeholder="$t('part_of_speech')"
                           dense
                         >
                           <template v-slot:append>
@@ -399,7 +419,7 @@
                                       class="text-h6"
                                       @click="block.partOfSpeech = ''"
                                     >
-                                      Part of speech
+                                      {{ $t("part_of_speech") }}
                                     </div>
                                     <q-space />
                                     <q-btn
@@ -483,13 +503,13 @@
                       <!-- Include gram select component here -->
                       <div class="col-3">
                         <label v-if="!showDeleteButton || !index > 0">
-                          Grammar
+                          {{ $t("grammar") }}
                         </label>
                         <q-input
                           readonly
                           outlined
                           v-model="block.grammar"
-                          placeholder="Grammar characteristics"
+                          :placeholder="$t('grammar')"
                           dense
                         >
                           <template v-slot:append>
@@ -507,7 +527,7 @@
                                       class="text-h6"
                                       @click="block.grammar = []"
                                     >
-                                      Grammar characteristics
+                                      {{ $t("grammar_characteristics") }}
                                     </div>
                                     <q-space />
                                     <q-btn
@@ -583,13 +603,13 @@
                       <!-- Include err select component here -->
                       <div class="col-2">
                         <label v-if="!showDeleteButton || !index > 0">
-                          Errors
+                          {{ $t("errors") }}
                         </label>
                         <q-input
                           readonly
                           outlined
                           v-model="block.errors"
-                          placeholder="Tags"
+                          :placeholder="$t('tags')"
                           dense
                         >
                           <template v-slot:append>
@@ -623,12 +643,12 @@
                     @click="addLexgramBlock"
                     outline
                     color="primary"
-                    label="Add Wordform"
+                    :label="$t('add_wordform')"
                   />
                   <q-btn
                     unelevated
                     type="submit"
-                    label="Search"
+                    :label="$t('search')"
                     color="primary"
                   />
                 </div>
