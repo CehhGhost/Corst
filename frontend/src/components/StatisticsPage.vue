@@ -34,5 +34,10 @@ export default {
       }
     },
   },
+  mounted() {
+    if (localStorage.getItem("corst_locale")) {
+      this.$i18n.locale = localStorage.getItem("corst_locale");
+    }
+  },
 };
 </script>

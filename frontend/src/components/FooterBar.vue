@@ -2,7 +2,7 @@
   <q-footer class="q-pa-md bg-secondary text-white">
     <div class="row justify-start items-center">
       <span class="text-white">
-        © HSE School of Linguistics. All rights reserved.
+        {{ $t("footer_text") }}
       </span>
     </div>
   </q-footer>

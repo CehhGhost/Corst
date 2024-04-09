@@ -17,7 +17,7 @@
         class="text-white"
         style="margin-right: 1%"
       >
-        Home
+        {{ $t("home") }}
       </q-btn>
       <q-btn
         flat
@@ -27,7 +27,7 @@
         class="text-white"
         style="margin-right: 1%"
       >
-        News
+        {{ $t("news") }}
       </q-btn>
       <q-btn
         flat
@@ -37,7 +37,7 @@
         class="text-white"
         style="margin-right: 1%"
       >
-        Search
+        {{ $t("search") }}
       </q-btn>
       <q-btn
         flat
@@ -47,10 +47,10 @@
         class="text-white"
         style="margin-right: 1%"
       >
-        Statistics
+        {{ $t("statistics") }}
       </q-btn>
       <q-btn flat dense to="/help" active-class="text-white" class="text-white">
-        Help
+        {{ $t("help") }}
       </q-btn>
       <q-space />
       <div v-if="!checkLogin()">
@@ -61,10 +61,28 @@
           active-class="text-white"
           class="text-white"
         >
-          Login
+          {{ $t("login_button") }}
         </q-btn>
       </div>
       <div v-else>
+        <q-btn
+          v-if="$i18n.locale === 'ru'"
+          flat
+          dense
+          label="RU"
+          active-class="text-white"
+          class="text-white"
+          @click="switchLanguage('en')"
+        ></q-btn>
+        <q-btn
+          v-else
+          flat
+          dense
+          label="EN"
+          active-class="text-white"
+          class="text-white"
+          @click="switchLanguage('ru')"
+        />
         <q-btn
           flat
           dense
@@ -72,7 +90,7 @@
           active-class="text-white"
           class="text-white"
         >
-          New Document
+          {{ $t("add_document") }}
         </q-btn>
         <q-btn
           flat
@@ -81,7 +99,7 @@
           active-class="text-white"
           class="text-white"
         >
-          All Documents
+          {{ $t("all_documents") }}
         </q-btn>
         <q-btn
           flat
@@ -90,7 +108,7 @@
           class="text-white"
           @click="logout()"
         >
-          Logout
+          {{ $t("logout") }}
         </q-btn>
       </div>
     </q-toolbar>
@@ -99,7 +117,6 @@
 
 <script>
 import router from "src/router";
-import { isLogin } from "src/global/globalFunctions";
 
 export default {
   name: "AppHeader",
@@ -116,6 +133,15 @@ export default {
       location.reload();
       this.isLogin = false;
     },
+    switchLanguage(locale) {
+      this.$i18n.locale = locale;
+      localStorage.setItem("corst_locale", locale);
+    },
+  },
+  mounted() {
+    if (localStorage.getItem("corst_locale")) {
+      this.$i18n.locale = localStorage.getItem("corst_locale");
+    }
   },
 };
 </script>

@@ -9,7 +9,7 @@
             to="/createArticle"
             color="primary"
             icon="add"
-            label="Add article"
+            :label="$t('add_article')"
             class="button"
             size="large"
           />
@@ -17,12 +17,12 @@
       </div>
       <div class="col-lg-6 col-md-8 col-sm-10">
         <div v-if="!loadingComplete" class="text-center text-grey-8">
-          Loading...
+          {{ $t("loading") }}
           <q-spinner color="primary" size="3em" :thickness="2" />
         </div>
         <div v-else>
           <div v-if="articles.length === 0" class="text-center text-grey-8">
-            No articles found.
+            {{ $t("no_articles_found") }}
           </div>
           <div v-else v-for="(article, i) in articles" :key="i">
             <q-card
@@ -35,7 +35,7 @@
                 <h3 class="text-h6">{{ article.date.split(" ")[0] }}</h3>
                 <div
                   class="row q-gutter-xs items-center"
-                  v-html="article.textRus"
+                  v-html="getCurrentArticleText(article)"
                 ></div>
 
                 <div class="q-pa-xs">
@@ -47,7 +47,7 @@
                         unelevated
                         color="secondary"
                         icon="edit"
-                        label="Edit"
+                        :label="$t('edit')"
                         class="button"
                         style="margin-right: 10px"
                         :to="'/editArticle/' + article.id"
@@ -102,9 +102,14 @@ export default {
     },
     async deleteArticle(id) {
       try {
-        const confirmation = confirm(
-          "Are you sure you want to delete this article?"
-        );
+        if (!this.userStatus) {
+          this.$router.push("/login");
+          return;
+        }
+        const confirmation =
+          this.$i18n.locale === "ru"
+            ? confirm("Вы уверены, что хотите удалить статью?")
+            : confirm("Are you sure you want to delete the article?");
         if (!confirmation) return;
         const response = await fetch(serverAdress + "/articles/" + id, {
           method: "DELETE",
@@ -118,13 +123,17 @@ export default {
         console.error(error);
       }
     },
+    getCurrentArticleText(article) {
+      return this.$i18n.locale === "en" ? article.textEng : article.textRus;
+    },
   },
   async mounted() {
+    if (localStorage.getItem("corst_locale")) {
+      this.$i18n.locale = localStorage.getItem("corst_locale");
+    }
     this.userStatus = await isLogin();
     await this.loadAllArticles();
     this.loadingComplete = true;
   },
 };
 </script>
-
-<style scoped></style>
