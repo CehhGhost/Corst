@@ -8,21 +8,21 @@
           <q-card-section class="item-info">
             <div class="column">
               <div class="info-item">
-                <span class="info-label">Created:</span>
+                <span class="info-label"> {{ $t("created_at") }}: </span>
                 <span class="info-value">{{
                   new Date(document.createdAt).toLocaleString()
                 }}</span>
               </div>
               <div class="info-item">
-                <span class="info-label">Genre:</span>
+                <span class="info-label"> {{ $t("genre") }}: </span>
                 <span class="info-value">{{ document.genre }}</span>
               </div>
               <div class="info-item">
-                <span class="info-label">Owner:</span>
+                <span class="info-label"> {{ $t("owner") }}: </span>
                 <span class="info-value">{{ document.ownerUsername }}</span>
               </div>
               <div class="info-item">
-                <span class="info-label">Status:</span>
+                <span class="info-label"> {{ $t("status") }}: </span>
                 <span class="info-value">{{
                   documentAdditionalInformation.statuses[document.statusNum]
                 }}</span>
@@ -30,19 +30,21 @@
             </div>
             <div class="info-column">
               <div class="info-item">
-                <span class="info-label">Gender:</span>
+                <span class="info-label"> {{ $t("gender") }}: </span>
                 <span class="info-value">{{ document.authorsGender[0] }}</span>
               </div>
               <div class="info-item">
-                <span class="info-label">Course:</span>
+                <span class="info-label"> {{ $t("authors_course") }}: </span>
                 <span class="info-value">{{ document.authorsCourse }}</span>
               </div>
               <div class="info-item">
-                <span class="info-label">Domain:</span>
+                <span class="info-label"> {{ $t("domain") }}: </span>
                 <span class="info-value">{{ document.domain }}</span>
               </div>
               <div class="info-item">
-                <span class="info-label">Academic Major:</span>
+                <span class="info-label">
+                  {{ $t("authors_academic_major") }}:
+                </span>
                 <span class="info-value">{{
                   document.authorsAcademicMajor
                 }}</span>
@@ -54,7 +56,7 @@
           <q-btn
             unelevated
             color="primary"
-            label="Annotate"
+            :label="$t('annotate')"
             class="button"
             :to="'/annotateDocument/' + document.id"
           />
@@ -63,7 +65,7 @@
             unelevated
             color="secondary"
             icon="edit"
-            label="Edit"
+            :label="$t('edit')"
             class="button"
             :to="'/editDocument/' + document.id"
             style="margin-left: 10px"
