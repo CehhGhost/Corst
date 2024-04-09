@@ -176,8 +176,6 @@ export default {
           mode: "pre",
         });
         recogito.on("createAnnotation", (annotation) => {
-          console.log("create");
-          console.log(annotation);
           this.sendAnnotation(annotation, sentence.id);
         });
         recogito.on("updateAnnotation", (annotation) => {
@@ -186,7 +184,7 @@ export default {
           //this.updateAnnotation(annotation, sentence.id);
         });
         recogito.on("deleteAnnotation", (annotation) => {
-          //this.deleteAnnotation(annotation, sentence.id);
+          this.deleteAnnotation(annotation, sentence.id);
         });
         recogito.loadAnnotations(
           serverAdress + "/annotations/get_by_sentence/" + sentence.id
@@ -224,19 +222,16 @@ export default {
         this.$router.push("/login");
       }
       try {
-        const response = await fetch(
-          serverAdress + "/documents/" + sentenceId,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              sentenceId: sentenceId,
-              annotation: annotation,
-            }),
-          }
-        );
+        const response = await fetch(serverAdress + "/annotations/", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            sentenceId: sentenceId,
+            annotation: annotation,
+          }),
+        });
         if (!response.ok) {
           console.error(response);
         }
