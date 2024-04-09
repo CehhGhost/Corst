@@ -81,7 +81,9 @@
           </div>
           <q-card flat bordered class="rounded-borders q-mb-xs">
             <q-card-section class="row items-center">
-              <span class="info-value"> {{ document.text }} </span>
+              <span class="info-value" id="main-text">
+                {{ document.text }}
+              </span>
             </q-card-section>
           </q-card>
         </div>
@@ -132,6 +134,17 @@ export default {
           this.document = "error";
         });
     },
+    async loadRecogito() {
+      const recogito = new Recogito({
+        content: "main-text",
+        mode: "pre",
+        readOnly: true,
+      });
+      recogito.loadAnnotations(
+        serverAdress + "/annotations/get_by_document/" + this.document.id
+      );
+      this.recogitoInstances.push(recogito);
+    },
   },
   async mounted() {
     if (!isLogin()) {
@@ -139,6 +152,12 @@ export default {
     } else {
       await this.loadDocument();
       this.loadingComplete = true;
+      this.loadRecogito();
+    }
+  },
+  beforeUnmount() {
+    if (this.recogito) {
+      this.recogito.destroy();
     }
   },
 };
