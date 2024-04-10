@@ -12,7 +12,7 @@
           class="absolute-bottom bg-transparent d-flex flex-column justify-center items-center"
         >
           <div class="d-flex justify-center w-100">
-            <q-btn flat dense to="/" style="height: 80px; margin-left: 25%">
+            <q-btn flat dense to="/" style="height: 80px; margin-left: 27%">
               <img src="../../resources/KRUT2.png" alt="Website Logo" />
             </q-btn>
           </div>
@@ -20,7 +20,7 @@
             class="text-center text-white"
             style="font-size: 18px; margin-bottom: 10px"
           >
-            Matvey Tataurovskiy
+            {{ name }}
           </div>
         </div>
       </q-banner>
@@ -76,7 +76,7 @@ export default {
       ],
 
       name: "",
-      permissioms: [],
+      authorities: [],
     };
   },
   methods: {
@@ -99,7 +99,8 @@ export default {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+        this.name = data.name + " " + data.surname;
+        this.authorities = data.authorities;
       } else {
         this.name = "Error";
       }
