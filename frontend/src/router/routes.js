@@ -59,6 +59,20 @@ const routes = [
     path: "/admin",
     component: () => import("../views/administration/AdminMainView.vue"),
   },
+  {
+    path: "/admin/documents",
+    component: () =>
+      import("../views/administration/AdminAllDocumentsView.vue"),
+  },
+  {
+    path: "/admin/documents/:id",
+    component: () => import("../views/administration/AdminDocumentView.vue"),
+  },
+  {
+    path: "/admin/documents/create",
+    component: () =>
+      import("../views/administration/AdminCreateDocumentView.vue"),
+  },
   // Error route
   {
     path: "/:catchAll(.*)*",

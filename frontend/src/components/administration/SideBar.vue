@@ -37,7 +37,7 @@
             v-for="(route, index) in routes"
             :key="index"
             clickable
-            @click="navigateTo(route.path)"
+            :to="route.path"
             :active-class="'bg-grey-2'"
           >
             <q-item-section>
@@ -80,10 +80,6 @@ export default {
     };
   },
   methods: {
-    navigateTo(path, index) {
-      this.activeIndex = index;
-      this.$router.push(path);
-    },
     async getName() {
       if (!isLogin()) {
         this.$router.push("/login");
