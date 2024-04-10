@@ -114,6 +114,7 @@ export default {
         .then((response) => response.json())
         .then((data) => {
           this.document = data;
+          console.log(this.document);
         })
         .catch((error) => {
           console.error("Error:", error);

@@ -1,10 +1,5 @@
 <template>
   <div class="q-pa-md">
-    <div class="text-subtitle1 q-pa-sm">
-      Use <kbd>SHIFT</kbd> to select / deselect a range and <kbd>CTRL</kbd> to
-      add to selection
-    </div>
-
     <q-table
       flat
       bordered
@@ -37,7 +32,6 @@
 
 <script>
 import { serverAdress } from "../../global/globalVaribles.js";
-import { isLogin } from "../../global/globalFunctions.js";
 import { ref, toRaw, nextTick } from "vue";
 
 export default {
@@ -48,7 +42,6 @@ export default {
         label: "ID",
         align: "left",
         field: (row) => row.id,
-        format: (val) => `${val}`,
         sortable: true,
       },
       {
