@@ -69,4 +69,5 @@ export default {
   administration: "Администрирование",
   create_section: "Создать раздел",
   add_section: "Создать раздел",
+  edit_section: "Изменить раздел",
 };
