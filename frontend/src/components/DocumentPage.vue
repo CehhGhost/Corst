@@ -80,15 +80,10 @@
         </q-card>
       </div>
       <div v-else>
-        <h1 class="text-h3">Error</h1>
-        <p>Failed to load document</p>
-        <q-btn
-          push
-          color="secondary"
-          label="Go to all documents"
-          class="q-mt-md"
-          to="/documents"
-        />
+        <div class="text-center text-grey-8">
+          {{ $t("loading") }}
+          <q-spinner color="primary" size="3em" :thickness="2" />
+        </div>
       </div>
     </q-page>
   </q-page-container>
