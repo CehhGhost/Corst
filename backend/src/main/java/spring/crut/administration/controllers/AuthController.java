@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import spring.crut.administration.dto.AuthDTO;
 import spring.crut.administration.dto.JwtDTO;
 import spring.crut.administration.security.JWTUtil;
+import spring.crut.administration.services.AuthoritiesService;
 import spring.crut.administration.services.CrutUserDetailsService;
 
 
@@ -22,6 +23,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
     private final CrutUserDetailsService crutUserDetailsService;
+    private final AuthoritiesService authoritiesService;
 
     @PostMapping
     public ResponseEntity<?> loginUser(@RequestBody AuthDTO authDTO) {
@@ -35,7 +37,8 @@ public class AuthController {
         JwtDTO jwtDTO = new JwtDTO(jwt);
         return ResponseEntity.ok(jwtDTO);
     }
-    @GetMapping("/check_login") ResponseEntity<?> checkValidationOfToken(@RequestParam(name = "jwt") String jwt) {
+    @GetMapping("/check_login")
+    ResponseEntity<?> checkValidationOfToken(@RequestParam(name = "jwt") String jwt) {
         try {
             var username = jwtUtil.validateTokenAndRetrieveClaim(jwt);
             crutUserDetailsService.loadUserByUsername(username);
@@ -43,5 +46,10 @@ public class AuthController {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(HttpStatus.OK);
+    }
+    // TODO протестировать при разных исходах работы с токеном
+    @GetMapping("/get_auth_info")
+    ResponseEntity<?> getAuthInfo() {
+        return ResponseEntity.ok(authoritiesService.getAuthInfo());
     }
 }
