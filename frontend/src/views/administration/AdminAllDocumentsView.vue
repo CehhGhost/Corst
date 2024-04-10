@@ -1,7 +1,7 @@
 <script setup>
 import SideBar from "src/components/administration/SideBar.vue";
 import NavBar from "src/components/administration/NavBar.vue";
-import AdminAllDocumentsView from "src/views/administration/AdminAllDocumentsView.vue";
+import AdminAllDocumentsPage from "src/components/administration/AllDocumentsPage.vue";
 </script>
 
 <template>
@@ -11,7 +11,7 @@ import AdminAllDocumentsView from "src/views/administration/AdminAllDocumentsVie
     </q-header>
     <SideBar />
     <div>
-      <AdminAllDocumentsView />
+      <AdminAllDocumentsPage />
     </div>
   </q-layout>
 </template>

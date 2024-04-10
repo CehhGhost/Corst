@@ -66,7 +66,7 @@ export default {
       persistent: true,
       activeIndex: 0,
       routes: [
-        { label: "Documents", path: "/admin_documents" },
+        { label: "Documents", path: "/admin/documents" },
         { label: "Articles", path: "/admin/articles" },
         { label: "Sections", path: "/admin/sections" },
         { label: "Users", path: "/admin/users" },

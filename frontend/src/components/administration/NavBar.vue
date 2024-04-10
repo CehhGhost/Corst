@@ -30,8 +30,6 @@
 </template>
 
 <script>
-import router from "src/router";
-
 export default {
   name: "AppHeader",
   data() {

@@ -60,7 +60,7 @@ const routes = [
     component: () => import("../views/administration/AdminMainView.vue"),
   },
   {
-    path: "/admin_documents",
+    path: "/admin/documents",
     component: () =>
       import("../views/administration/AdminAllDocumentsView.vue"),
   },
