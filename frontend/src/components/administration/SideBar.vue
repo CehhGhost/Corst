@@ -12,11 +12,9 @@
           class="absolute-bottom bg-transparent d-flex flex-column justify-center items-center"
         >
           <div class="d-flex justify-center w-100">
-            <img
-              src="../../resources/KRUT2.png"
-              alt="Website Logo"
-              style="height: 80px; margin-left: 25%"
-            />
+            <q-btn flat dense to="/" style="height: 80px; margin-left: 25%">
+              <img src="../../resources/KRUT2.png" alt="Website Logo" />
+            </q-btn>
           </div>
           <div
             class="text-center text-white"
