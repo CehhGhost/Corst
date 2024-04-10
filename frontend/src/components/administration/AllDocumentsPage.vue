@@ -263,7 +263,7 @@ export default {
       return rows;
     },
     goToDocPage(id) {
-      this.$router.push(`/documents/${id}`);
+      this.$router.push(`/admin/documents/${id}`);
     },
 
     deleteDocuments() {
