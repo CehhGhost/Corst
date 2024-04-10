@@ -12,7 +12,7 @@
           class="absolute-bottom bg-transparent d-flex flex-column justify-center items-center"
         >
           <div class="d-flex justify-center w-100">
-            <q-btn flat dense to="/" style="height: 80px; margin-left: 25%">
+            <q-btn flat dense to="/" style="height: 80px; margin-left: 27%">
               <img src="../../resources/KRUT2.png" alt="Website Logo" />
             </q-btn>
           </div>
@@ -20,7 +20,7 @@
             class="text-center text-white"
             style="font-size: 18px; margin-bottom: 10px"
           >
-            Matvey Tataurovskiy
+            {{ name }}
           </div>
         </div>
       </q-banner>
@@ -54,6 +54,9 @@
 </template>
 
 <script>
+import { serverAdress } from "../../global/globalVaribles.js";
+import { isLogin } from "../../global/globalFunctions.js";
+
 export default {
   data() {
     return {
@@ -68,9 +71,12 @@ export default {
         { label: "Sections", path: "/admin/sections" },
         { label: "Users", path: "/admin/users" },
         { label: "Roles", path: "/admin/roles" },
-        { label: "Permissions", path: "/admin/permissions" },
+        { label: "Authorities", path: "/admin/authorities" },
         { label: "Genres", path: "/admin/genres" },
       ],
+
+      name: "",
+      authorities: [],
     };
   },
   methods: {
@@ -78,6 +84,31 @@ export default {
       this.activeIndex = index;
       this.$router.push(path);
     },
+    async getName() {
+      if (!isLogin()) {
+        this.$router.push("/login");
+        return;
+      }
+      const url = serverAdress + "/auth/get_auth_info";
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("corst_token"),
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        this.name = data.name + " " + data.surname;
+        this.authorities = data.authorities;
+      } else {
+        this.name = "Error";
+      }
+    },
+  },
+
+  mounted() {
+    this.getName();
   },
 };
 </script>

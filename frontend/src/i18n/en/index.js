@@ -66,4 +66,5 @@ export default {
   tags: "Tags",
   add_wordform: "Add wordform",
   change_password: "Change password",
+  administration: "Administration",
 };

@@ -43,7 +43,7 @@ export default {
     },
     logout() {
       localStorage.removeItem("corst_token");
-      router.push("/");
+      this.$router.push("/");
       location.reload();
       this.isLogin = false;
     },
@@ -53,6 +53,9 @@ export default {
     },
   },
   mounted() {
+    if (!localStorage.getItem("corst_token")) {
+      this.$router.push("/");
+    }
     if (localStorage.getItem("corst_locale")) {
       this.$i18n.locale = localStorage.getItem("corst_locale");
     }

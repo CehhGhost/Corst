@@ -106,6 +106,15 @@
           dense
           active-class="text-white"
           class="text-white"
+          to="/admin"
+        >
+          {{ $t("administration") }}
+        </q-btn>
+        <q-btn
+          flat
+          dense
+          active-class="text-white"
+          class="text-white"
           @click="logout()"
         >
           {{ $t("logout") }}
