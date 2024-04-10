@@ -44,9 +44,9 @@ public abstract class InfoService <T extends Info, R extends InfoRepository<T>> 
     protected abstract T createInfo(String name);
 
     @Transactional
-    public Set<T> getAllByNames(List<String> errorTagsNames) {
+    public Set<T> getAllByNames(List<String> infoNames) {
         Set<T> result = new HashSet<>();
-        for (var name : errorTagsNames) {
+        for (var name : infoNames) {
             name = name.toLowerCase();
             var info = repository.findByName(name);
             if (info.isEmpty()) {
@@ -55,5 +55,29 @@ public abstract class InfoService <T extends Info, R extends InfoRepository<T>> 
             result.add(info.get());
         }
         return result;
+    }
+
+    @Transactional
+    public void deleteInfoById(Long id) {
+        if (!repository.existsById(id)) {
+            throw new IllegalArgumentException("No info with such id!");
+        }
+        repository.deleteById(id);
+    }
+
+    @Transactional
+    public void updateInfoById(Long id, String name) {
+        if (name == null || name.isEmpty()) {
+            return;
+        }
+        var info = repository.findById(id);
+        if (info.isEmpty()) {
+            throw new IllegalArgumentException("No info with such id!");
+        }
+        if (repository.existsByName(name)) {
+            throw new IllegalArgumentException("There is already an info with such name!");
+        }
+        info.get().setName(name);
+        repository.save(info.get());
     }
 }
