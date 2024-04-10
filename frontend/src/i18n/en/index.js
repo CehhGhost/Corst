@@ -65,4 +65,5 @@ export default {
   errors: "Errors",
   tags: "Tags",
   add_wordform: "Add wordform",
+  change_password: "Change password",
 };

@@ -65,4 +65,5 @@ export default {
   errors: "Ошибки",
   tags: "Теги",
   add_wordform: "Добавить словоформу",
+  change_password: "Сменить пароль",
 };
