@@ -54,6 +54,9 @@
 </template>
 
 <script>
+import { serverAdress } from "../../global/globalVaribles.js";
+import { isLogin } from "../../global/globalFunctions.js";
+
 export default {
   data() {
     return {
@@ -68,9 +71,12 @@ export default {
         { label: "Sections", path: "/admin/sections" },
         { label: "Users", path: "/admin/users" },
         { label: "Roles", path: "/admin/roles" },
-        { label: "Permissions", path: "/admin/permissions" },
+        { label: "Authorities", path: "/admin/authorities" },
         { label: "Genres", path: "/admin/genres" },
       ],
+
+      name: "",
+      permissioms: [],
     };
   },
   methods: {
@@ -78,6 +84,30 @@ export default {
       this.activeIndex = index;
       this.$router.push(path);
     },
+    async getName() {
+      if (!isLogin()) {
+        this.$router.push("/login");
+        return;
+      }
+      const url = serverAdress + "/auth/get_auth_info";
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("corst_token"),
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+      } else {
+        this.name = "Error";
+      }
+    },
+  },
+
+  mounted() {
+    this.getName();
   },
 };
 </script>
