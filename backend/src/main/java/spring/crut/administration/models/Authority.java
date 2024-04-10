@@ -21,10 +21,5 @@ public class Authority {
 
     private String name;
 
-    @ManyToMany
-    @JoinTable(name = "_roles_authorities",
-            joinColumns = @JoinColumn(name = "roles_id"),
-            inverseJoinColumns = @JoinColumn(name = "authorities_id"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"roles_id", "authorities_id"}))
-    private Set<Role> roles;
+
 }

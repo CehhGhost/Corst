@@ -34,17 +34,17 @@ public class AdminController {
         usersService.createUser(user);
         return ResponseEntity.ok(HttpStatus.OK);
     }
-    @PutMapping("/set_role/{id}")
+    @PatchMapping("/set_role/{id}")
     public ResponseEntity<HttpStatus> setRoleForUser(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {
         usersService.setRoleForUser(id, requestBody.get("role"));
         return ResponseEntity.ok(HttpStatus.OK);
     }
-    @PutMapping("/change_password/{id}")
+    @PatchMapping("/change_password/{id}")
     public ResponseEntity<HttpStatus> changePasswordForUser(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {
         usersService.changePasswordForUser(id, requestBody.get("oldPassword"), requestBody.get("newPassword"));
         return ResponseEntity.ok(HttpStatus.OK);
     }
-    @GetMapping("/user")
+    @GetMapping("/users")
     public ResponseEntity<?> getAllUsers() {
         List<UserDTO> usersDTO = new ArrayList<>();
         for (var user : usersService.getAllUsers()) {
