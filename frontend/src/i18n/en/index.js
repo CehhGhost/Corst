@@ -69,4 +69,5 @@ export default {
   administration: "Administration",
   create_section: "Create section",
   add_section: "Add section",
+  edit_section: "Edit section",
 };
