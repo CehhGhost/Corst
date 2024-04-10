@@ -75,7 +75,7 @@
         icon="add"
         :label="$t('add_document')"
         class="button"
-        to="/admin/documents/add"
+        to="/admin/documents/create"
       />
       <q-btn
         unelevated
