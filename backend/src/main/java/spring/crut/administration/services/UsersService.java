@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import spring.crut.administration.models.Role;
 import spring.crut.administration.models.User;
 import spring.crut.administration.repositories.RolesRepository;
@@ -22,6 +23,7 @@ public class UsersService {
         usersRepository.save(user);
     }
 
+    @Transactional
     public void setRoleForUser(Long id, String roleName) {
         var role = rolesRepository.findByName(roleName);
         if (role.isEmpty()) {

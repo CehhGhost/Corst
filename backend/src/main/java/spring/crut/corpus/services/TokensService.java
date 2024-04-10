@@ -62,7 +62,7 @@ public class TokensService {
         return tokensRepository.findAllBySentenceOrderByNum(sentence);
     }
 
-    // TODO продумать, как работать с грамматикой и тегами ошибок
+    // TODO продумать, как работать c тегами ошибок
     public boolean equalsToLexGramTokenDTO(Token token, LexGramTokenDTO token1) {
         if (!token.getLemma().equals(token1.getWordform())) {
             return false;
