@@ -68,6 +68,25 @@
         </q-td>
       </template>
     </q-table>
+    <div style="display: flex; justify-content: flex-end; margin-top: 20px">
+      <q-btn
+        unelevated
+        color="primary"
+        icon="add"
+        :label="$t('add_document')"
+        class="button"
+        to="/admin/documents/add"
+      />
+      <q-btn
+        unelevated
+        color="negative"
+        icon="delete"
+        class="button"
+        :disabled="selected == null || selected.length === 0"
+        style="margin-left: 10px; margin-right: 20px"
+        @click="deleteDocuments()"
+      />
+    </div>
   </div>
 </template>
 
@@ -175,15 +194,36 @@ export default {
         if (rows.length !== 1 || evt === void 0) {
           return;
         }
+        const oldSelectedRow = storedSelectedRow;
         const [newSelectedRow] = rows;
         const { ctrlKey, shiftKey } = evt;
-
         if (shiftKey !== true) {
           storedSelectedRow = newSelectedRow;
         }
-
         nextTick(() => {
-          if (ctrlKey !== true && added === true) {
+          if (shiftKey === true) {
+            const tableRows = tableRef.value.filteredSortedRows;
+            let firstIndex = tableRows.indexOf(oldSelectedRow);
+            let lastIndex = tableRows.indexOf(newSelectedRow);
+            if (firstIndex < 0) {
+              firstIndex = 0;
+            }
+            if (firstIndex > lastIndex) {
+              [firstIndex, lastIndex] = [lastIndex, firstIndex];
+            }
+            const rangeRows = tableRows.slice(firstIndex, lastIndex + 1);
+            const selectedRows = selected.value.map(toRaw);
+            selected.value =
+              added === true
+                ? selectedRows.concat(
+                    rangeRows.filter(
+                      (row) => selectedRows.includes(row) === false
+                    )
+                  )
+                : selectedRows.filter(
+                    (row) => rangeRows.includes(row) === false
+                  );
+          } else if (ctrlKey !== true && added === true) {
             selected.value = [newSelectedRow];
           }
         });
@@ -224,6 +264,21 @@ export default {
     },
     goToDocPage(id) {
       this.$router.push(`/documents/${id}`);
+    },
+
+    deleteDocuments() {
+      const confirmation =
+        this.$i18n.locale === "ru"
+          ? confirm("Вы уверены, что хотите удалить документы?")
+          : confirm("Are you sure you want to delete the documents?");
+      if (!confirmation) return;
+      for (let i = 0; i < this.selected.length; i++) {
+        fetch(serverAdress + "/documents/delete/" + this.selected[i].id, {
+          method: "DELETE",
+        });
+      }
+      this.rows = this.rows.filter((row) => !this.selected.includes(row));
+      this.selected = [];
     },
   },
   async mounted() {
