@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import { ref } from "vue";
 import { serverAdress } from "../../global/globalVaribles.js";
 import { isLogin } from "../../global/globalFunctions.js";
 
@@ -65,7 +64,7 @@ export default {
         textRus: this.textRus,
         textEng: this.textEng,
       };
-      const response = await fetch(`${serverAdress}/sections`, {
+      const response = await fetch(`${serverAdress}/sections/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

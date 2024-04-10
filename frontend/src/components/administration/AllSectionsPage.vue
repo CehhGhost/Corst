@@ -65,7 +65,7 @@
         icon="add"
         :label="$t('add_section')"
         class="button"
-        to="/admin/createSection"
+        to="/admin/sections/create"
       />
       <q-btn
         unelevated
@@ -105,14 +105,14 @@ export default {
         name: "headerRus",
         label: "Header (Rus)",
         align: "center",
-        field: "date",
+        field: "headerRus",
         sortable: true,
       },
       {
         name: "headerEng",
         label: "Header (Eng)",
         align: "center",
-        field: "date",
+        field: "headerEng",
         sortable: true,
       },
       {
@@ -207,6 +207,7 @@ export default {
     getAllSectionRows(data) {
       const rows = [];
       for (let i = 0; i < data.length; i++) {
+        console.log(data[i]);
         rows.push({
           id: data[i].id,
           number: data[i].number,
@@ -220,14 +221,10 @@ export default {
     },
     goToSectionPage(id) {
       console.log(id);
-      this.$router.push(`/adminSection/${id}`);
+      this.$router.push(`/admin/sections/${id}`);
     },
 
     deleteSections() {
-      if (!this.userStatus) {
-        this.$router.push("/login");
-        return;
-      }
       const confirmation =
         this.$i18n.locale === "ru"
           ? confirm("Вы уверены, что хотите удалить выбранные секции?")
@@ -241,11 +238,8 @@ export default {
               method: "DELETE",
             }
           );
-          if (response.ok) {
-            this.loadAllSections();
-          } else {
-            console.error(response);
-          }
+          this.rows = this.rows.filter((row) => !this.selected.includes(row));
+          this.selected = [];
         } catch (error) {
           console.error(error);
         }

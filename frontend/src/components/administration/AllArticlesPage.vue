@@ -209,10 +209,6 @@ export default {
     },
 
     deleteArticles() {
-      if (!this.userStatus) {
-        this.$router.push("/login");
-        return;
-      }
       const confirmation =
         this.$i18n.locale === "ru"
           ? confirm("Вы уверены, что хотите удалить выбранные статьи?")
@@ -226,14 +222,11 @@ export default {
               method: "DELETE",
             }
           );
-          if (response.ok) {
-            this.loadAllArticles();
-          } else {
-            console.error(response);
-          }
         } catch (error) {
           console.error(error);
         }
+        this.rows = this.rows.filter((row) => !this.selected.includes(row));
+        this.selected = [];
       });
     },
   },
