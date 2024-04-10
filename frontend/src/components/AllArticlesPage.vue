@@ -93,6 +93,7 @@ export default {
         if (response.ok) {
           const data = await response.json();
           this.articles = data;
+          console.log(data);
         } else {
           console.log(response);
         }
@@ -100,7 +101,7 @@ export default {
         console.error(error);
       }
     },
-    async deleteArticle(id) {
+    async deleteArticle() {
       try {
         if (!this.userStatus) {
           this.$router.push("/login");
@@ -111,14 +112,13 @@ export default {
             ? confirm("Вы уверены, что хотите удалить статью?")
             : confirm("Are you sure you want to delete the article?");
         if (!confirmation) return;
-        const response = await fetch(serverAdress + "/articles/" + id, {
-          method: "DELETE",
-        });
-        if (response.ok) {
-          this.loadAllArticles();
-        } else {
-          console.error(response);
+        for (let i = 0; i < this.selected.length; i++) {
+          fetch(serverAdress + "/articles/delete/" + this.selected[i].id, {
+            method: "DELETE",
+          });
         }
+        this.rows = this.rows.filter((row) => !this.selected.includes(row));
+        this.selected = [];
       } catch (error) {
         console.error(error);
       }
