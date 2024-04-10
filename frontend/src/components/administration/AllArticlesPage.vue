@@ -205,7 +205,7 @@ export default {
     },
     goToArticlePage(id) {
       console.log(id);
-      this.$router.push(`/adminArticle/${id}`);
+      this.$router.push(`/admin/articles/${id}`);
     },
 
     deleteArticles() {

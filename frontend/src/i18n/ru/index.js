@@ -67,4 +67,6 @@ export default {
   add_wordform: "Добавить словоформу",
   change_password: "Сменить пароль",
   administration: "Администрирование",
+  create_section: "Создать раздел",
+  add_section: "Создать раздел",
 };

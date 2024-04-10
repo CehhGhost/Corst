@@ -63,9 +63,9 @@
         unelevated
         color="primary"
         icon="add"
-        :label="$t('add_article')"
+        :label="$t('add_section')"
         class="button"
-        to="/admin/sections/create"
+        to="/admin/createSection"
       />
       <q-btn
         unelevated
