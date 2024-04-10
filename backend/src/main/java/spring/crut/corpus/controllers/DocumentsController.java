@@ -80,4 +80,8 @@ public class DocumentsController {
         documentsService.setStatusById(id, status);
         return ResponseEntity.ok(HttpStatus.OK);
     }
+    @GetMapping("/get_contect/{id}/{amount}")
+    public ResponseEntity<?> getContextForSentence(@PathVariable Long id, @PathVariable Integer amount) {
+        return ResponseEntity.ok(sentencesService.getContextForSentence(id, amount));
+    }
 }

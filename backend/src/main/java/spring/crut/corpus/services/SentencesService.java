@@ -10,11 +10,8 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-import spring.crut.corpus.dto.AnnotationDTO;
-import spring.crut.corpus.dto.SearchSentenceDTO;
-import spring.crut.corpus.dto.CreateSentenceDTO;
+import spring.crut.corpus.dto.*;
 
-import spring.crut.corpus.dto.LexGramTokenDTO;
 import spring.crut.corpus.models.Annotation;
 import spring.crut.corpus.models.Document;
 import spring.crut.corpus.models.Sentence;
@@ -250,6 +247,30 @@ public class SentencesService {
             annotationDTOs.add(annotationDTO);
         }
         return annotationDTOs;
+    }
+
+    @Transactional
+    public SentenceContextDTO getContextForSentence(Long id, Integer amount) {
+        var currentSentence = sentencesRepository.findById(id);
+        if (currentSentence.isEmpty()) {
+            throw new IllegalArgumentException("No such sentence with this id!");
+        }
+        var sentences = currentSentence.get().getDocument().getSentences();
+        var currentNum = currentSentence.get().getNum();
+        List<String> contextText = new ArrayList<>();
+        for (int i = amount; i > 0; --i) {
+            if (i <= currentNum) {
+                contextText.add(sentences.get(currentNum - i).getText());
+            }
+        }
+        int resultNum = contextText.size();
+        contextText.add(currentSentence.get().getText());
+        for (int i = 1; i <= amount; ++i) {
+            if (i + currentNum < sentences.size()) {
+                contextText.add(sentences.get(currentNum + i).getText());
+            }
+        }
+        return new SentenceContextDTO(contextText, resultNum);
     }
 
     static class LemmatizedWordform {
