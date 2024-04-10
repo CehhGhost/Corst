@@ -101,23 +101,23 @@ public class InfoController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("/domains")
+    @GetMapping("/genres")
     public ResponseEntity<?> getAllGenres() {
         return ResponseEntity.ok(genresService.getAll());
     }
 
-    @PostMapping("/domains/create")
+    @PostMapping("/genres/create")
     public ResponseEntity<?> createGenre(@RequestBody InfoDTO infoDTO) {
         genresService.create(infoDTO.getName());
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @DeleteMapping("/domains/{id}")
+    @DeleteMapping("/genres/{id}")
     public ResponseEntity<?> deleteGenreById(@PathVariable Long id) {
         genresService.deleteInfoById(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
-    @PutMapping("/domains/{id}")
+    @PutMapping("/genres/{id}")
     public ResponseEntity<?> updateGenreById(@PathVariable Long id, @RequestBody InfoDTO infoDTO) {
         genresService.updateInfoById(id, infoDTO.getName());
         return ResponseEntity.ok(HttpStatus.OK);
