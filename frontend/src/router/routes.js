@@ -82,6 +82,11 @@ const routes = [
     component: () =>
       import("../views/administration/AdminCreateArticleView.vue"),
   },
+  {
+    path: "/adminArticle/:id",
+    component: () =>
+      import("src/views/administration/AdminEditArticleView.vue"),
+  },
   // Error route
   {
     path: "/:catchAll(.*)*",
