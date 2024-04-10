@@ -4,13 +4,14 @@
       flat
       bordered
       ref="tableRef"
-      title="Treats"
+      title="Documents"
       :rows="rows"
       :columns="cols"
       row-key="id"
       selection="multiple"
       v-model:selected="selected"
       @selection="handleSelection"
+      style="width: (100% - 200px); margin-left: 200px; margin-top: 50px"
     >
       <template v-slot:header-selection="scope">
         <q-checkbox v-model="scope.selected" />
@@ -35,7 +36,7 @@ import { serverAdress } from "../../global/globalVaribles.js";
 import { ref, toRaw, nextTick } from "vue";
 
 export default {
-  setup() {
+  data() {
     const cols = [
       {
         name: "id",
@@ -108,7 +109,7 @@ export default {
         sortable: true,
       },
     ];
-    let rows = ref([]);
+    let rows = ref(this.getAllDocumentRows(this.getAllDocuments()));
 
     const tableRef = ref();
     const selected = ref([]);
@@ -165,7 +166,6 @@ export default {
       },
     };
   },
-  data() {},
   methods: {
     async getAllDocuments() {
       try {
@@ -174,6 +174,7 @@ export default {
         });
         if (response.ok) {
           const data = await response.json();
+          console.log(data);
           return data;
         }
       } catch (error) {
@@ -199,8 +200,9 @@ export default {
       return rows;
     },
   },
-  mounted() {
-    this.rows = this.getAllDocumentRows(this.getAllDocuments());
+  async mounted() {
+    console.log(this.rows);
+    this.rows = this.getAllDocumentRows(await this.getAllDocuments());
   },
 };
 </script>
