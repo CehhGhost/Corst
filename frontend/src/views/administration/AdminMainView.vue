@@ -10,7 +10,7 @@ import AdminMainPage from "src/components/administration/AdminMainPage.vue";
       <NavBar />
     </q-header>
     <SideBar />
-    <div class="ml-64">
+    <div>
       <AdminMainPage />
     </div>
   </q-layout>

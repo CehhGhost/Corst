@@ -66,4 +66,5 @@ export default {
   tags: "Теги",
   add_wordform: "Добавить словоформу",
   change_password: "Сменить пароль",
+  administration: "Администрирование",
 };
