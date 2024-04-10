@@ -29,9 +29,4 @@ public class AuthoritiesController {
         }
         return ResponseEntity.ok(result);
     }
-    // TODO протестировать при разных исходах работы с токеном
-    @GetMapping("/get_for_user")
-    ResponseEntity<?> getAuthoritiesForUser() {
-        return ResponseEntity.ok(authoritiesService.getAuthoritiesForUser());
-    }
 }
