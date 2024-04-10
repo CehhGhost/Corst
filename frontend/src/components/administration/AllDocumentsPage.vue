@@ -7,12 +7,32 @@
       title="Documents"
       :rows="rows"
       :columns="cols"
+      :visible-columns="visibleColumns"
       row-key="id"
       selection="multiple"
       v-model:selected="selected"
       @selection="handleSelection"
       style="width: (100% - 200px); margin-left: 200px; margin-top: 50px"
     >
+      <template v-slot:top>
+        <q-space />
+
+        <q-select
+          v-model="visibleColumns"
+          multiple
+          outlined
+          dense
+          options-dense
+          :display-value="$q.lang.table.columns"
+          emit-value
+          map-options
+          :options="cols"
+          option-value="name"
+          options-cover
+          style="min-width: 150px"
+        />
+      </template>
+
       <template v-slot:header-selection="scope">
         <q-checkbox v-model="scope.selected" />
       </template>
@@ -26,6 +46,26 @@
             }
           "
         />
+      </template>
+
+      <template v-slot:body-cell-id="props">
+        <q-td
+          :props="props"
+          @click="goToDocPage(props.row.id)"
+          style="cursor: pointer"
+        >
+          <q-item-label>{{ props.row.id }}</q-item-label>
+        </q-td>
+      </template>
+
+      <template v-slot:body-cell-title="props">
+        <q-td
+          :props="props"
+          @click="goToDocPage(props.row.id)"
+          style="cursor: pointer"
+        >
+          <q-item-label>{{ props.row.title }}</q-item-label>
+        </q-td>
       </template>
     </q-table>
   </div>
@@ -109,7 +149,7 @@ export default {
         sortable: true,
       },
     ];
-    let rows = ref(this.getAllDocumentRows(this.getAllDocuments()));
+    let rows = ref([]);
 
     const tableRef = ref();
     const selected = ref([]);
@@ -119,12 +159,22 @@ export default {
       rows,
       tableRef,
       selected,
+      visibleColumns: ref([
+        "id",
+        "title",
+        "createdAt",
+        "genre",
+        "domain",
+        "authorsGender",
+        "authorsCourse",
+        "authorsAcademicMajor",
+        "statusNum",
+        "ownerUsername",
+      ]),
       handleSelection({ rows, added, evt }) {
         if (rows.length !== 1 || evt === void 0) {
           return;
         }
-
-        const oldSelectedRow = storedSelectedRow;
         const [newSelectedRow] = rows;
         const { ctrlKey, shiftKey } = evt;
 
@@ -133,33 +183,7 @@ export default {
         }
 
         nextTick(() => {
-          if (shiftKey === true) {
-            const tableRows = tableRef.value.filteredSortedRows;
-            let firstIndex = tableRows.indexOf(oldSelectedRow);
-            let lastIndex = tableRows.indexOf(newSelectedRow);
-
-            if (firstIndex < 0) {
-              firstIndex = 0;
-            }
-
-            if (firstIndex > lastIndex) {
-              [firstIndex, lastIndex] = [lastIndex, firstIndex];
-            }
-
-            const rangeRows = tableRows.slice(firstIndex, lastIndex + 1);
-            const selectedRows = selected.value.map(toRaw);
-
-            selected.value =
-              added === true
-                ? selectedRows.concat(
-                    rangeRows.filter(
-                      (row) => selectedRows.includes(row) === false
-                    )
-                  )
-                : selectedRows.filter(
-                    (row) => rangeRows.includes(row) === false
-                  );
-          } else if (ctrlKey !== true && added === true) {
+          if (ctrlKey !== true && added === true) {
             selected.value = [newSelectedRow];
           }
         });
@@ -174,7 +198,6 @@ export default {
         });
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
           return data;
         }
       } catch (error) {
@@ -198,6 +221,9 @@ export default {
         });
       }
       return rows;
+    },
+    goToDocPage(id) {
+      this.$router.push(`/documents/${id}`);
     },
   },
   async mounted() {
