@@ -67,4 +67,6 @@ export default {
   add_wordform: "Add wordform",
   change_password: "Change password",
   administration: "Administration",
+  create_section: "Create section",
+  add_section: "Add section",
 };

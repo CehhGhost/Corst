@@ -51,7 +51,7 @@
       <template v-slot:body-cell-id="props">
         <q-td
           :props="props"
-          @click="goToArticlePage(props.row.id)"
+          @click="goToSectionPage(props.row.id)"
           style="cursor: pointer"
         >
           <q-item-label>{{ props.row.id }}</q-item-label>
@@ -63,9 +63,9 @@
         unelevated
         color="primary"
         icon="add"
-        :label="$t('add_article')"
+        :label="$t('add_section')"
         class="button"
-        to="/admin/articles/create"
+        to="/admin/sections/create"
       />
       <q-btn
         unelevated
@@ -74,7 +74,7 @@
         class="button"
         :disabled="selected == null || selected.length === 0"
         style="margin-left: 10px; margin-right: 20px"
-        @click="deleteArticles()"
+        @click="deleteSections()"
       />
     </div>
   </div>
@@ -95,17 +95,24 @@ export default {
         sortable: true,
       },
       {
-        name: "createdAt",
-        label: "Created",
-        align: "center",
-        field: "createdAt",
+        name: "number",
+        label: "Number",
+        align: "left",
+        field: "number",
         sortable: true,
       },
       {
-        name: "date",
-        label: "Date",
+        name: "headerRus",
+        label: "Header (Rus)",
         align: "center",
-        field: "date",
+        field: "headerRus",
+        sortable: true,
+      },
+      {
+        name: "headerEng",
+        label: "Header (Eng)",
+        align: "center",
+        field: "headerEng",
         sortable: true,
       },
       {
@@ -133,7 +140,14 @@ export default {
       rows,
       tableRef,
       selected,
-      visibleColumns: ref(["id", "date", "createdAt", "textRus", "textEng"]),
+      visibleColumns: ref([
+        "id",
+        "number",
+        "headerRus",
+        "headerEng",
+        "textRus",
+        "textEng",
+      ]),
       handleSelection({ rows, added, evt }) {
         if (rows.length !== 1 || evt === void 0) {
           return;
@@ -175,9 +189,9 @@ export default {
     };
   },
   methods: {
-    async getAllArticles() {
+    async getAllSections() {
       try {
-        const response = await fetch(serverAdress + "/articles", {
+        const response = await fetch(serverAdress + "/sections", {
           method: "GET",
         });
         if (response.ok) {
@@ -190,48 +204,50 @@ export default {
         console.error(error);
       }
     },
-    getAllArticleRows(data) {
+    getAllSectionRows(data) {
       const rows = [];
       for (let i = 0; i < data.length; i++) {
+        console.log(data[i]);
         rows.push({
           id: data[i].id,
-          createdAt: new Date(data[i].createdAt).toLocaleString(),
-          date: data[i].date.split(" ")[0],
+          number: data[i].number,
+          headerRus: data[i].headerRus,
+          headerEng: data[i].headerEng,
           textRus: data[i].textRus,
           textEng: data[i].textEng,
         });
       }
       return rows;
     },
-    goToArticlePage(id) {
+    goToSectionPage(id) {
       console.log(id);
-      this.$router.push(`/admin/articles/${id}`);
+      this.$router.push(`/admin/sections/${id}`);
     },
 
-    deleteArticles() {
+    deleteSections() {
       const confirmation =
         this.$i18n.locale === "ru"
-          ? confirm("Вы уверены, что хотите удалить выбранные статьи?")
-          : confirm("Are you sure you want to delete articles?");
+          ? confirm("Вы уверены, что хотите удалить выбранные секции?")
+          : confirm("Are you sure you want to delete sections?");
       if (!confirmation) return;
-      this.selected.forEach(async (article) => {
+      this.selected.forEach(async (section) => {
         try {
           const response = await fetch(
-            serverAdress + "/articles/" + article.id,
+            serverAdress + "/sections/" + section.id,
             {
               method: "DELETE",
             }
           );
+          this.rows = this.rows.filter((row) => !this.selected.includes(row));
+          this.selected = [];
         } catch (error) {
           console.error(error);
         }
-        this.rows = this.rows.filter((row) => !this.selected.includes(row));
-        this.selected = [];
       });
     },
   },
   async mounted() {
-    this.rows = this.getAllArticleRows(await this.getAllArticles());
+    this.rows = this.getAllSectionRows(await this.getAllSections());
   },
 };
 </script>
