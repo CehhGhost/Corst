@@ -1,7 +1,7 @@
 <script setup>
 import SideBar from "src/components/administration/SideBar.vue";
 import NavBar from "src/components/administration/NavBar.vue";
-import FooterBar from "src/components/FooterBar.vue";
+import AdminMainPage from "src/components/administration/AdminMainPage.vue";
 </script>
 
 <template>
@@ -11,7 +11,7 @@ import FooterBar from "src/components/FooterBar.vue";
     </q-header>
     <SideBar />
     <div class="ml-64">
-      <router-view />
+      <AdminMainPage />
     </div>
   </q-layout>
 </template>
