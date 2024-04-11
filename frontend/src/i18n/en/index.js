@@ -76,4 +76,5 @@ export default {
   surname: "Surname",
   edit_user: "Edit user",
   add_role: "Add role",
+  edit_role: "Edit role",
 };

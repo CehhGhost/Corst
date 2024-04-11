@@ -121,7 +121,10 @@ const routes = [
     path: "/admin/roles/create",
     component: () => import("../views/administration/AdminCreateRoleView.vue"),
   },
-  {},
+  {
+    path: "/admin/roles/:id",
+    component: () => import("../views/administration/AdminEditRoleView.vue"),
+  },
   {
     path: "/admin/authorities",
     component: () =>
