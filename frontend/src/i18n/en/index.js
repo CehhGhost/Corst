@@ -70,4 +70,5 @@ export default {
   create_section: "Create section",
   add_section: "Add section",
   edit_section: "Edit section",
+  add_user: "Add user",
 };

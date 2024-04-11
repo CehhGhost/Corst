@@ -51,10 +51,20 @@
       <template v-slot:body-cell-id="props">
         <q-td
           :props="props"
-          @click="goToSectionPage(props.row.id)"
+          @click="goToUserPage(props.row.id)"
           style="cursor: pointer"
         >
           <q-item-label>{{ props.row.id }}</q-item-label>
+        </q-td>
+      </template>
+
+      <template v-slot:body-cell-username="props">
+        <q-td
+          :props="props"
+          @click="goToUserPage(props.row.id)"
+          style="cursor: pointer"
+        >
+          <q-item-label>{{ props.row.username }}</q-item-label>
         </q-td>
       </template>
     </q-table>
@@ -63,9 +73,9 @@
         unelevated
         color="primary"
         icon="add"
-        :label="$t('add_section')"
+        :label="$t('add_user')"
         class="button"
-        to="/admin/sections/create"
+        to="/admin/users/create"
       />
       <q-btn
         unelevated
@@ -74,7 +84,7 @@
         class="button"
         :disabled="selected == null || selected.length === 0"
         style="margin-left: 10px; margin-right: 20px"
-        @click="deleteSections()"
+        @click="deleteUsers()"
       />
     </div>
   </div>
@@ -184,7 +194,7 @@ export default {
         console.error(error);
       }
     },
-    getAllUsersRows(data) {
+    getAllUserRows(data) {
       const rows = [];
       for (let i = 0; i < data.length; i++) {
         console.log(data[i]);
@@ -197,7 +207,7 @@ export default {
       this.$router.push(`/admin/users/${id}`);
     },
 
-    deleteSections() {
+    deleteUsers() {
       const confirmation =
         this.$i18n.locale === "ru"
           ? confirm("Вы уверены, что хотите удалить выбранных пользователей?")

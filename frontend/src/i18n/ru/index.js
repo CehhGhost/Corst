@@ -70,4 +70,5 @@ export default {
   create_section: "Создать раздел",
   add_section: "Создать раздел",
   edit_section: "Изменить раздел",
+  add_user: "Добавить пользователя",
 };
