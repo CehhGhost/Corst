@@ -7,7 +7,6 @@
       title="Domains"
       :rows="rows"
       :columns="cols"
-      :visible-columns="visibleColumns"
       row-key="id"
       selection="multiple"
       v-model:selected="selected"
@@ -122,7 +121,6 @@ export default {
       rows,
       tableRef,
       selected,
-      visibleColumns: ref(["id", "name"]),
       handleSelection({ rows, added, evt }) {
         if (rows.length !== 1 || evt === void 0) {
           return;
