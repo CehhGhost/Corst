@@ -53,6 +53,24 @@
         {{ $t("help") }}
       </q-btn>
       <q-space />
+      <q-btn
+        v-if="$i18n.locale === 'ru'"
+        flat
+        dense
+        label="RU"
+        active-class="text-white"
+        class="text-white"
+        @click="switchLanguage('en')"
+      ></q-btn>
+      <q-btn
+        v-else
+        flat
+        dense
+        label="EN"
+        active-class="text-white"
+        class="text-white"
+        @click="switchLanguage('ru')"
+      />
       <div v-if="!checkLogin()">
         <q-btn
           flat
@@ -65,24 +83,6 @@
         </q-btn>
       </div>
       <div v-else>
-        <q-btn
-          v-if="$i18n.locale === 'ru'"
-          flat
-          dense
-          label="RU"
-          active-class="text-white"
-          class="text-white"
-          @click="switchLanguage('en')"
-        ></q-btn>
-        <q-btn
-          v-else
-          flat
-          dense
-          label="EN"
-          active-class="text-white"
-          class="text-white"
-          @click="switchLanguage('ru')"
-        />
         <q-btn
           flat
           dense
