@@ -204,7 +204,6 @@ export default {
       return rows;
     },
     goToArticlePage(id) {
-      console.log(id);
       this.$router.push(`/admin/articles/${id}`);
     },
 

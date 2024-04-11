@@ -114,7 +114,6 @@ export default {
         .then((response) => response.json())
         .then((data) => {
           this.document = data;
-          console.log(this.document);
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -141,7 +140,6 @@ export default {
     } else {
       await this.loadDocument();
       if (this.document != null) {
-        console.log(this.document);
         this.loadRecogito();
       }
     }
