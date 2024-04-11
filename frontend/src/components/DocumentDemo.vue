@@ -207,7 +207,6 @@ export default {
         // wait for the default selection to be performed
         nextTick(() => {
           if (shiftKey === true) {
-            console.log(tableRef);
             const tableRows = tableRef.value.filteredSortedRows;
             let firstIndex = tableRows.indexOf(oldSelectedRow);
             let lastIndex = tableRows.indexOf(newSelectedRow);

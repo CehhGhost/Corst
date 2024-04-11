@@ -130,7 +130,6 @@ export default {
       this.roles = [];
       const data = await this.getRoles();
       for (let i = 0; i < data.length; i++) {
-        console.log(data[i]);
         this.roles.push(data[i].name);
       }
     },

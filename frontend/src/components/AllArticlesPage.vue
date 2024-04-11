@@ -93,9 +93,8 @@ export default {
         if (response.ok) {
           const data = await response.json();
           this.articles = data;
-          console.log(data);
         } else {
-          console.log(response);
+          console.error(response);
         }
       } catch (error) {
         console.error(error);

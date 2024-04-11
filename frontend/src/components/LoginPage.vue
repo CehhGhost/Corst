@@ -69,10 +69,6 @@ export default {
     formIsEmpty() {
       return this.username === "" || this.password === "";
     },
-    fakeLogin() {
-      console.log("Fake login with username:", this.username);
-      this.$router.push("/");
-    },
     async login() {
       try {
         const response = await fetch(serverAdress + "/auth", {

@@ -207,7 +207,6 @@ export default {
     getAllSectionRows(data) {
       const rows = [];
       for (let i = 0; i < data.length; i++) {
-        console.log(data[i]);
         rows.push({
           id: data[i].id,
           number: data[i].number,
@@ -220,7 +219,6 @@ export default {
       return rows;
     },
     goToSectionPage(id) {
-      console.log(id);
       this.$router.push(`/admin/sections/${id}`);
     },
 

@@ -208,7 +208,6 @@ export default {
       return rows;
     },
     goToUserPage(id) {
-      console.log(id);
       this.$router.push(`/admin/users/${id}`);
     },
 
