@@ -143,20 +143,22 @@ public class SentencesService {
         for (var document : documents) {
             var sentences = document.getSentences();
             for (var sentence : sentences) {
-                boolean errorTagCheck = false;
-                for (var annotation : sentence.getAnnotations()) {
-                    for (var errorTag : annotation.getErrorTags()) {
-                        if (errorTags.contains(errorTag)) {
-                            errorTagCheck = true;
+                if (!errorTags.isEmpty()) {
+                    boolean errorTagCheck = false;
+                    for (var annotation : sentence.getAnnotations()) {
+                        for (var errorTag : annotation.getErrorTags()) {
+                            if (errorTags.contains(errorTag)) {
+                                errorTagCheck = true;
+                                break;
+                            }
+                        }
+                        if (errorTagCheck) {
                             break;
                         }
                     }
-                    if (errorTagCheck) {
-                        break;
+                    if (!errorTagCheck) {
+                        continue;
                     }
-                }
-                if (!errorTagCheck) {
-                    continue;
                 }
                 var tokens = tokensService.getAllBySentenceAndSort(sentence);
                 for (int i = 0; i < tokens.size(); ++i) {
