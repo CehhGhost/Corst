@@ -600,7 +600,6 @@
                           </template>
                         </q-input>
                       </div>
-                      <!-- Include err select component here -->
                       <div class="col-2">
                         <label v-if="!showDeleteButton || !index > 0">
                           {{ $t("errors") }}
@@ -1050,6 +1049,22 @@ export default {
         this.context = data;
       } else {
         console.error(request);
+      }
+    },
+
+    async getAllErrorTags() {
+      try {
+        const response = await fetch(serverAdress + "/info/error_tags", {
+          method: "GET",
+        });
+        if (response.ok) {
+          const data = await response.json();
+          this.lexgrammFeaturesFixed.errors = data;
+        } else {
+          console.error(response);
+        }
+      } catch (error) {
+        console.error(error);
       }
     },
   },
