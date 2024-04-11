@@ -7,9 +7,9 @@
         style="width: (100% - 200px); margin-left: 200px; margin-top: 50px"
       >
         <h3 class="q-mb-md" style="margin-bottom: 25px">
-          {{ $t("edit_error_tag") }}
+          {{ $t("edit_course") }}
         </h3>
-        <q-form @submit="addErrorTag" class="q-gutter-md">
+        <q-form @submit="addCourse" class="q-gutter-md">
           <q-input outlined v-model="name" :label="$t('name')" />
           <q-btn
             type="submit"
@@ -36,10 +36,10 @@ export default {
     };
   },
   methods: {
-    async loadErrorTag() {
+    async loadCourse() {
       try {
         const response = await fetch(
-          `${serverAdress}/info/error_tags/${this.$route.params.id}`,
+          `${serverAdress}/info/courses/${this.$route.params.id}`,
           {
             method: "GET",
             headers: {
@@ -57,10 +57,10 @@ export default {
       }
     },
 
-    async addErrorTag() {
+    async addCourse() {
       try {
         const response = await fetch(
-          `${serverAdress}/info/error_tags/${this.$route.params.id}`,
+          `${serverAdress}/info/courses/${this.$route.params.id}`,
           {
             method: "PUT",
             headers: {
@@ -73,7 +73,7 @@ export default {
           }
         );
         if (response.ok) {
-          this.$router.push("/admin/error_tags");
+          this.$router.push("/admin/courses");
         }
       } catch (error) {
         console.error("Error:", error);
@@ -88,7 +88,7 @@ export default {
     if (!this.userStatus) {
       this.$router.push("/");
     } else {
-      await this.loadErrorTag();
+      await this.loadCourse();
     }
   },
 };

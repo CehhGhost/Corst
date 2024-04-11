@@ -155,6 +155,10 @@ const routes = [
       import("../views/administration/AdminCreateDomainView.vue"),
   },
   {
+    path: "/admin/domains/:id",
+    component: () => import("../views/administration/AdminEditDomainView.vue"),
+  },
+  {
     path: "/admin/academic_majors",
     component: () =>
       import("../views/administration/AdminAllAcademicMajorView.vue"),
@@ -163,6 +167,11 @@ const routes = [
     path: "/admin/academic_majors/create",
     component: () =>
       import("../views/administration/AdminCreateAcademicMajorView.vue"),
+  },
+  {
+    path: "/admin/academic_majors/:id",
+    component: () =>
+      import("../views/administration/AdminEditAcademicMajorView.vue"),
   },
   {
     path: "/admin/courses",
@@ -174,12 +183,20 @@ const routes = [
       import("../views/administration/AdminCreateCourseView.vue"),
   },
   {
+    path: "/admin/courses/:id",
+    component: () => import("../views/administration/AdminEditCourseView.vue"),
+  },
+  {
     path: "/admin/genres",
     component: () => import("../views/administration/AdminAllGenresView.vue"),
   },
   {
     path: "/admin/genres/create",
     component: () => import("../views/administration/AdminCreateGenreView.vue"),
+  },
+  {
+    path: "/admin/genres/:id",
+    component: () => import("../views/administration/AdminEditGenreView.vue"),
   },
   // Error route
   {
