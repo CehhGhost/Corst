@@ -282,7 +282,6 @@ export default {
     },
   },
   async mounted() {
-    console.log(this.rows);
     this.rows = this.getAllDocumentRows(await this.getAllDocuments());
   },
 };

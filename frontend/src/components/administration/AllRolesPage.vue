@@ -58,13 +58,13 @@
         </q-td>
       </template>
 
-      <template v-slot:body-cell-username="props">
+      <template v-slot:body-cell-name="props">
         <q-td
           :props="props"
           @click="goToUserPage(props.row.id)"
           style="cursor: pointer"
         >
-          <q-item-label>{{ props.row.username }}</q-item-label>
+          <q-item-label>{{ props.row.name }}</q-item-label>
         </q-td>
       </template>
     </q-table>
@@ -73,9 +73,9 @@
         unelevated
         color="primary"
         icon="add"
-        :label="$t('add_user')"
+        :label="$t('add_role')"
         class="button"
-        to="/admin/users/create"
+        to="/admin/roles/create"
       />
       <q-btn
         unelevated
@@ -84,7 +84,7 @@
         class="button"
         :disabled="selected == null || selected.length === 0"
         style="margin-left: 10px; margin-right: 20px"
-        @click="deleteUsers()"
+        @click="deleteRoles()"
       />
     </div>
   </div>
@@ -105,31 +105,17 @@ export default {
         sortable: true,
       },
       {
-        name: "username",
-        label: "Username",
-        align: "left",
-        field: "username",
-        sortable: true,
-      },
-      {
         name: "name",
         label: "Name",
-        align: "center",
+        align: "left",
         field: "name",
         sortable: true,
       },
       {
-        name: "surname",
-        label: "Suranme",
+        name: "authorities",
+        label: "Authorities",
         align: "center",
-        field: "surname",
-        sortable: true,
-      },
-      {
-        name: "role",
-        label: "Role",
-        align: "center",
-        field: "usersRole",
+        field: "authorities",
         sortable: true,
       },
     ];
@@ -143,7 +129,7 @@ export default {
       rows,
       tableRef,
       selected,
-      visibleColumns: ref(["id", "username", "name", "surname", "role"]),
+      visibleColumns: ref(["id", "name", "authorities"]),
       handleSelection({ rows, added, evt }) {
         if (rows.length !== 1 || evt === void 0) {
           return;
@@ -185,42 +171,48 @@ export default {
     };
   },
   methods: {
-    async getAllUsers() {
+    async getAllRoles() {
       try {
-        const response = await fetch(serverAdress + "/admin/users");
-        const data = await response.json();
-        return data;
+        const response = await fetch(serverAdress + "/roles", {
+          method: "GET",
+        });
+        if (response.ok) {
+          const data = await response.json();
+          return data;
+        }
       } catch (error) {
         console.error(error);
       }
     },
-    getAllUserRows(data) {
+    getAllRolesRows(data) {
       const rows = [];
       for (let i = 0; i < data.length; i++) {
+        let authorities_ = [];
+        for (let j = 0; j < data[i].authorities.length; j++) {
+          authorities_.push(data[i].authorities[j].name);
+        }
         rows.push({
           id: data[i].id,
-          username: data[i].username,
           name: data[i].name,
-          surname: data[i].surname,
-          usersRole: data[i].usersRole,
+          authorities: authorities_.join(", "),
         });
       }
       return rows;
     },
-    goToUserPage(id) {
+    goToRolePage(id) {
       console.log(id);
-      this.$router.push(`/admin/users/${id}`);
+      this.$router.push(`/admin/roles/${id}`);
     },
 
-    deleteUsers() {
+    deleteRoles() {
       const confirmation =
         this.$i18n.locale === "ru"
-          ? confirm("Вы уверены, что хотите удалить выбранных пользователей?")
-          : confirm("Are you sure you want to delete users?");
+          ? confirm("Вы уверены, что хотите удалить выбранные роли?")
+          : confirm("Are you sure you want to delete theese roles?");
       if (!confirmation) return;
-      this.selected.forEach(async (user) => {
+      this.selected.forEach(async (role) => {
         try {
-          const response = await fetch(serverAdress + "/users/" + user.id, {
+          const response = await fetch(serverAdress + "/roles/" + role.id, {
             method: "DELETE",
           });
           this.rows = this.rows.filter((row) => !this.selected.includes(row));
@@ -232,7 +224,7 @@ export default {
     },
   },
   async mounted() {
-    this.rows = this.getAllUserRows(await this.getAllUsers());
+    this.rows = this.getAllRolesRows(await this.getAllRoles());
   },
 };
 </script>

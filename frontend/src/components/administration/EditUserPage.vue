@@ -7,9 +7,9 @@
         style="width: (100% - 200px); margin-left: 200px; margin-top: 50px"
       >
         <h3 class="q-mb-md" style="margin-bottom: 25px">
-          {{ $t("add_user") }}
+          {{ $t("edit_user") }}
         </h3>
-        <q-form @submit="addUser" class="q-gutter-md">
+        <q-form @submit="editUser" class="q-gutter-md">
           <div class="row">
             <q-input
               outlined
@@ -38,6 +38,8 @@
               type="password"
               :label="$t('password')"
               style="width: 47%"
+              disable
+              readonly
             />
           </div>
           <q-select
@@ -59,6 +61,7 @@
 </template>
 
 <script>
+// TODO Add delete and change password functionality
 import { serverAdress } from "../../global/globalVaribles.js";
 import { isLogin } from "../../global/globalFunctions.js";
 
@@ -69,7 +72,7 @@ export default {
       surname: "",
       username: "",
       password: "",
-      role: null,
+      role: "",
 
       roles: [],
 
@@ -79,7 +82,7 @@ export default {
   methods: {
     async getRoles() {
       try {
-        const response = await fetch(serverAdress + "/roles", {
+        const response = await fetch(serverAdress + "/", {
           method: "GET",
         });
         this.responseSuccess = response.ok;
@@ -93,7 +96,22 @@ export default {
         console.error("Error:", error);
       }
     },
-    async addUser() {
+    async getUser() {
+      const response = await fetch(
+        `${serverAdress}/admin/users/` + this.$route.params.id,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("corst_token")}`,
+          },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      }
+    },
+    async editUser() {
       this.userStatus = await isLogin();
       if (!this.userStatus) {
         this.$router.push("/login");
@@ -102,7 +120,6 @@ export default {
         this.name == "" ||
         this.surname == "" ||
         this.username == "" ||
-        this.password == "" ||
         this.role == null
       ) {
         if (this.$i18n.locale == "ru") alert("Пожалуйста, заполните все поля");
@@ -113,11 +130,11 @@ export default {
         name: this.name,
         surname: this.surname,
         username: this.username,
-        password: this.password,
-        usersRole: this.role,
+        role: this.role,
       };
-      const response = await fetch(`${serverAdress}/admin/register`, {
-        method: "POST",
+      const response = await fetch(`${serverAdress}/`, {
+        // TODO Add the correct endpoint
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("corst_token")}`,
@@ -127,6 +144,13 @@ export default {
       if (response.ok) {
         this.$router.push("/admin/users");
       }
+    },
+
+    parseUser(data) {
+      this.name = data.name;
+      this.surname = data.surname;
+      this.username = data.username;
+      this.role = data.role.name;
     },
   },
   async mounted() {
@@ -139,6 +163,7 @@ export default {
     }
 
     try {
+      this.parseUser(await this.getUser());
       await this.getRoles();
     } catch (error) {
       console.error("Error:", error);
