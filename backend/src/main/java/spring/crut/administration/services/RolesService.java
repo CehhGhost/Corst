@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.crut.administration.dto.CreateUpdateRoleDTO;
+import spring.crut.administration.dto.RoleDTO;
 import spring.crut.administration.models.Authority;
 import spring.crut.administration.models.Role;
 import spring.crut.administration.repositories.AuthoritiesRepository;
@@ -94,5 +95,12 @@ public class RolesService {
             return "NO_ROLES";
         }
         return usersRole.getName();
+    }
+
+    public Role getRoleById(Long id) {
+        if (!rolesRepository.existsById(id)) {
+            throw new IllegalArgumentException("No roles with such id!");
+        }
+        return rolesRepository.getById(id);
     }
 }

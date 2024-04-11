@@ -46,10 +46,7 @@ public class AdminController {
     }
     @GetMapping("/users/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
-        var user = usersService.getUserById(id);
-        var userDTO = modelMapper.map(user, UserDTO.class);
-        // userDTO.setUsersRole(user);
-        return ResponseEntity.ok(userDTO);
+        return ResponseEntity.ok(usersService.getUserById(id));
     }
     @PutMapping("/users/{id}")
     public ResponseEntity<?> updateUserById(@PathVariable Long id, @RequestBody UpdateUserDTO userDTO) {
