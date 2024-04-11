@@ -16,11 +16,9 @@ import spring.crut.corpus.models.Annotation;
 import spring.crut.corpus.models.Document;
 import spring.crut.corpus.models.Sentence;
 import spring.crut.corpus.repositories.SentencesRepository;
+import spring.crut.corpus.services.info.ErrorTagsService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Service
@@ -31,6 +29,7 @@ public class SentencesService {
     private final ModelMapper modelMapper;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
+    private final ErrorTagsService errorTagsService;
     @Transactional
     public void createSentences(Document document) {
         String natashaServiceUrl = "http://127.0.0.1:5000/analyse";
@@ -119,8 +118,10 @@ public class SentencesService {
             return sentencesDTO;
         }
         Map<Integer, List<Integer>> checkMap = new HashMap<>();
+        Set<String> errors = new HashSet<>();
         for (int i = 0; i < lexGramTokensDTO.size(); ++i) {
             var token = lexGramTokensDTO.get(i);
+            errors.addAll(token.getErrors());
             token.setWordform(token.getWordform().toLowerCase());
             if (token.getTo() < token.getFrom()) {
                 var exchange = token.getTo();
@@ -134,6 +135,7 @@ public class SentencesService {
                 checkMap.get(j).add(i);
             }
         }
+        var errorTags = errorTagsService.getAllByNames(errors.stream().toList());
         Boolean[] tokensArray = new Boolean[lexGramTokensDTO.size()];
         Boolean[] positionArray = new Boolean[checkMap.size()];
         var positions = checkMap.keySet().toArray();
@@ -141,6 +143,21 @@ public class SentencesService {
         for (var document : documents) {
             var sentences = document.getSentences();
             for (var sentence : sentences) {
+                boolean errorTagCheck = true;
+                for (var annotation : sentence.getAnnotations()) {
+                    for (var errorTag : annotation.getErrorTags()) {
+                        if (!errorTags.contains(errorTag)) {
+                            errorTagCheck = false;
+                            break;
+                        }
+                    }
+                    if (!errorTagCheck) {
+                        break;
+                    }
+                }
+                if (!errorTagCheck) {
+                    continue;
+                }
                 var tokens = tokensService.getAllBySentenceAndSort(sentence);
                 for (int i = 0; i < tokens.size(); ++i) {
                     for (var startingPosition : checkMap.get(0)) {
