@@ -6,7 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import spring.crut.administration.dto.CreateUpdateUserDTO;
+import spring.crut.administration.dto.CreateUserDTO;
+import spring.crut.administration.dto.UpdateUserDTO;
 import spring.crut.administration.dto.UserDTO;
 import spring.crut.administration.services.UsersService;
 
@@ -29,7 +30,7 @@ public class AdminController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody CreateUpdateUserDTO userDTO) {
+    public ResponseEntity<?> registerUser(@RequestBody CreateUserDTO userDTO) {
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         usersService.createUser(userDTO);
         return ResponseEntity.ok(HttpStatus.OK);
@@ -55,5 +56,10 @@ public class AdminController {
         var userDTO = modelMapper.map(user, UserDTO.class);
         userDTO.setUsersRole(user.getRolesName());
         return ResponseEntity.ok(userDTO);
+    }
+    @PutMapping("/users/{id}")
+    public ResponseEntity<?> updateUserById(@PathVariable Long id, @RequestBody UpdateUserDTO userDTO) {
+        usersService.updateUserById(id, userDTO);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 }
