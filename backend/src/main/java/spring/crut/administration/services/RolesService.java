@@ -18,7 +18,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class RolesService {
     private final RolesRepository rolesRepository;
-    private final AuthoritiesRepository authoritiesRepository;
+    private final AuthoritiesService authoritiesService;
 
     public void setAuthorities(Long id, List<Authority> authorities) {
         var role = rolesRepository.findById(id);
@@ -26,15 +26,13 @@ public class RolesService {
             throw new IllegalArgumentException("There is no such role");
         }
         for (var authority : authorities) {
-            var actualAuthority = authoritiesRepository.findByName(authority.getName());
-            if (actualAuthority.isEmpty()) {
-                throw new IllegalArgumentException("There is no such authority");
-            }
-            role.get().getAuthorities().add(actualAuthority.get());
+            var actualAuthority = authoritiesService.getByName(authority.getName());
+            role.get().getAuthorities().add(actualAuthority);
         }
         rolesRepository.save(role.get());
     }
 
+    @Transactional
     public void createRole(CreateUpdateRoleDTO roleDTO) {
 
         if (rolesRepository.findByName(roleDTO.getName()).isPresent()) {
@@ -44,16 +42,14 @@ public class RolesService {
         role.setName(roleDTO.getName());
         Set<Authority> authorities = new HashSet<>();
         for (var authority : roleDTO.getAuthorities()) {
-            var actualAuthority = authoritiesRepository.findByName(authority);
-            if (actualAuthority.isEmpty()) {
-                throw new IllegalArgumentException("There is no such authority");
-            }
-            authorities.add(actualAuthority.get());
+            var actualAuthority = authoritiesService.getByName(authority);
+            authorities.add(actualAuthority);
         }
         role.setAuthorities(authorities);
         rolesRepository.save(role);
     }
 
+    @Transactional
     public void deleteRole(Long id) {
         var role = rolesRepository.findById(id);
         if (role.isEmpty()) {
@@ -72,5 +68,14 @@ public class RolesService {
     @Transactional
     public Role getRoleWithAuthorities(Long id) {
         return rolesRepository.findByIdWithAuthorities(id).orElseThrow(() -> new RuntimeException("Role not found"));
+    }
+
+    @Transactional
+    public void updateRoleById(Long id, CreateUpdateRoleDTO roleDTO) {
+        var role = rolesRepository.findById(id);
+        if (role.isEmpty()) {
+            throw new IllegalArgumentException("There is no such role");
+        }
+
     }
 }
