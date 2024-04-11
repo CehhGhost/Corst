@@ -12,6 +12,6 @@ import spring.crut.corpus.models.info.Genre;
 public interface ErrorTagsRepository extends InfoRepository<ErrorTag>{
     @Modifying
     @Transactional
-    @Query("UPDATE Annotation a SET a.errorTags = NULL WHERE :errorTag MEMBER OF a.errorTags")
+    @Query("UPDATE Annotation a SET a.errorTags = NULL WHERE :errorTag IN elements(a.errorTags)")
     void updateErrorTagInAnnotations(@Param("errorTag") ErrorTag errorTag);
 }
