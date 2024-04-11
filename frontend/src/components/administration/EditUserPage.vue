@@ -61,6 +61,7 @@
 </template>
 
 <script>
+// TODO Add delete and change password functionality
 import { serverAdress } from "../../global/globalVaribles.js";
 import { isLogin } from "../../global/globalFunctions.js";
 
@@ -99,7 +100,6 @@ export default {
       const response = await fetch(
         `${serverAdress}/admin/users/` + this.$route.params.id,
         {
-          // TODO Add the correct endpoint
           method: "GET",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("corst_token")}`,
