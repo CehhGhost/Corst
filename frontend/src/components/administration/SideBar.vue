@@ -72,7 +72,11 @@ export default {
         { label: "Users", path: "/admin/users" },
         { label: "Roles", path: "/admin/roles" },
         { label: "Authorities", path: "/admin/authorities" },
+        { label: "Error Tags", path: "/admin/error_tags" },
         { label: "Genres", path: "/admin/genres" },
+        { label: "Domains", path: "/admin/domains" },
+        { label: "Academic Majors", path: "/admin/academic_majors" },
+        { label: "Courses", path: "/admin/courses" },
       ],
 
       name: "",
