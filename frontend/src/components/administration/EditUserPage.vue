@@ -128,15 +128,17 @@ export default {
         username: this.username,
         usersRole: this.role,
       };
-      const response = await fetch(`${serverAdress}/`, {
-        // TODO Add the correct endpoint
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("corst_token")}`,
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await fetch(
+        `${serverAdress}/admin/users/${this.$route.params.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("corst_token")}`,
+          },
+          body: JSON.stringify(data),
+        }
+      );
       if (response.ok) {
         this.$router.push("/admin/users");
       }
@@ -145,13 +147,11 @@ export default {
       this.roles = [];
       const data = await this.getRoles();
       for (let i = 0; i < data.length; i++) {
-        console.log(data[i]);
         this.roles.push(data[i].name);
       }
     },
 
     parseUser(data) {
-      console.log(data);
       this.name = data.name;
       this.surname = data.surname;
       this.username = data.username;

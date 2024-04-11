@@ -200,7 +200,6 @@ export default {
       return rows;
     },
     goToRolePage(id) {
-      console.log(id);
       this.$router.push(`/admin/roles/${id}`);
     },
 
