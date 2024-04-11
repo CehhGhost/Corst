@@ -1,6 +1,8 @@
 package spring.crut.administration.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,9 @@ public class UsersService {
     private final PasswordEncoder passwordEncoder;
 
     public void createUser(User user) {
+        if (usersRepository.existsUserByUsername(user.getUsername())) {
+            throw new IllegalArgumentException("This username is already existed");
+        }
         usersRepository.save(user);
     }
 
@@ -56,5 +61,13 @@ public class UsersService {
 
     public List<User> getAllUsers() {
         return usersRepository.findAll();
+    }
+
+    public User getUserById(Long id) {
+        var user = usersRepository.findById(id);
+        if (user.isEmpty()) {
+            throw new IllegalArgumentException("No user with such id!");
+        }
+        return user.get();
     }
 }

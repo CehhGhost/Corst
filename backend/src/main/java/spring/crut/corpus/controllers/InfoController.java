@@ -9,12 +9,6 @@ import spring.crut.corpus.dto.DocumentInfoDTO;
 import spring.crut.corpus.dto.InfoDTO;
 import spring.crut.corpus.services.info.*;
 
-//    @GetMapping
-//    @GetMapping("/{id}")
-//    @PostMapping
-//    @DeleteMapping
-//    @PutMapping
-
 @RestController
 @RequestMapping("/info")
 @RequiredArgsConstructor
