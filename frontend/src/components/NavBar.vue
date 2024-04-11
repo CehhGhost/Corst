@@ -106,7 +106,7 @@
           dense
           active-class="text-white"
           class="text-white"
-          to="/admin"
+          to="/admin/documents"
         >
           {{ $t("administration") }}
         </q-btn>
