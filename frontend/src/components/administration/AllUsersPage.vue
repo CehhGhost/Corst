@@ -220,9 +220,12 @@ export default {
       if (!confirmation) return;
       this.selected.forEach(async (user) => {
         try {
-          const response = await fetch(serverAdress + "/users/" + user.id, {
-            method: "DELETE",
-          });
+          const response = await fetch(
+            serverAdress + "/admin/users/" + user.id,
+            {
+              method: "DELETE",
+            }
+          );
           this.rows = this.rows.filter((row) => !this.selected.includes(row));
           this.selected = [];
         } catch (error) {

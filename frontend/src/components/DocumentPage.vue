@@ -127,9 +127,9 @@ export default {
         content: "main-text",
         readOnly: true,
       });
-      recogito.loadAnnotations(
-        serverAdress + "/annotations/get_by_document/" + this.document.id
-      );
+      // recogito.loadAnnotations(
+      //   serverAdress + "/annotations/get_by_document/" + this.document.id
+      // );
     },
   },
   async mounted() {
