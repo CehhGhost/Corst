@@ -118,7 +118,7 @@ public class SentencesService {
             return sentencesDTO;
         }
         Map<Integer, List<Integer>> checkMap = new HashMap<>();
-        Set<String> errors = new HashSet<>();
+        List<String> errors = new ArrayList<>();
         for (int i = 0; i < lexGramTokensDTO.size(); ++i) {
             var token = lexGramTokensDTO.get(i);
             errors.addAll(token.getErrors());
@@ -135,7 +135,7 @@ public class SentencesService {
                 checkMap.get(j).add(i);
             }
         }
-        var errorTags = errorTagsService.getAllByNames(errors.stream().toList());
+        var errorTags = errorTagsService.getAllByNames(errors);
         Boolean[] tokensArray = new Boolean[lexGramTokensDTO.size()];
         Boolean[] positionArray = new Boolean[checkMap.size()];
         var positions = checkMap.keySet().toArray();
@@ -143,15 +143,15 @@ public class SentencesService {
         for (var document : documents) {
             var sentences = document.getSentences();
             for (var sentence : sentences) {
-                boolean errorTagCheck = true;
+                boolean errorTagCheck = false;
                 for (var annotation : sentence.getAnnotations()) {
                     for (var errorTag : annotation.getErrorTags()) {
                         if (!errorTags.contains(errorTag)) {
-                            errorTagCheck = false;
+                            errorTagCheck = true;
                             break;
                         }
                     }
-                    if (!errorTagCheck) {
+                    if (errorTagCheck) {
                         break;
                     }
                 }
