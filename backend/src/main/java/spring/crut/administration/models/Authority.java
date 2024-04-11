@@ -21,5 +21,5 @@ public class Authority {
 
     private String name;
 
-
+    private String description;
 }
