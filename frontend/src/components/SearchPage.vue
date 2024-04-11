@@ -740,6 +740,15 @@
                 </q-card-section>
               </q-card>
             </div>
+            <div v-if="loadableMore && searchResults.length > 0">
+              <q-btn
+                @click="loadMore()"
+                outline
+                color="primary"
+                :label="$t('load_more')"
+                style="margin-top: 20px"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -908,6 +917,7 @@ export default {
       searchResults: [],
 
       context: null,
+      loadableMore: false,
     };
   },
   methods: {
@@ -968,6 +978,7 @@ export default {
         if (response.ok) {
           const data = await response.json();
           this.searchResults = data;
+          this.loadableMore = data.loadableMore;
         } else {
           console.log(response);
         }
