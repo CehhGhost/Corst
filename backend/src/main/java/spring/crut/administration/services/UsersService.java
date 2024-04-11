@@ -113,4 +113,14 @@ public class UsersService {
         user.setUsername(userDTO.getUsername());
         usersRepository.save(user);
     }
+
+    public void deleteUserById(Long id) {
+        var user = usersRepository.findById(id);
+        if (user.isEmpty()) {
+            throw new IllegalArgumentException("No user with such id!");
+        }
+        user.get().getOwningAnnotations().clear();
+        user.get().getRole().getUsers().remove(user.get());
+        usersRepository.delete(user.get());
+    }
 }

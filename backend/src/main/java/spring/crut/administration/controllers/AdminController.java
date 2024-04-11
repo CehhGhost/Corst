@@ -53,4 +53,9 @@ public class AdminController {
         usersService.updateUserById(id, userDTO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<?> deleteUserById(@PathVariable Long id) {
+        usersService.deleteUserById(id);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 }
