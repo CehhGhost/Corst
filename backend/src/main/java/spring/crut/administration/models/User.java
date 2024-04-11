@@ -37,13 +37,10 @@ public class User {
 
     @OneToMany
     private List<Annotation> owningAnnotations;
-
-    public Role getRole() {
+    public String getRolesName() {
         if (this.role != null) {
-            return this.role;
+            return this.role.getName();
         }
-        var role = new Role();
-        role.setName("NO_ROLE");
-        return role;
+        return "NO_ROLE";
     }
 }

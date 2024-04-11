@@ -46,7 +46,7 @@ public class AdminController {
         List<UserDTO> usersDTOs = new ArrayList<>();
         for (var user : usersService.getAllUsers()) {
             var userDTO = modelMapper.map(user, UserDTO.class);
-            userDTO.setUsersRole(user.getRole().getName());
+            userDTO.setUsersRole(user.getRolesName());
             usersDTOs.add(userDTO);
         }
         return ResponseEntity.ok(usersDTOs);
@@ -55,7 +55,7 @@ public class AdminController {
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
         var user = usersService.getUserById(id);
         var userDTO = modelMapper.map(user, UserDTO.class);
-        userDTO.setUsersRole(user.getRole().getName());
+        userDTO.setUsersRole(user.getRolesName());
         return ResponseEntity.ok(userDTO);
     }
 }
