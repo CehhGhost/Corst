@@ -141,6 +141,11 @@ const routes = [
       import("../views/administration/AdminCreateErrorTagView.vue"),
   },
   {
+    path: "/admin/error_tags/:id",
+    component: () =>
+      import("../views/administration/AdminEditErrorTagView.vue"),
+  },
+  {
     path: "/admin/domains",
     component: () => import("../views/administration/AdminAllDomainsView.vue"),
   },
@@ -148,6 +153,10 @@ const routes = [
     path: "/admin/domains/create",
     component: () =>
       import("../views/administration/AdminCreateDomainView.vue"),
+  },
+  {
+    path: "/admin/domains/:id",
+    component: () => import("../views/administration/AdminEditDomainView.vue"),
   },
   {
     path: "/admin/academic_majors",
@@ -160,6 +169,11 @@ const routes = [
       import("../views/administration/AdminCreateAcademicMajorView.vue"),
   },
   {
+    path: "/admin/academic_majors/:id",
+    component: () =>
+      import("../views/administration/AdminEditAcademicMajorView.vue"),
+  },
+  {
     path: "/admin/courses",
     component: () => import("../views/administration/AdminAllCoursesView.vue"),
   },
@@ -169,6 +183,10 @@ const routes = [
       import("../views/administration/AdminCreateCourseView.vue"),
   },
   {
+    path: "/admin/courses/:id",
+    component: () => import("../views/administration/AdminEditCourseView.vue"),
+  },
+  {
     path: "/admin/genres",
     component: () => import("../views/administration/AdminAllGenresView.vue"),
   },
@@ -176,7 +194,10 @@ const routes = [
     path: "/admin/genres/create",
     component: () => import("../views/administration/AdminCreateGenreView.vue"),
   },
-
+  {
+    path: "/admin/genres/:id",
+    component: () => import("../views/administration/AdminEditGenreView.vue"),
+  },
   // Error route
   {
     path: "/:catchAll(.*)*",
