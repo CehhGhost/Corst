@@ -90,12 +90,12 @@ public class UsersService {
         return usersDTOs;
     }
 
-    public User getUserById(Long id) {
+    public UserDTO getUserById(Long id) {
         var user = usersRepository.findById(id);
         if (user.isEmpty()) {
             throw new IllegalArgumentException("No user with such id!");
         }
-        return user.get();
+        return new UserDTO(user.get().getId(), user.get().getName(), user.get().getSurname(), user.get().getUsername(), rolesService.getRolesName(user.get().getRole()));
     }
 
     public void updateUserById(Long id, UpdateUserDTO userDTO) {

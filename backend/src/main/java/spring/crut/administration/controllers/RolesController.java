@@ -29,6 +29,11 @@ public class RolesController {
         }
         return ResponseEntity.ok(roleDTOs);
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getRoleById(@PathVariable Long id) {
+        var role = rolesService.getRoleById(id);
+        return ResponseEntity.ok(modelMapper.map(role, RoleDTO.class));
+    }
     @PutMapping("/{id}")
     public ResponseEntity<?> updateRoleById(@PathVariable Long id, @RequestBody CreateUpdateRoleDTO roleDTO) {
         rolesService.updateRoleById(id, roleDTO);
