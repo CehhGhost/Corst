@@ -29,6 +29,12 @@ public abstract class InfoService <T extends Info, R extends InfoRepository<T>> 
         return info;
     }
     @Transactional
+    public void createDefaultInfo() {
+        if (!repository.existsByName("unknown")) {
+            repository.save(createInfo("unknown"));
+        }
+    }
+    @Transactional
     public List<T> getAll() {
         return repository.findAll();
     }

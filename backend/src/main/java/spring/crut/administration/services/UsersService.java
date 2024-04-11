@@ -117,6 +117,7 @@ public class UsersService {
         usersRepository.save(user);
     }
 
+    // TODO доделать
     public void deleteUserById(Long id) {
         var user = usersRepository.findById(id);
         if (user.isEmpty()) {
@@ -128,5 +129,21 @@ public class UsersService {
             document.setOwner(null);
         }
         usersRepository.delete(user.get());
+    }
+
+    @Transactional
+    public void createDefaultUsers() {
+        if (!usersRepository.existsUserByUsername("admin")) {
+            var user = new User();
+            user.setPassword(passwordEncoder.encode("12345"));
+            user.setName("admin");
+            user.setSurname("admin");
+            user.setUsername("admin");
+            usersRepository.save(user);
+            var role = rolesService.getRoleByName("ROLE_ADMIN");
+            user.setRole(role);
+            role.getUsers().add(user);
+            user.setRole(role);
+        }
     }
 }
