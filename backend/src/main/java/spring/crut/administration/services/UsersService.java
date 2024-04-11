@@ -12,6 +12,8 @@ import spring.crut.administration.dto.UserDTO;
 import spring.crut.administration.models.User;
 import spring.crut.administration.repositories.RolesRepository;
 import spring.crut.administration.repositories.UsersRepository;
+import spring.crut.corpus.models.Document;
+import spring.crut.corpus.services.DocumentsService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ public class UsersService {
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
     private final RolesService rolesService;
+    private final DocumentsService documentsService;
 
 
     @Transactional
@@ -121,6 +124,9 @@ public class UsersService {
         }
         user.get().getOwningAnnotations().clear();
         user.get().getRole().getUsers().remove(user.get());
+        for(var document : documentsService.getAllDocumentsByUser(user.get())) {
+            document.setOwner(null);
+        }
         usersRepository.delete(user.get());
     }
 }

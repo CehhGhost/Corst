@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import spring.crut.administration.models.User;
 import spring.crut.administration.security.CrutUserDetails;
 import spring.crut.corpus.dto.*;
 import spring.crut.corpus.enums.Gender;
@@ -156,6 +157,10 @@ public class DocumentsService {
             counter += sentence.getText().length();
         }
         return annotationDTOs;
+    }
+
+    public List<Document> getAllDocumentsByUser(User user) {
+        return documentsRepository.findAllByOwner(user);
     }
 
     public void setAttrsForTokensInDocumentDTO(DocumentDTO documentDTO) {
