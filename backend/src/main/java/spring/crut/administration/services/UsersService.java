@@ -1,13 +1,12 @@
 package spring.crut.administration.services;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import spring.crut.administration.models.Role;
+import spring.crut.administration.dto.CreateUpdateUserDTO;
 import spring.crut.administration.models.User;
 import spring.crut.administration.repositories.RolesRepository;
 import spring.crut.administration.repositories.UsersRepository;
@@ -20,16 +19,29 @@ public class UsersService {
     private final UsersRepository usersRepository;
     private final RolesRepository rolesRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
-    public void createUser(User user) {
-        if (usersRepository.existsUserByUsername(user.getUsername())) {
+    @Transactional
+    public void createUser(CreateUpdateUserDTO userDTO) {
+        var user = modelMapper.map(userDTO, User.class);
+        if (usersRepository.existsUserByUsername(userDTO.getUsername())) {
             throw new IllegalArgumentException("This username is already existed");
         }
         usersRepository.save(user);
+        var role = rolesRepository.findByName(userDTO.getUsersRole());
+        if (role.isEmpty()) {
+            throw new IllegalArgumentException("There is no such role");
+        }
+        if (user.getRole() != null && user.getRole().equals(role.get())) {
+            return;
+        }
+        user.setRole(role.get());
+        role.get().getUsers().add(user);
+        usersRepository.save(user);
+        rolesRepository.save(role.get());
     }
-
     @Transactional
-    public void setRoleForUser(Long id, String roleName) {
+    public void setRoleForUserById(Long id, String roleName) {
         var role = rolesRepository.findByName(roleName);
         if (role.isEmpty()) {
             throw new IllegalArgumentException("There is no such role");
@@ -47,6 +59,7 @@ public class UsersService {
         rolesRepository.save(role.get());
     }
 
+    @Transactional
     public void changePasswordForUser(Long id, String oldPassword, String newPassword) {
         var user = usersRepository.findById(id);
         if (user.isEmpty()) {

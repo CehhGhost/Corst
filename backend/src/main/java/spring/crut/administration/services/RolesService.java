@@ -3,6 +3,7 @@ package spring.crut.administration.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import spring.crut.administration.dto.CreateUpdateRoleDTO;
 import spring.crut.administration.models.Authority;
 import spring.crut.administration.models.Role;
 import spring.crut.administration.repositories.AuthoritiesRepository;
@@ -34,13 +35,16 @@ public class RolesService {
         rolesRepository.save(role.get());
     }
 
-    public void createRole(Role role) {
-        if (rolesRepository.findByName(role.getName()).isPresent()) {
+    public void createRole(CreateUpdateRoleDTO roleDTO) {
+
+        if (rolesRepository.findByName(roleDTO.getName()).isPresent()) {
             throw new IllegalArgumentException("This role is already existing");
         }
+        Role role = new Role();
+        role.setName(roleDTO.getName());
         Set<Authority> authorities = new HashSet<>();
-        for (var authority : role.getAuthorities()) {
-            var actualAuthority = authoritiesRepository.findByName(authority.getName());
+        for (var authority : roleDTO.getAuthorities()) {
+            var actualAuthority = authoritiesRepository.findByName(authority);
             if (actualAuthority.isEmpty()) {
                 throw new IllegalArgumentException("There is no such authority");
             }
