@@ -12,4 +12,13 @@ public class CoursesService extends InfoService<Course, CoursesRepository> {
         course.setName(name);
         return course;
     }
+
+    @Override
+    protected void updateInfoForDocuments(Long id) {
+        var replacement = repository.findByName("unknown");
+        if (replacement.isEmpty()) {
+            throw new IllegalArgumentException("Something is wrong, cant find default Course");
+        }
+        repository.updateCourseForDocuments(id, replacement.get());
+    }
 }

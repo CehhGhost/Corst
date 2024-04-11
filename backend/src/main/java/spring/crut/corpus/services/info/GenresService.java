@@ -12,4 +12,13 @@ public class GenresService extends InfoService<Genre, GenresRepository> {
         genre.setName(name);
         return genre;
     }
+
+    @Override
+    protected void updateInfoForDocuments(Long id) {
+        var replacement = repository.findByName("unknown");
+        if (replacement.isEmpty()) {
+            throw new IllegalArgumentException("Something is wrong, cant find default Genre");
+        }
+        repository.updateGenreForDocuments(id, replacement.get());
+    }
 }
