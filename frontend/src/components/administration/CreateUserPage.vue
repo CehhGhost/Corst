@@ -69,7 +69,7 @@ export default {
       surname: "",
       username: "",
       password: "",
-      role: "",
+      role: null,
 
       roles: [],
 
@@ -79,13 +79,15 @@ export default {
   methods: {
     async getRoles() {
       try {
-        const response = await fetch(serverAdress + "/info/document", {
+        const response = await fetch(serverAdress + "/roles", {
           method: "GET",
         });
         this.responseSuccess = response.ok;
         if (response.ok) {
           const data = await response.json();
-          return data;
+          for (let i = 0; i < data.roles.length; i++) {
+            this.roles.push(data.roles[i].name);
+          }
         }
       } catch (error) {
         console.error("Error:", error);
@@ -100,27 +102,20 @@ export default {
         this.name == "" ||
         this.surname == "" ||
         this.username == "" ||
-        this.password == "" ||
-        this.role == ""
+        this.password == ""
       ) {
         if (this.$i18n.locale == "ru") alert("Пожалуйста, заполните все поля");
         else alert("Please fill all fields");
         return;
-      }
-      if (this.$i18n.locale == "ru") {
-        this.authorsGender =
-          this.authorsGenders[
-            this.authorsGendersLoc.indexOf(this.authorsGender)
-          ];
       }
       const data = {
         name: this.name,
         surname: this.surname,
         username: this.username,
         password: this.password,
-        role: this.role,
+        usersRole: this.role,
       };
-      const response = await fetch(`${serverAdress}/admin/users`, {
+      const response = await fetch(`${serverAdress}/admin/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
