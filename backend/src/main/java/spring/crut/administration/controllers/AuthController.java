@@ -14,6 +14,9 @@ import spring.crut.administration.dto.JwtDTO;
 import spring.crut.administration.security.JWTUtil;
 import spring.crut.administration.services.AuthoritiesService;
 import spring.crut.administration.services.CrutUserDetailsService;
+import spring.crut.administration.services.UsersService;
+
+import java.util.Map;
 
 
 @RestController
@@ -24,6 +27,7 @@ public class AuthController {
     private final JWTUtil jwtUtil;
     private final CrutUserDetailsService crutUserDetailsService;
     private final AuthoritiesService authoritiesService;
+    private final UsersService usersService;
 
     @PostMapping
     public ResponseEntity<?> loginUser(@RequestBody AuthDTO authDTO) {
@@ -45,6 +49,12 @@ public class AuthController {
         } catch (JWTVerificationException | UsernameNotFoundException exc) {
             return ResponseEntity.badRequest().build();
         }
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+    // TODO переделать
+    @PatchMapping("/change_password/{id}")
+    public ResponseEntity<HttpStatus> changePasswordForUser(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {
+        usersService.changePasswordForUser(id, requestBody.get("oldPassword"), requestBody.get("newPassword"));
         return ResponseEntity.ok(HttpStatus.OK);
     }
     // TODO протестировать при разных исходах работы с токеном
