@@ -147,6 +147,7 @@ export default {
         } else {
           alert("Please fill all fields");
         }
+        return;
       }
       if (this.$i18n.locale == "ru") {
         this.authorsGender =
@@ -245,24 +246,6 @@ export default {
       }
       for (let i = 0; i < this.authorsAcademicMajors.length; i++) {
         this.filteredAuthorsAcademicMajors.push(this.authorsAcademicMajors[i]);
-      }
-    },
-    async changeDocument() {
-      this.userStatus = await isLogin();
-      if (!this.userStatus) {
-        this.$router.push("/login");
-      }
-      if (
-        !this.title ||
-        !this.text ||
-        !this.authorsGender ||
-        !this.genre ||
-        !this.domain ||
-        !this.authorsCourse ||
-        !this.authorsAcademicMajor
-      ) {
-        alert("Please fill all fields");
-        return;
       }
     },
     createValue(val, done) {
