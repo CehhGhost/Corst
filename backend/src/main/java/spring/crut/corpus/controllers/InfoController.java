@@ -34,6 +34,11 @@ public class InfoController {
         return ResponseEntity.ok(academicMajorsService.getAll());
     }
 
+    @GetMapping("/academic_majors/{id}")
+    public ResponseEntity<?> getAcademicMajorById(@PathVariable Long id) {
+        return ResponseEntity.ok(academicMajorsService.getInfoById(id));
+    }
+
     @PostMapping("/academic_majors/create")
     public ResponseEntity<?> createAcademicMajor(@RequestBody InfoDTO infoDTO) {
         academicMajorsService.create(infoDTO.getName());
@@ -54,6 +59,11 @@ public class InfoController {
     @GetMapping("/courses")
     public ResponseEntity<?> getAllCourses() {
         return ResponseEntity.ok(coursesService.getAll());
+    }
+
+    @GetMapping("/courses/{id}")
+    public ResponseEntity<?> getCourseById(@PathVariable Long id) {
+        return ResponseEntity.ok(coursesService.getInfoById(id));
     }
 
     @PostMapping("/courses/create")
@@ -78,6 +88,11 @@ public class InfoController {
         return ResponseEntity.ok(domainsService.getAll());
     }
 
+    @GetMapping("/domains/{id}")
+    public ResponseEntity<?> getDomainById(@PathVariable Long id) {
+        return ResponseEntity.ok(domainsService.getInfoById(id));
+    }
+
     @PostMapping("/domains/create")
     public ResponseEntity<?> createDomain(@RequestBody InfoDTO infoDTO) {
         domainsService.create(infoDTO.getName());
@@ -100,6 +115,11 @@ public class InfoController {
         return ResponseEntity.ok(genresService.getAll());
     }
 
+    @GetMapping("/genres/{id}")
+    public ResponseEntity<?> getGenreById(@PathVariable Long id) {
+        return ResponseEntity.ok(genresService.getInfoById(id));
+    }
+
     @PostMapping("/genres/create")
     public ResponseEntity<?> createGenre(@RequestBody InfoDTO infoDTO) {
         genresService.create(infoDTO.getName());
@@ -117,9 +137,32 @@ public class InfoController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @GetMapping("/error_tags")
+    public ResponseEntity<?> getAllErrorTags() {
+        return ResponseEntity.ok(errorTagsService.getAll());
+    }
+
+    @GetMapping("/error_tags/{id}")
+    public ResponseEntity<?> getErrorTagById(@PathVariable Long id) {
+        return ResponseEntity.ok(errorTagsService.getInfoById(id));
+    }
+
     @PostMapping("/error_tags/create")
     public ResponseEntity<?> createErrorTag(@RequestBody InfoDTO infoDTO) {
         errorTagsService.create(infoDTO.getName());
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
+    @DeleteMapping("/error_tags/{id}")
+    public ResponseEntity<?> deleteErrorTagById(@PathVariable Long id) {
+        errorTagsService.deleteInfoById(id);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PutMapping("/error_tags/{id}")
+    public ResponseEntity<?> updateErrorTagById(@PathVariable Long id, @RequestBody InfoDTO infoDTO) {
+        errorTagsService.updateInfoById(id, infoDTO.getName());
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
 }

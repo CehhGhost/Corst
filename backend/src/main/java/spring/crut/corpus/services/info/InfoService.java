@@ -80,4 +80,13 @@ public abstract class InfoService <T extends Info, R extends InfoRepository<T>> 
         info.get().setName(name);
         repository.save(info.get());
     }
+
+    @Transactional
+    public T getInfoById(Long id) {
+        var info = repository.findById(id);
+        if (info.isEmpty()) {
+            throw new IllegalArgumentException("No info with such id!");
+        }
+        return info.get();
+    }
 }
