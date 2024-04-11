@@ -103,7 +103,7 @@ export default {
         }
       );
       if (response.ok) {
-        this.$router.push("/news");
+        this.$router.push("/admin/articles");
       } else {
         console.error(response);
       }
