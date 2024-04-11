@@ -145,6 +145,8 @@ export default {
       documentStatus: "Not annotated",
       options: this.statuses(),
       userStatus: false,
+
+      tags: [],
     };
   },
   watch: {
@@ -204,11 +206,21 @@ export default {
         console.error("Error:", error);
       }
     },
+
     async loadRecogito() {
+      let widgets = [];
+      widgets.push("COMMENT");
+      widgets.push({
+        widget: "TAG",
+        vocabulary: this.tags,
+      });
       this.document.sentences.forEach((sentence, i) => {
         const recogito = new Recogito({
+          allowEmpty: false,
           content: "a-card-" + sentence.id,
           mode: "pre",
+          locale: "ru",
+          widgets: widgets,
         });
         recogito.on("createAnnotation", (annotation) => {
           this.sendAnnotation(annotation, sentence.id);
@@ -298,6 +310,28 @@ export default {
       }
     },
 
+    async getAllErrorTags() {
+      try {
+        const response = await fetch(serverAdress + "/info/error_tags/", {
+          method: "GET",
+        });
+        if (response.ok) {
+          const data = await response.json();
+          return data;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+    parseTags(data) {
+      const tags = [];
+      for (let i = 0; i < data.length; i++) {
+        tags.push(data[i].name);
+      }
+      return tags;
+    },
+
     statuses() {
       return this.$i18n.locale === "ru"
         ? ["Не аннотирован", "Аннотирован", "Проверен"]
@@ -315,6 +349,7 @@ export default {
     if (this.responseSuccess) {
       await this.loadDocument();
       this.loadingComplete = true;
+      this.tags = this.parseTags(await this.getAllErrorTags());
       await this.loadRecogito();
     }
   },
