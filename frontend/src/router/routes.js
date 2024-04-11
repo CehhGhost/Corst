@@ -142,7 +142,7 @@ const routes = [
   {
     path: "/admin/academic_majors",
     component: () =>
-      import("../views/administration/AdminAllAcademicMajorsView.vue"),
+      import("../views/administration/AdminAllAcademicMajorView.vue"),
   },
   {
     path: "/admin/courses",

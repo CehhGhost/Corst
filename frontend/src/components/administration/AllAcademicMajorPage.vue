@@ -166,7 +166,7 @@ export default {
   methods: {
     async getAllAcademicMajors() {
       try {
-        const response = await fetch(serverAdress + "/academic_majors", {
+        const response = await fetch(serverAdress + "/info/academic_majors", {
           method: "GET",
         });
         if (response.ok) {
@@ -187,7 +187,7 @@ export default {
       }
       return rows;
     },
-    goToAcademicMajorsPage(id) {
+    goToacademicMajorPage(id) {
       this.$router.push(`/admin/academic_majors/${id}`);
     },
 

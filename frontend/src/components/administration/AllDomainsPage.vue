@@ -166,7 +166,7 @@ export default {
   methods: {
     async getAllDomains() {
       try {
-        const response = await fetch(serverAdress + "/domains", {
+        const response = await fetch(serverAdress + "/info/domains", {
           method: "GET",
         });
         if (response.ok) {
@@ -187,7 +187,7 @@ export default {
       }
       return rows;
     },
-    goToDomainsPage(id) {
+    goToDomainPage(id) {
       this.$router.push(`/admin/domains/${id}`);
     },
 

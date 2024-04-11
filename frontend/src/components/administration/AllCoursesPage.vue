@@ -166,7 +166,7 @@ export default {
   methods: {
     async getAllCourses() {
       try {
-        const response = await fetch(serverAdress + "/courses", {
+        const response = await fetch(serverAdress + "/info/courses", {
           method: "GET",
         });
         if (response.ok) {

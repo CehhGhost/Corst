@@ -166,7 +166,7 @@ export default {
   methods: {
     async getAllGenres() {
       try {
-        const response = await fetch(serverAdress + "/genres", {
+        const response = await fetch(serverAdress + "/info/genres", {
           method: "GET",
         });
         if (response.ok) {
@@ -187,7 +187,7 @@ export default {
       }
       return rows;
     },
-    goToGenresPage(id) {
+    goToGenrePage(id) {
       this.$router.push(`/admin/genres/${id}`);
     },
 
