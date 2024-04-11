@@ -1,5 +1,6 @@
 package spring.crut.administration.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,5 +14,6 @@ public class UserDTO {
     private String name;
     private String surname;
     private String username;
-    private String role;
+    @JsonProperty("role")
+    private String usersRole;
 }
