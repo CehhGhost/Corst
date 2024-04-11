@@ -179,7 +179,7 @@ export default {
       this.selected.forEach(async (tag) => {
         try {
           const response = await fetch(
-            serverAdress + "/info/domais/" + tag.id,
+            serverAdress + "/info/domains/" + tag.id,
             {
               method: "DELETE",
             }
