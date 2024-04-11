@@ -130,8 +130,8 @@ public class DocumentsService {
                     annotationInfo = objectMapper.readValue(annotation.getAnnotationInfo(), new TypeReference<>() {});
 
                     Map<String, Object> target = (Map<String, Object>) annotationInfo.get("target");
-                    Map<String, Object>[] selectorArray = (Map<String, Object>[]) target.get("selector");
-                    Map<String, Object> selector = selectorArray[1];
+                    List<Map<String, Object>> selectorArray = (List<Map<String, Object>>) target.get("selector");
+                    Map<String, Object> selector = selectorArray.get(1);
                     int start = (int) selector.get("start");
                     int end = (int) selector.get("end");
 
