@@ -38,7 +38,7 @@ public class User {
     @OneToMany
     private List<Annotation> owningAnnotations;
     public String getRolesName() {
-        if (this.role != null) {
+         if (this.role != null) {
             return this.role.getName();
         }
         return "NO_ROLE";
