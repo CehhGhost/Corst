@@ -10,7 +10,10 @@ import spring.crut.administration.models.Authority;
 import spring.crut.administration.repositories.AuthoritiesRepository;
 import spring.crut.administration.security.CrutUserDetails;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -26,5 +29,12 @@ public class AuthoritiesService {
             throw new IllegalArgumentException("There is no such authority");
         }
         return actualAuthority.get();
+    }
+    public List<String> getAllAuthoritiesNames() {
+        List<String> result = new ArrayList<>();
+        for (var authority : authoritiesRepository.findAll()) {
+            result.add(authority.getName());
+        }
+        return result;
     }
 }

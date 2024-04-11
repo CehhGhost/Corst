@@ -90,6 +90,27 @@ public class RolesService {
         rolesRepository.save(role.get());
     }
 
+    @Transactional
+    public void createDefaultRoles() {
+        if (rolesRepository.findByName("ROLE_ADMIN").isEmpty()) {
+            var admin = new Role();
+            admin.setName("ROLE_ADMIN");
+            Set<Authority> authorities = new HashSet<>();
+            for (var authority : authoritiesService.getAllAuthoritiesNames()) {
+                var actualAuthority = authoritiesService.getByName(authority);
+                authorities.add(actualAuthority);
+            }
+            admin.setAuthorities(authorities);
+            rolesRepository.save(admin);
+        }
+        if (rolesRepository.findByName("ROLE_DEFAULT_USER").isEmpty()) {
+            var defaultUser = new Role();
+            defaultUser.setName("ROLE_DEFAULT_USER");
+            defaultUser.setAuthorities(new HashSet<>());
+            rolesRepository.save(defaultUser);
+        }
+    }
+
     public String getRolesName(Role usersRole) {
         if (usersRole == null) {
             return "NO_ROLES";
@@ -102,5 +123,13 @@ public class RolesService {
             throw new IllegalArgumentException("No roles with such id!");
         }
         return rolesRepository.getById(id);
+    }
+
+    public Role getRoleByName(String roleName) {
+        var role = rolesRepository.findByName(roleName);
+        if (role.isEmpty()) {
+            throw new IllegalArgumentException("No roles with such name!");
+        }
+        return role.get();
     }
 }
