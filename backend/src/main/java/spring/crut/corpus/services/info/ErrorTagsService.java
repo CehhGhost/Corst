@@ -6,6 +6,7 @@ import spring.crut.corpus.repositories.info.ErrorTagsRepository;
 
 @Service
 public class ErrorTagsService extends InfoService<ErrorTag, ErrorTagsRepository> {
+
     @Override
     protected ErrorTag createInfo(String name) {
         var errorTag = new ErrorTag();
@@ -13,8 +14,9 @@ public class ErrorTagsService extends InfoService<ErrorTag, ErrorTagsRepository>
         return errorTag;
     }
 
+    // TODO доделать
     @Override
     protected void updateInfoForDocuments(Long id) {
-        repository.updateErrorTagInAnnotations(repository.getById(id));
+        return;
     }
 }
