@@ -26,9 +26,9 @@ public class Section {
     @Column(name = "header_eng")
     private String headerEng;
 
-    @Column(name = "text_rus")
+    @Column(name = "text_rus", columnDefinition = "TEXT")
     private String textRus;
 
-    @Column(name = "text_eng")
+    @Column(name = "text_eng", columnDefinition = "TEXT")
     private String textEng;
 }
