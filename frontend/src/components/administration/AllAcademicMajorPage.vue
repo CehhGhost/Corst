@@ -7,32 +7,12 @@
       title="Academic Majors"
       :rows="rows"
       :columns="cols"
-      :visible-columns="visibleColumns"
       row-key="id"
       selection="multiple"
       v-model:selected="selected"
       @selection="handleSelection"
       style="width: (100% - 200px); margin-left: 200px; margin-top: 50px"
     >
-      <template v-slot:top>
-        <q-space />
-
-        <q-select
-          v-model="visibleColumns"
-          multiple
-          outlined
-          dense
-          options-dense
-          :display-value="$q.lang.table.columns"
-          emit-value
-          map-options
-          :options="cols"
-          option-value="name"
-          options-cover
-          style="min-width: 150px"
-        />
-      </template>
-
       <template v-slot:header-selection="scope">
         <q-checkbox v-model="scope.selected" />
       </template>
@@ -122,7 +102,6 @@ export default {
       rows,
       tableRef,
       selected,
-      visibleColumns: ref(["id", "name"]),
       handleSelection({ rows, added, evt }) {
         if (rows.length !== 1 || evt === void 0) {
           return;
