@@ -51,7 +51,7 @@
       <template v-slot:body-cell-id="props">
         <q-td
           :props="props"
-          @click="goToUserPage(props.row.id)"
+          @click="goToRolePage(props.row.id)"
           style="cursor: pointer"
         >
           <q-item-label>{{ props.row.id }}</q-item-label>
@@ -61,7 +61,7 @@
       <template v-slot:body-cell-name="props">
         <q-td
           :props="props"
-          @click="goToUserPage(props.row.id)"
+          @click="goToRolePage(props.row.id)"
           style="cursor: pointer"
         >
           <q-item-label>{{ props.row.name }}</q-item-label>
