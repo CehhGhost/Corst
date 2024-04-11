@@ -105,6 +105,10 @@ const routes = [
     path: "/admin/users",
     component: () => import("../views/administration/AdminAllUsersView.vue"),
   },
+  {
+    path: "/admin/users/create",
+    component: () => import("../views/administration/AdminCreateUserView.vue"),
+  },
   // Error route
   {
     path: "/:catchAll(.*)*",

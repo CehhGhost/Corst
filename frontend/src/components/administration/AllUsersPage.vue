@@ -198,7 +198,13 @@ export default {
       const rows = [];
       for (let i = 0; i < data.length; i++) {
         console.log(data[i]);
-        rows.push({});
+        rows.push({
+          id: data[i].id,
+          username: data[i].username,
+          name: data[i].name,
+          surname: data[i].surname,
+          role: data[i].role,
+        });
       }
       return rows;
     },
