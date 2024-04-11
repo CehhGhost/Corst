@@ -14,6 +14,7 @@ import spring.crut.administration.security.CrutUserDetails;
 import spring.crut.corpus.dto.*;
 import spring.crut.corpus.enums.Gender;
 import spring.crut.corpus.models.Document;
+import spring.crut.corpus.models.Sentence;
 import spring.crut.corpus.repositories.DocumentsRepository;
 import spring.crut.corpus.enums.Status;
 import spring.crut.corpus.services.info.AcademicMajorsService;
@@ -122,8 +123,11 @@ public class DocumentsService {
     public List<AnnotationDTO> getAnnotationsByTheirDocumentId(Long documentId) {
         var document = this.getDocumentByID(documentId);
         List<AnnotationDTO> annotationDTOs = new ArrayList<>();
-        long counter = 0;
+        int counter = 0;
         for (var sentence : document.getSentences()) {
+            while (document.getText().charAt(counter) != sentence.getText().charAt(0)){
+                counter++;
+            }
             for (var annotation : sentence.getAnnotations()) {
                 Map<String, Object> annotationInfo = null;
                 try {
