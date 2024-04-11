@@ -102,7 +102,8 @@ public class UsersService {
         if (!usersRepository.existsById(id)) {
             throw new IllegalArgumentException("No user with such id!");
         }
-        if (usersRepository.existsUserByUsername(userDTO.getUsername())) {
+        var current_user = usersRepository.findByUsername(userDTO.getUsername());
+        if (current_user.isPresent() && !current_user.get().getId().equals(id)) {
             throw new IllegalArgumentException("This username is already existed");
         }
         this.setRoleForUserById(id, userDTO.getUsersRole());
