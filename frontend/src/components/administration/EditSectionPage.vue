@@ -83,14 +83,17 @@ export default {
         textRus: this.textRus,
         textEng: this.textEng,
       };
-      const response = await fetch(`${serverAdress}/sections`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("corst_token")}`,
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await fetch(
+        `${serverAdress}/sections/${this.$route.params.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("corst_token")}`,
+          },
+          body: JSON.stringify(data),
+        }
+      );
       if (response.ok) {
         this.$router.push("/admin/sections");
       }
