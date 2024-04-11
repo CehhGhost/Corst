@@ -214,8 +214,6 @@ export default {
           this.sendAnnotation(annotation, sentence.id);
         });
         recogito.on("updateAnnotation", (annotation) => {
-          console.log("update");
-          console.log(annotation);
           this.updateAnnotation(annotation, sentence.id);
         });
         recogito.on("deleteAnnotation", (annotation) => {

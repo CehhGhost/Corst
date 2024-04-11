@@ -130,6 +130,29 @@ const routes = [
     component: () =>
       import("../views/administration/AdminAllAuthoritiesView.vue"),
   },
+  {
+    path: "/admin/error_tags",
+    component: () =>
+      import("../views/administration/AdminAllErrorTagsView.vue"),
+  },
+  {
+    path: "/admin/domains",
+    component: () => import("../views/administration/AdminAllDomainsView.vue"),
+  },
+  {
+    path: "/admin/academic_majors",
+    component: () =>
+      import("../views/administration/AdminAllAcademicMajorView.vue"),
+  },
+  {
+    path: "/admin/courses",
+    component: () => import("../views/administration/AdminAllCoursesView.vue"),
+  },
+  {
+    path: "/admin/genres",
+    component: () => import("../views/administration/AdminAllGenresView.vue"),
+  },
+
   // Error route
   {
     path: "/:catchAll(.*)*",
