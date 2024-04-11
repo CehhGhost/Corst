@@ -141,6 +141,11 @@ const routes = [
       import("../views/administration/AdminCreateErrorTagView.vue"),
   },
   {
+    path: "/admin/error_tags/:id",
+    component: () =>
+      import("../views/administration/AdminEditErrorTagView.vue"),
+  },
+  {
     path: "/admin/domains",
     component: () => import("../views/administration/AdminAllDomainsView.vue"),
   },
@@ -176,7 +181,6 @@ const routes = [
     path: "/admin/genres/create",
     component: () => import("../views/administration/AdminCreateGenreView.vue"),
   },
-
   // Error route
   {
     path: "/:catchAll(.*)*",

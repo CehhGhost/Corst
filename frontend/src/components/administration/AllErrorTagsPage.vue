@@ -167,7 +167,7 @@ export default {
       return rows;
     },
     goToErrorTagPage(id) {
-      this.$router.push(`/info/error_tags/${id}`);
+      this.$router.push(`/admin/error_tags/${id}`);
     },
 
     deleteErrorTags() {
