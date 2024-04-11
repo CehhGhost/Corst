@@ -15,6 +15,6 @@ public class ErrorTagsService extends InfoService<ErrorTag, ErrorTagsRepository>
 
     @Override
     protected void updateInfoForDocuments(Long id) {
-        return;
+        repository.updateErrorTagInAnnotations(id);
     }
 }
