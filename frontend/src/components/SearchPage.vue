@@ -1037,7 +1037,7 @@ export default {
       this.contextVisible = true;
       const request = await fetch(
         serverAdress +
-          `documents/sentences/${id}/get_context/${this.displayOptionsSettings.sentencesInExpandedContext}`,
+          `/documents/sentences/${id}/get_context/${this.displayOptionsSettings.sentencesInExpandedContext}`,
         {
           method: "GET",
           headers: {
