@@ -6,7 +6,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import spring.crut.administration.dto.CreateUpdateUserDTO;
+import spring.crut.administration.dto.CreateUserDTO;
+import spring.crut.administration.dto.UpdateUserDTO;
 import spring.crut.administration.models.User;
 import spring.crut.administration.repositories.RolesRepository;
 import spring.crut.administration.repositories.UsersRepository;
@@ -22,7 +23,7 @@ public class UsersService {
     private final ModelMapper modelMapper;
 
     @Transactional
-    public void createUser(CreateUpdateUserDTO userDTO) {
+    public void createUser(CreateUserDTO userDTO) {
         var user = modelMapper.map(userDTO, User.class);
         if (usersRepository.existsUserByUsername(userDTO.getUsername())) {
             throw new IllegalArgumentException("This username is already existed");
@@ -50,8 +51,12 @@ public class UsersService {
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("User not found");
         }
-        if (user.get().getRole() != null && user.get().getRole().equals(role.get())) {
-            return;
+        var current_role = user.get().getRole();
+        if (current_role != null) {
+            if (current_role.equals(role.get())) {
+                return;
+            }
+            current_role.getUsers().remove(user.get());
         }
         user.get().setRole(role.get());
         role.get().getUsers().add(user.get());
@@ -82,5 +87,20 @@ public class UsersService {
             throw new IllegalArgumentException("No user with such id!");
         }
         return user.get();
+    }
+
+    public void updateUserById(Long id, UpdateUserDTO userDTO) {
+        if (!usersRepository.existsById(id)) {
+            throw new IllegalArgumentException("No user with such id!");
+        }
+        if (usersRepository.existsUserByUsername(userDTO.getUsername())) {
+            throw new IllegalArgumentException("This username is already existed");
+        }
+        this.setRoleForUserById(id, userDTO.getUsersRole());
+        var user = usersRepository.getById(id);
+        user.setName(userDTO.getName());
+        user.setSurname(userDTO.getSurname());
+        user.setUsername(userDTO.getUsername());
+        usersRepository.save(user);
     }
 }
