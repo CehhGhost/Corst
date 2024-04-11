@@ -63,7 +63,7 @@ public class Document {
     private AcademicMajor authorsAcademicMajor;
 
     @ManyToOne
-    @JoinColumn(name = "owner_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private User owner;
 
     @OneToMany
