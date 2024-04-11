@@ -658,7 +658,10 @@
           <h4></h4>
           <div>
             <div v-for="(result, index) in searchResults" :key="index">
-              <q-card class="rounded-borders" style="margin-top: 10px">
+              <q-card
+                class="rounded-borders"
+                style="margin-top: 10px; position: relative"
+              >
                 <q-card-section>
                   <div class="row q-gutter-md items-center">
                     <div>
@@ -666,6 +669,40 @@
                       <h3 class="text-h6">{{ result.documentTitle }}</h3>
                       <p>{{ result.text }}</p>
                     </div>
+                    <q-btn
+                      flat
+                      dense
+                      color="primary"
+                      style="position: absolute; top: 0; right: 10px"
+                      @click="showContext(result.id)"
+                    >
+                      Show Context
+                    </q-btn>
+                    <q-dialog v-model="contextVisible">
+                      <q-card>
+                        <q-card-section class="row items-center q-pb-sm">
+                          <label class="text-h6">
+                            {{ result.documentTitle }}
+                          </label>
+                          <q-space />
+                          <q-btn icon="close" flat round dense v-close-popup />
+                        </q-card-section>
+                        <q-card-section>
+                          <div
+                            v-for="(sentence, i) in context.context"
+                            :key="i"
+                          >
+                            <span
+                              v-if="i == context.origin_num"
+                              style="font-weight: bold"
+                            >
+                              {{ sentence }}
+                            </span>
+                            <span>{{ sentence }}</span>
+                          </div>
+                        </q-card-section>
+                      </q-card>
+                    </q-dialog>
                   </div>
                 </q-card-section>
               </q-card>
@@ -685,7 +722,8 @@ export default {
   setup() {
     const displaySettingsModal = ref(false);
     const displaySubcorpusModal = ref(false);
-    return { displaySettingsModal, displaySubcorpusModal };
+    const contextVisible = ref(false);
+    return { displaySettingsModal, displaySubcorpusModal, contextVisible };
   },
   data() {
     return {
@@ -835,6 +873,8 @@ export default {
 
       showDeleteButton: true,
       searchResults: [],
+
+      context: null,
     };
   },
   methods: {
@@ -990,6 +1030,27 @@ export default {
     },
     focusInput(field, id) {
       this.$refs[`${field}Input${id}`][0].focus();
+    },
+
+    async showContext(id) {
+      this.context = "";
+      this.contextVisible = true;
+      const request = await fetch(
+        serverAdress +
+          `documents/sentences/${id}/get_context/${this.displayOptionsSettings.sentencesInExpandedContext}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (request.ok) {
+        const data = await request.json();
+        this.context = data;
+      } else {
+        console.error(request);
+      }
     },
   },
   async mounted() {
