@@ -197,7 +197,6 @@ export default {
     getAllUserRows(data) {
       const rows = [];
       for (let i = 0; i < data.length; i++) {
-        console.log(data[i]);
         rows.push({
           id: data[i].id,
           username: data[i].username,
