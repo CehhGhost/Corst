@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import spring.crut.administration.dto.AuthDTO;
 import spring.crut.administration.dto.JwtDTO;
 import spring.crut.administration.security.JWTUtil;
-import spring.crut.administration.services.AuthoritiesService;
 import spring.crut.administration.services.CrutUserDetailsService;
 import spring.crut.administration.services.UsersService;
 
@@ -26,7 +25,6 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
     private final CrutUserDetailsService crutUserDetailsService;
-    private final AuthoritiesService authoritiesService;
     private final UsersService usersService;
 
     @PostMapping
@@ -60,6 +58,6 @@ public class AuthController {
     // TODO протестировать при разных исходах работы с токеном
     @GetMapping("/get_auth_info")
     ResponseEntity<?> getAuthInfo() {
-        return ResponseEntity.ok(authoritiesService.getAuthInfo());
+        return ResponseEntity.ok(crutUserDetailsService.getAuthInfo());
     }
 }

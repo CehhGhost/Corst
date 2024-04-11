@@ -42,19 +42,13 @@ public class AdminController {
     }
     @GetMapping("/users")
     public ResponseEntity<?> getAllUsers() {
-        List<UserDTO> usersDTOs = new ArrayList<>();
-        for (var user : usersService.getAllUsers()) {
-            var userDTO = modelMapper.map(user, UserDTO.class);
-            userDTO.setUsersRole(user.getRolesName());
-            usersDTOs.add(userDTO);
-        }
-        return ResponseEntity.ok(usersDTOs);
+        return ResponseEntity.ok(usersService.getAllUsers());
     }
     @GetMapping("/users/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
         var user = usersService.getUserById(id);
         var userDTO = modelMapper.map(user, UserDTO.class);
-        userDTO.setUsersRole(user.getRolesName());
+        // userDTO.setUsersRole(user);
         return ResponseEntity.ok(userDTO);
     }
     @PutMapping("/users/{id}")

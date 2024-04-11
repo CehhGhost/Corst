@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.crut.administration.dto.CreateUserDTO;
 import spring.crut.administration.dto.UpdateUserDTO;
+import spring.crut.administration.dto.UserDTO;
 import spring.crut.administration.models.User;
 import spring.crut.administration.repositories.RolesRepository;
 import spring.crut.administration.repositories.UsersRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,6 +23,8 @@ public class UsersService {
     private final RolesRepository rolesRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
+    private final RolesService rolesService;
+
 
     @Transactional
     public void createUser(CreateUserDTO userDTO) {
@@ -77,8 +81,13 @@ public class UsersService {
         usersRepository.save(user.get());
     }
 
-    public List<User> getAllUsers() {
-        return usersRepository.findAll();
+    public List<UserDTO> getAllUsers() {
+        List<UserDTO> usersDTOs = new ArrayList<>();
+        for (var user : usersRepository.findAll()) {
+            var userDTO = new UserDTO(user.getId(), user.getName(), user.getSurname(), user.getUsername(), rolesService.getRolesName(user.getRole()));
+            usersDTOs.add(userDTO);
+        }
+        return usersDTOs;
     }
 
     public User getUserById(Long id) {

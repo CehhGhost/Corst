@@ -34,7 +34,6 @@ public class RolesService {
 
     @Transactional
     public void createRole(CreateUpdateRoleDTO roleDTO) {
-
         if (rolesRepository.findByName(roleDTO.getName()).isPresent()) {
             throw new IllegalArgumentException("This role is already existing");
         }
@@ -76,6 +75,24 @@ public class RolesService {
         if (role.isEmpty()) {
             throw new IllegalArgumentException("There is no such role");
         }
+        var checkRole = rolesRepository.findByName(roleDTO.getName());
+        if (checkRole.isPresent() && !checkRole.get().getId().equals(role.get().getId())) {
+            throw new IllegalArgumentException("There is already a role with such name!");
+        }
+        role.get().setName(roleDTO.getName());
+        Set<Authority> authorities = new HashSet<>();
+        for (var authority : roleDTO.getAuthorities()) {
+            var actualAuthority = authoritiesService.getByName(authority);
+            authorities.add(actualAuthority);
+        }
+        role.get().setAuthorities(authorities);
+        rolesRepository.save(role.get());
+    }
 
+    public String getRolesName(Role usersRole) {
+        if (usersRole == null) {
+            return "NO_ROLES";
+        }
+        return usersRole.getName();
     }
 }
