@@ -618,6 +618,40 @@
                                 transition-show="scale"
                                 transition-hide="scale"
                               >
+                                <q-card>
+                                  <q-card-section
+                                    class="bg-primary text-white row items-center"
+                                  >
+                                    <div
+                                      class="text-h6"
+                                      @click="block.errors = []"
+                                    >
+                                      {{ $t("error_tags") }}
+                                    </div>
+                                    <q-space />
+                                    <q-btn
+                                      icon="close"
+                                      flat
+                                      round
+                                      dense
+                                      v-close-popup
+                                    />
+                                  </q-card-section>
+                                  <q-card-section>
+                                    <q-list>
+                                      <q-item
+                                        v-for="error in lexgrammFeaturesFixed.errors"
+                                        :key="error"
+                                      >
+                                        <q-checkbox
+                                          v-model="block.errors"
+                                          :val="error.name"
+                                          :label="error.name"
+                                        ></q-checkbox>
+                                      </q-item>
+                                    </q-list>
+                                  </q-card-section>
+                                </q-card>
                               </q-popup-proxy>
                             </q-icon>
                           </template>
@@ -1059,6 +1093,7 @@ export default {
         });
         if (response.ok) {
           const data = await response.json();
+          console.log(data);
           this.lexgrammFeaturesFixed.errors = data;
         } else {
           console.error(response);
@@ -1079,6 +1114,7 @@ export default {
       this.subcorpusTextInfoContainer.authorsAcademicMajors =
         data.academicMajors;
     });
+    await this.getAllErrorTags();
   },
 };
 </script>

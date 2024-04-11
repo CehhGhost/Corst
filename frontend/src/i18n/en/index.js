@@ -87,4 +87,5 @@ export default {
   edit_academic_major: "Edit academic major",
   add_course: "Add course",
   edit_course: "Edit course",
+  error_tags: "Error tags",
 };
