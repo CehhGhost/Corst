@@ -174,13 +174,16 @@ export default {
       const confirmation =
         this.$i18n.locale === "ru"
           ? confirm("Вы уверены, что хотите удалить выбранные теги ошибок?")
-          : confirm("Are you sure you want to delete theese error tags?");
+          : confirm("Are you sure you want to delete these error tags?");
       if (!confirmation) return;
       this.selected.forEach(async (tag) => {
         try {
-          const response = await fetch(serverAdress + "/error_tags/" + tag.id, {
-            method: "DELETE",
-          });
+          const response = await fetch(
+            serverAdress + "/info/error_tags/" + tag.id,
+            {
+              method: "DELETE",
+            }
+          );
           this.rows = this.rows.filter((row) => !this.selected.includes(row));
           this.selected = [];
         } catch (error) {
