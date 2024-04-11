@@ -146,7 +146,7 @@ public class SentencesService {
                 boolean errorTagCheck = false;
                 for (var annotation : sentence.getAnnotations()) {
                     for (var errorTag : annotation.getErrorTags()) {
-                        if (!errorTags.contains(errorTag)) {
+                        if (errorTags.contains(errorTag)) {
                             errorTagCheck = true;
                             break;
                         }
