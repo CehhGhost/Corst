@@ -30,6 +30,10 @@ public class RolesController {
         return ResponseEntity.ok(roleDTOs);
     }
     @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateRoleById(@PathVariable Long id, @RequestBody CreateUpdateRoleDTO roleDTO) {
+        rolesService.updateRoleById(id, roleDTO);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
     public ResponseEntity<HttpStatus> setAuthoritiesForRole(@PathVariable Long id, @RequestBody List<AuthorityDTO> authoritiesDTO) {
         List<Authority> authorities = new ArrayList<>();
         for (var authorityDTO : authoritiesDTO) {

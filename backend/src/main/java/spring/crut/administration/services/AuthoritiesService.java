@@ -30,4 +30,12 @@ public class AuthoritiesService {
         authInfoDTO.setSurname(userDetails.getUser().getSurname());
         return authInfoDTO;
     }
+
+    public Authority getByName(String authority) {
+        var actualAuthority =  authoritiesRepository.findByName(authority);
+        if (actualAuthority.isEmpty()) {
+            throw new IllegalArgumentException("There is no such authority");
+        }
+        return actualAuthority.get();
+    }
 }
