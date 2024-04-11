@@ -33,9 +33,9 @@ public class Article {
     @Column(name = "updated_at")
     private Timestamp updatedAt;
 
-    @Column(name = "text_rus")
+    @Column(name = "text_rus", columnDefinition = "TEXT")
     private String textRus;
 
-    @Column(name = "text_eng")
+    @Column(name = "text_eng", columnDefinition = "TEXT")
     private String textEng;
 }
