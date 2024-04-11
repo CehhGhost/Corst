@@ -16,19 +16,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthoritiesService {
     private final AuthoritiesRepository authoritiesRepository;
-    private final CrutUserDetailsService crutUserDetailsService;
     public List<Authority> getAllAuthorities() {
         return authoritiesRepository.findAll();
-    }
-
-    public AuthInfoDTO getAuthInfo() {
-        AuthInfoDTO authInfoDTO = new AuthInfoDTO();
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CrutUserDetails userDetails = (CrutUserDetails) authentication.getPrincipal();
-        authInfoDTO.setAuthorities(crutUserDetailsService.getAuthorities(userDetails.getUser()));
-        authInfoDTO.setName(userDetails.getUser().getName());
-        authInfoDTO.setSurname(userDetails.getUser().getSurname());
-        return authInfoDTO;
     }
 
     public Authority getByName(String authority) {

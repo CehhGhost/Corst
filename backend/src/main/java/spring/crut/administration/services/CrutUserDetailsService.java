@@ -1,12 +1,15 @@
 package spring.crut.administration.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import spring.crut.administration.dto.AuthInfoDTO;
 import spring.crut.administration.models.Role;
 import spring.crut.administration.models.User;
 import spring.crut.administration.repositories.UsersRepository;
@@ -43,5 +46,15 @@ private final RolesService rolesService;
             authorities.add(new SimpleGrantedAuthority(authority.getName()));
         }
         return authorities;
+    }
+
+    public AuthInfoDTO getAuthInfo() {
+        AuthInfoDTO authInfoDTO = new AuthInfoDTO();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CrutUserDetails userDetails = (CrutUserDetails) authentication.getPrincipal();
+        authInfoDTO.setAuthorities(this.getAuthorities(userDetails.getUser()));
+        authInfoDTO.setName(userDetails.getUser().getName());
+        authInfoDTO.setSurname(userDetails.getUser().getSurname());
+        return authInfoDTO;
     }
 }
