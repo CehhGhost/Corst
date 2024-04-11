@@ -8,7 +8,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import spring.crut.administration.dto.CreateUpdateUserDTO;
 import spring.crut.administration.dto.UserDTO;
-import spring.crut.administration.models.User;
 import spring.crut.administration.services.UsersService;
 
 import java.util.ArrayList;
@@ -32,13 +31,12 @@ public class AdminController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody CreateUpdateUserDTO userDTO) {
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        var user = modelMapper.map(userDTO, User.class);
-        usersService.createUser(user);
+        usersService.createUser(userDTO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @PatchMapping("/set_role/{id}")
     public ResponseEntity<HttpStatus> setRoleForUser(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {
-        usersService.setRoleForUser(id, requestBody.get("role"));
+        usersService.setRoleForUserById(id, requestBody.get("role"));
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @GetMapping("/users")

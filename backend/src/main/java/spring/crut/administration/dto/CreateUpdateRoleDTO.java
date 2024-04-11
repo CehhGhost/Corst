@@ -9,8 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleDTO {
-    private Long id;
+public class CreateUpdateRoleDTO {
     private String name;
-    private List<AuthorityDTO> authorities;
+    private List<String> authorities;
 }

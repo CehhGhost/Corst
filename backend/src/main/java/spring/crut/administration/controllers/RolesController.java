@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.crut.administration.dto.AuthorityDTO;
+import spring.crut.administration.dto.CreateUpdateRoleDTO;
 import spring.crut.administration.dto.RoleDTO;
 import spring.crut.administration.models.Authority;
 import spring.crut.administration.models.Role;
@@ -21,8 +22,12 @@ public class RolesController {
     private final RolesService rolesService;
     private final ModelMapper modelMapper;
     @GetMapping
-    public ResponseEntity<List<Role>> getAllRoles() {
-        return ResponseEntity.ok(rolesService.getAllRoles());
+    public ResponseEntity<?> getAllRoles() {
+        List<RoleDTO> roleDTOs = new ArrayList<>();
+        for (var role : rolesService.getAllRoles()) {
+            roleDTOs.add(modelMapper.map(role, RoleDTO.class));
+        }
+        return ResponseEntity.ok(roleDTOs);
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<HttpStatus> setAuthoritiesForRole(@PathVariable Long id, @RequestBody List<AuthorityDTO> authoritiesDTO) {
@@ -34,9 +39,8 @@ public class RolesController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @PostMapping("/create")
-    public ResponseEntity<HttpStatus> createRole(@RequestBody RoleDTO roleDTO) {
-        Role role = modelMapper.map(roleDTO, Role.class);
-        rolesService.createRole(role);
+    public ResponseEntity<HttpStatus> createRole(@RequestBody CreateUpdateRoleDTO roleDTO) {
+        rolesService.createRole(roleDTO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @DeleteMapping("/delete/{id}")

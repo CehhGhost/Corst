@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthorityDTO {
     private String name;
+    private String description;
 }
