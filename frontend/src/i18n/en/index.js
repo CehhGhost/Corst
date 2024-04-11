@@ -71,4 +71,7 @@ export default {
   add_section: "Add section",
   edit_section: "Edit section",
   add_user: "Add user",
+  role: "Role",
+  name: "Name",
+  surname: "Surname",
 };

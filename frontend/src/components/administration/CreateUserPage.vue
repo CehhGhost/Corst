@@ -6,7 +6,7 @@
         class="create-document"
         style="width: (100% - 200px); margin-left: 200px; margin-top: 50px"
       >
-        <h3 class="q-mb-md">
+        <h3 class="q-mb-md" style="margin-bottom: 25px">
           {{ $t("add_user") }}
         </h3>
         <q-form @submit="addUser" class="q-gutter-md">
@@ -69,8 +69,11 @@ export default {
       surname: "",
       username: "",
       password: "",
+      role: "",
 
       roles: [],
+
+      userStatus: false,
     };
   },
   methods: {
@@ -110,32 +113,24 @@ export default {
             this.authorsGendersLoc.indexOf(this.authorsGender)
           ];
       }
-      await fetch(serverAdress + "/documents/create", {
+      const data = {
+        name: this.name,
+        surname: this.surname,
+        username: this.username,
+        password: this.password,
+        role: this.role,
+      };
+      const response = await fetch(`${serverAdress}/admin/users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("corst_token"),
+          Authorization: `Bearer ${localStorage.getItem("corst_token")}`,
         },
-        body: JSON.stringify({
-          title: this.title,
-          text: this.text.replace(/"/g, "'"),
-          authorsGender: this.authorsGender,
-          genre: this.genre,
-          domain: this.domain,
-          authorsCourse: this.authorsCourse,
-          authorsAcademicMajor: this.authorsAcademicMajor,
-        }),
-      })
-        .then((response) => {
-          if (response.ok) {
-            this.$router.push("/admin/documents");
-          } else {
-            console.error(response);
-          }
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+        body: JSON.stringify(data),
+      });
+      if (response.ok) {
+        this.$router.push("/admin/users");
+      }
     },
   },
   async mounted() {
