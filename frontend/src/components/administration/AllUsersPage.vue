@@ -129,7 +129,7 @@ export default {
         name: "role",
         label: "Role",
         align: "center",
-        field: "role",
+        field: "usersRole",
         sortable: true,
       },
     ];
@@ -203,7 +203,7 @@ export default {
           username: data[i].username,
           name: data[i].name,
           surname: data[i].surname,
-          role: data[i].role,
+          usersRole: data[i].usersRole,
         });
       }
       return rows;

@@ -74,4 +74,5 @@ export default {
   role: "Роль",
   name: "Имя",
   surname: "Фамилия",
+  edit_user: "Изменить пользователя",
 };

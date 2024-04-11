@@ -109,6 +109,10 @@ const routes = [
     path: "/admin/users/create",
     component: () => import("../views/administration/AdminCreateUserView.vue"),
   },
+  {
+    path: "/admin/users/:id",
+    component: () => import("../views/administration/AdminEditUserView.vue"),
+  },
   // Error route
   {
     path: "/:catchAll(.*)*",
