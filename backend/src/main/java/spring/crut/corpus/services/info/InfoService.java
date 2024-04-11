@@ -68,8 +68,10 @@ public abstract class InfoService <T extends Info, R extends InfoRepository<T>> 
         if (!repository.existsById(id)) {
             throw new IllegalArgumentException("No info with such id!");
         }
+        updateInfoForDocuments(id);
         repository.deleteById(id);
     }
+    protected abstract void updateInfoForDocuments(Long id);
 
     @Transactional
     public void updateInfoById(Long id, String name) {

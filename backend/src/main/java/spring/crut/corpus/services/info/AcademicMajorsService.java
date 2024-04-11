@@ -13,4 +13,13 @@ public class AcademicMajorsService extends InfoService<AcademicMajor, AcademicMa
         academicMajor.setName(name);
         return academicMajor;
     }
+
+    @Override
+    protected void updateInfoForDocuments(Long id) {
+        var replacement = repository.findByName("unknown");
+        if (replacement.isEmpty()) {
+            throw new IllegalArgumentException("Something is wrong, cant find default AcademicMajor");
+        }
+        repository.updateAcademicMajorForDocuments(id, replacement.get());
+    }
 }

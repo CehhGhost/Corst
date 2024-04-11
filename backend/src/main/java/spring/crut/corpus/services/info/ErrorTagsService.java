@@ -12,4 +12,9 @@ public class ErrorTagsService extends InfoService<ErrorTag, ErrorTagsRepository>
         errorTag.setName(name);
         return errorTag;
     }
+
+    @Override
+    protected void updateInfoForDocuments(Long id) {
+        return;
+    }
 }
