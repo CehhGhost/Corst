@@ -698,7 +698,7 @@
                             >
                               {{ sentence }}
                             </span>
-                            <span>{{ sentence }}</span>
+                            <span v-else>{{ sentence }}</span>
                           </div>
                         </q-card-section>
                       </q-card>
