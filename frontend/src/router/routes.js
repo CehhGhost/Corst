@@ -121,6 +121,12 @@ const routes = [
     path: "/admin/roles/create",
     component: () => import("../views/administration/AdminCreateRoleView.vue"),
   },
+  {},
+  {
+    path: "/admin/authorities",
+    component: () =>
+      import("../views/administration/AdminAllAuthoritiesView.vue"),
+  },
   // Error route
   {
     path: "/:catchAll(.*)*",

@@ -81,19 +81,15 @@ export default {
   },
   methods: {
     async getRoles() {
-      try {
-        const response = await fetch(serverAdress + "/", {
-          method: "GET",
-        });
-        this.responseSuccess = response.ok;
-        if (response.ok) {
-          const data = await response.json();
-          for (let i = 0; i < data.roles.length; i++) {
-            this.roles.push(data.roles[i].name);
-          }
-        }
-      } catch (error) {
-        console.error("Error:", error);
+      const response = await fetch(`${serverAdress}/roles`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("corst_token")}`,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        return data;
       }
     },
     async getUser() {
@@ -130,7 +126,7 @@ export default {
         name: this.name,
         surname: this.surname,
         username: this.username,
-        role: this.role,
+        usersRole: this.role,
       };
       const response = await fetch(`${serverAdress}/`, {
         // TODO Add the correct endpoint
@@ -145,12 +141,21 @@ export default {
         this.$router.push("/admin/users");
       }
     },
+    async parseRoles() {
+      this.roles = [];
+      const data = await this.getRoles();
+      for (let i = 0; i < data.length; i++) {
+        console.log(data[i]);
+        this.roles.push(data[i].name);
+      }
+    },
 
     parseUser(data) {
+      console.log(data);
       this.name = data.name;
       this.surname = data.surname;
       this.username = data.username;
-      this.role = data.role.name;
+      this.role = data.usersRole;
     },
   },
   async mounted() {
@@ -164,7 +169,7 @@ export default {
 
     try {
       this.parseUser(await this.getUser());
-      await this.getRoles();
+      await this.parseRoles();
     } catch (error) {
       console.error("Error:", error);
     }

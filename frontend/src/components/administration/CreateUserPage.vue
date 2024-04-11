@@ -85,9 +85,7 @@ export default {
         this.responseSuccess = response.ok;
         if (response.ok) {
           const data = await response.json();
-          for (let i = 0; i < data.roles.length; i++) {
-            this.roles.push(data.roles[i].name);
-          }
+          return data;
         }
       } catch (error) {
         console.error("Error:", error);
@@ -128,6 +126,14 @@ export default {
         this.$router.push("/admin/users");
       }
     },
+    async parseRoles() {
+      this.roles = [];
+      const data = await this.getRoles();
+      for (let i = 0; i < data.length; i++) {
+        console.log(data[i]);
+        this.roles.push(data[i].name);
+      }
+    },
   },
   async mounted() {
     if (localStorage.getItem("corst_locale")) {
@@ -139,7 +145,7 @@ export default {
     }
 
     try {
-      await this.getRoles();
+      await this.parseRoles();
     } catch (error) {
       console.error("Error:", error);
     }
