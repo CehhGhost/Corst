@@ -76,6 +76,7 @@ public class DocumentsService {
         documentsRepository.save(document);
     }
 
+    @Transactional
     public void setInfo(Document document, CreateUpdateDocumentDTO createUpdateDocumentDTO) {
         document.setAuthorsAcademicMajor(academicMajorsService.create(createUpdateDocumentDTO.getAuthorsAcademicMajor()));
         document.setAuthorsCourse(coursesService.create(createUpdateDocumentDTO.getAuthorsCourse()));
@@ -83,6 +84,7 @@ public class DocumentsService {
         document.setGenre(genresService.create(createUpdateDocumentDTO.getGenre()));
     }
 
+    @Transactional
     public List<Document> specifySubcorpus(SubcorpusDataDTO subcorpusDataDTO) {
         var documents = documentsRepository.findAll();
         List<Document> specifiedDocuments = new ArrayList<>();
@@ -94,6 +96,7 @@ public class DocumentsService {
         return specifiedDocuments;
     }
 
+    @Transactional
     public void deleteDocument(Long id) {
         if (!documentsRepository.existsById(id)) {
             throw new IllegalArgumentException("No such document with that id!");
@@ -101,10 +104,12 @@ public class DocumentsService {
         documentsRepository.deleteById(id);
     }
 
+    @Transactional
     public List<Document> getAllDocuments() {
         return documentsRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
+    @Transactional
     public Document getDocumentByID(Long id) {
         var document = documentsRepository.findById(id);
         if (document.isEmpty()) {
@@ -117,11 +122,25 @@ public class DocumentsService {
     public List<AnnotationDTO> getAnnotationsByTheirDocumentId(Long documentId) {
         var document = this.getDocumentByID(documentId);
         List<AnnotationDTO> annotationDTOs = new ArrayList<>();
+        long counter = 0;
         for (var sentence : document.getSentences()) {
             for (var annotation : sentence.getAnnotations()) {
                 Map<String, Object> annotationInfo = null;
                 try {
                     annotationInfo = objectMapper.readValue(annotation.getAnnotationInfo(), new TypeReference<>() {});
+
+                    Map<String, Object> target = (Map<String, Object>) annotationInfo.get("target");
+                    Map<String, Object>[] selectorArray = (Map<String, Object>[]) target.get("selector");
+                    Map<String, Object> selector = selectorArray[1];
+                    int start = (int) selector.get("start");
+                    int end = (int) selector.get("end");
+
+                    start += counter;
+                    end += counter;
+
+                    selector.put("start", start);
+                    selector.put("end", end);
+
                     objectMapper.writeValueAsString(annotationInfo);
                 } catch (JsonProcessingException e) {
                     throw new RuntimeException(e);
@@ -130,6 +149,7 @@ public class DocumentsService {
                 annotationDTO.setInfo(annotationInfo);
                 annotationDTOs.add(annotationDTO);
             }
+            counter += sentence.getText().length();
         }
         return annotationDTOs;
     }
