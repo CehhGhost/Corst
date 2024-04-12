@@ -38,7 +38,7 @@
                   v-html="getCurrentArticleText(article)"
                 ></div>
 
-                <div class="q-pa-xs">
+                <div v-if="userStatus" class="q-pa-xs">
                   <div class="row justify-between">
                     <div class="col-auto"></div>
                     <div class="row-auto">
