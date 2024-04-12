@@ -270,24 +270,6 @@ export default {
         this.filteredAuthorsAcademicMajors.push(this.authorsAcademicMajors[i]);
       }
     },
-    async changeDocument() {
-      this.userStatus = await isLogin();
-      if (!this.userStatus) {
-        this.$router.push("/login");
-      }
-      if (
-        !this.title ||
-        !this.text ||
-        !this.authorsGender ||
-        !this.genre ||
-        !this.domain ||
-        !this.authorsCourse ||
-        !this.authorsAcademicMajor
-      ) {
-        alert("Please fill all fields");
-        return;
-      }
-    },
     createValue(val, done) {
       if (val.length > 0) {
         done(val, "add-unique");

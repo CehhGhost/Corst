@@ -978,7 +978,6 @@ export default {
         if (response.ok) {
           const data = await response.json();
           this.searchResults = data;
-          this.loadableMore = data.loadableMore;
         } else {
           console.log(response);
         }
