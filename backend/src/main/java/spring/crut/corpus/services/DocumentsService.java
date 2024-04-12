@@ -126,7 +126,7 @@ public class DocumentsService {
         List<AnnotationDTO> annotationDTOs = new ArrayList<>();
         int counter = 0;
         for (var sentence : document.getSentences()) {
-            while (document.getText().charAt(counter) != sentence.getText().charAt(0)){
+            while (counter < document.getText().length() && document.getText().charAt(counter) != sentence.getText().charAt(0)){
                 counter++;
             }
             for (var annotation : sentence.getAnnotations()) {
