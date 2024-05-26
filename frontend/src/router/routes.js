@@ -5,7 +5,7 @@ const routes = [
   },
   {
     path: "/news",
-    component: () => import("../views/AllArticlesView.vue"),
+    component: () => import("../views/content/AllArticlesView.vue"),
   },
   {
     path: "/search",
@@ -13,7 +13,7 @@ const routes = [
   },
   {
     path: "/login",
-    component: () => import("../views/LoginView.vue"),
+    component: () => import("../views/authorization/LoginView.vue"),
   },
   {
     path: "/statistics",
@@ -21,39 +21,35 @@ const routes = [
   },
   {
     path: "/createArticle",
-    component: () => import("../views/CreateArticleView.vue"),
+    component: () => import("../views/content/CreateArticleView.vue"),
   },
   {
     path: "/help",
     component: () => import("../views/HelpView.vue"),
   },
   {
-    path: "/demo",
-    component: () => import("../views/DemoView.vue"),
-  },
-  {
     path: "/documents",
-    component: () => import("../views/AllDocumentsView.vue"),
+    component: () => import("../views/corpus/AllDocumentsView.vue"),
   },
   {
     path: "/addDocument",
-    component: () => import("../views/CreateDocumentView.vue"),
+    component: () => import("../views/corpus/CreateDocumentView.vue"),
   },
   {
     path: "/annotateDocument/:id",
-    component: () => import("../views/AnnotateDocumentView.vue"),
+    component: () => import("../views/corpus/AnnotateDocumentView.vue"),
   },
   {
     path: "/editDocument/:id",
-    component: () => import("../views/EditDocumentView.vue"),
+    component: () => import("../views/corpus/EditDocumentView.vue"),
   },
   {
     path: "/editArticle/:id",
-    component: () => import("../views/EditArticleView.vue"),
+    component: () => import("../views/content/EditArticleView.vue"),
   },
   {
     path: "/documents/:id",
-    component: () => import("../views/DocumentView.vue"),
+    component: () => import("../views/corpus/DocumentView.vue"),
   },
   {
     path: "/admin",
@@ -62,141 +58,185 @@ const routes = [
   {
     path: "/admin/documents",
     component: () =>
-      import("../views/administration/AdminAllDocumentsView.vue"),
+      import(
+        "../views/administration/corpus/document/AdminAllDocumentsView.vue"
+      ),
   },
   {
     path: "/admin/documents/:id",
-    component: () => import("../views/administration/AdminDocumentView.vue"),
+    component: () =>
+      import(
+        "../views/administration/corpus/document/AdminAllDocumentsView.vue"
+      ),
   },
   {
     path: "/admin/documents/create",
     component: () =>
-      import("../views/administration/AdminCreateDocumentView.vue"),
+      import(
+        "../views/administration/corpus/document/AdminCreateDocumentView.vue"
+      ),
   },
   {
     path: "/admin/articles",
-    component: () => import("../views/administration/AdminAllArticlesView.vue"),
+    component: () =>
+      import(
+        "../views/administration/content/article/AdminAllArticlesView.vue"
+      ),
   },
   {
     path: "/admin/articles/create",
     component: () =>
-      import("../views/administration/AdminCreateArticleView.vue"),
+      import(
+        "../views/administration/content/article/AdminCreateArticleView.vue"
+      ),
   },
   {
     path: "/admin/articles/:id",
     component: () =>
-      import("src/views/administration/AdminEditArticleView.vue"),
+      import(
+        "src/views/administration/content/article/AdminEditArticleView.vue"
+      ),
   },
   {
     path: "/admin/sections",
-    component: () => import("../views/administration/AdminAllSectionsView.vue"),
+    component: () =>
+      import(
+        "../views/administration/content/section/AdminAllSectionsView.vue"
+      ),
   },
   {
     path: "/admin/sections/create",
     component: () =>
-      import("../views/administration/AdminCreateSectionsView.vue"),
+      import(
+        "../views/administration/content/section/AdminCreateSectionsView.vue"
+      ),
   },
   {
     path: "/admin/sections/:id",
     component: () =>
-      import("../views/administration/AdminEditSectionsView.vue"),
+      import(
+        "../views/administration/content/section/AdminEditSectionsView.vue"
+      ),
   },
   {
     path: "/admin/users",
-    component: () => import("../views/administration/AdminAllUsersView.vue"),
+    component: () =>
+      import("../views/administration/admin/user/AdminAllUsersView.vue"),
   },
   {
     path: "/admin/users/create",
-    component: () => import("../views/administration/AdminCreateUserView.vue"),
+    component: () =>
+      import("../views/administration/admin/user/AdminCreateUserView.vue"),
   },
   {
     path: "/admin/users/:id",
-    component: () => import("../views/administration/AdminEditUserView.vue"),
+    component: () =>
+      import("../views/administration/admin/user/AdminEditUserView.vue"),
   },
   {
     path: "/admin/roles",
-    component: () => import("../views/administration/AdminAllRolesView.vue"),
+    component: () =>
+      import("../views/administration/admin/role/AdminAllRolesView.vue"),
   },
   {
     path: "/admin/roles/create",
-    component: () => import("../views/administration/AdminCreateRoleView.vue"),
+    component: () =>
+      import("../views/administration/admin/role/AdminCreateRoleView.vue"),
   },
   {
     path: "/admin/roles/:id",
-    component: () => import("../views/administration/AdminEditRoleView.vue"),
+    component: () =>
+      import("../views/administration/admin/role/AdminEditRoleView.vue"),
   },
   {
     path: "/admin/authorities",
     component: () =>
-      import("../views/administration/AdminAllAuthoritiesView.vue"),
+      import(
+        "../views/administration/admin/authorities/AdminAllAuthoritiesView.vue"
+      ),
   },
   {
     path: "/admin/error_tags",
     component: () =>
-      import("../views/administration/AdminAllErrorTagsView.vue"),
+      import("../views/administration/info/errorTag/AdminAllErrorTagsView.vue"),
   },
   {
     path: "/admin/error_tags/create",
     component: () =>
-      import("../views/administration/AdminCreateErrorTagView.vue"),
+      import(
+        "../views/administration/info/errorTag/AdminCreateErrorTagView.vue"
+      ),
   },
   {
     path: "/admin/error_tags/:id",
     component: () =>
-      import("../views/administration/AdminEditErrorTagView.vue"),
+      import("../views/administration/info/errorTag/AdminEditErrorTagView.vue"),
   },
   {
     path: "/admin/domains",
-    component: () => import("../views/administration/AdminAllDomainsView.vue"),
+    component: () =>
+      import("../views/administration/info/domain/AdminAllDomainsView.vue"),
   },
   {
     path: "/admin/domains/create",
     component: () =>
-      import("../views/administration/AdminCreateDomainView.vue"),
+      import("../views/administration/info/domain/AdminCreateDomainView.vue"),
   },
   {
     path: "/admin/domains/:id",
-    component: () => import("../views/administration/AdminEditDomainView.vue"),
+    component: () =>
+      import("../views/administration/info/domain/AdminEditDomainView.vue"),
   },
   {
     path: "/admin/academic_majors",
     component: () =>
-      import("../views/administration/AdminAllAcademicMajorView.vue"),
+      import(
+        "../views/administration/info/academicMajor/AdminAllAcademicMajorView.vue"
+      ),
   },
   {
     path: "/admin/academic_majors/create",
     component: () =>
-      import("../views/administration/AdminCreateAcademicMajorView.vue"),
+      import(
+        "../views/administration/info/academicMajor/AdminCreateAcademicMajorView.vue"
+      ),
   },
   {
     path: "/admin/academic_majors/:id",
     component: () =>
-      import("../views/administration/AdminEditAcademicMajorView.vue"),
+      import(
+        "../views/administration/info/academicMajor/AdminEditAcademicMajorView.vue"
+      ),
   },
   {
     path: "/admin/courses",
-    component: () => import("../views/administration/AdminAllCoursesView.vue"),
+    component: () =>
+      import("../views/administration/info/course/AdminAllCoursesView.vue"),
   },
   {
     path: "/admin/courses/create",
     component: () =>
-      import("../views/administration/AdminCreateCourseView.vue"),
+      import("../views/administration/info/course/AdminCreateCourseView.vue"),
   },
   {
     path: "/admin/courses/:id",
-    component: () => import("../views/administration/AdminEditCourseView.vue"),
+    component: () =>
+      import("../views/administration/info/course/AdminEditCourseView.vue"),
   },
   {
     path: "/admin/genres",
-    component: () => import("../views/administration/AdminAllGenresView.vue"),
+    component: () =>
+      import("../views/administration/info/genre/AdminAllGenresView.vue"),
   },
   {
     path: "/admin/genres/create",
-    component: () => import("../views/administration/AdminCreateGenreView.vue"),
+    component: () =>
+      import("../views/administration/info/genre/AdminCreateGenreView.vue"),
   },
   {
     path: "/admin/genres/:id",
-    component: () => import("../views/administration/AdminEditGenreView.vue"),
+    component: () =>
+      import("../views/administration/info/genre/AdminEditGenreView.vue"),
   },
   // Error route
   {
