@@ -1,7 +1,7 @@
 <script setup>
 import SearchPage from "../components/SearchPage.vue";
-import NavBar from "../components/NavBar.vue";
-import FooterBar from "../components/FooterBar.vue";
+import NavBar from "../components/partials/NavBar.vue";
+import FooterBar from "../components/partials/FooterBar.vue";
 </script>
 
 <template>

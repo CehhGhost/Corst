@@ -1,7 +1,7 @@
 <script setup>
 import StatisticsPage from "../components/StatisticsPage.vue";
-import NavBar from "../components/NavBar.vue";
-import FooterBar from "../components/FooterBar.vue";
+import NavBar from "../components/partials/NavBar.vue";
+import FooterBar from "../components/partials/FooterBar.vue";
 </script>
 
 <template>

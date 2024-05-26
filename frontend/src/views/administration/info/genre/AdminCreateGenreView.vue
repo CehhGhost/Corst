@@ -1,7 +1,7 @@
 <script setup>
-import SideBar from "src/components/administration/partials/SideBar.vue";
 import NavBar from "src/components/administration/partials/NavBar.vue";
-import AdminMainPage from "src/components/administration/AdminMainPage.vue";
+import SideBar from "src/components/administration/partials/SideBar.vue";
+import AdminCreateGenre from "src/components/administration/info/genre/CreateGenrePage.vue";
 </script>
 
 <template>
@@ -11,7 +11,7 @@ import AdminMainPage from "src/components/administration/AdminMainPage.vue";
     </q-header>
     <SideBar />
     <div>
-      <AdminMainPage />
+      <AdminCreateGenre />
     </div>
   </q-layout>
 </template>
