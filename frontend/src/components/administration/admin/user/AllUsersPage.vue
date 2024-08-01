@@ -91,7 +91,8 @@
 </template>
 
 <script>
-import { serverAdress } from "../../global/globalVaribles.js";
+import { serverAdress } from "../../../../global/globalVaribles.js";
+import { isLogin } from "../../../../global/globalFunctions.js";
 import { ref, toRaw, nextTick } from "vue";
 
 export default {

@@ -62,8 +62,8 @@
 
 <script>
 // TODO Add delete and change password functionality
-import { serverAdress } from "../../global/globalVaribles.js";
-import { isLogin } from "../../global/globalFunctions.js";
+import { serverAdress } from "../../../../global/globalVaribles.js";
+import { isLogin } from "../../../../global/globalFunctions.js";
 
 export default {
   data() {
