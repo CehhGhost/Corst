@@ -107,6 +107,7 @@ export default {
     };
   },
   methods: {
+    // TEST
     async loadDocument() {
       const documentId = this.$route.params.id;
       const url = serverAdress + `/documents/${documentId}`;
