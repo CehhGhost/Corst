@@ -77,34 +77,43 @@
                 <div :id="'a-card-' + sentence.id">{{ sentence.text }}</div>
               </template>
               <q-card-section class="row items-center">
-                <q-chip
-                  v-for="(token, i) in sentence.tokens"
-                  :key="i"
-                  :label="token.text"
-                >
-                  <q-tooltip
-                    anchor="top middle"
-                    self="bottom middle"
-                    :offset="[10, 10]"
+                <div>
+                  <span
+                    v-for="(token, i) in sentence.tokens"
+                    :key="i"
+                    class="token-with-tooltip"
                   >
-                    <div>
+                    <span>{{ token.text }}</span>
+                    <q-tooltip
+                      anchor="top middle"
+                      self="bottom middle"
+                      :offset="[10, 10]"
+                    >
                       <div>
-                        <span class="tooltip-header">Lemma: </span>
-                        <span class="tooltip-info">{{ token.lemma }}</span>
-                      </div>
-                      <div>
-                        <span class="tooltip-header">POS: </span>
-                        <span class="tooltip-info">{{ token.pos }}</span>
-                      </div>
-                      <div v-for="(attr, i) in token.attrs" :key="i">
                         <div>
-                          <span class="tooltip-header">{{ i }}: </span>
-                          <span class="tooltip-info">{{ attr }}</span>
+                          <span class="tooltip-header">Lemma: </span>
+                          <span class="tooltip-info">{{ token.lemma }}</span>
+                        </div>
+                        <div>
+                          <span class="tooltip-header">POS: </span>
+                          <span class="tooltip-info">{{ token.pos }}</span>
+                        </div>
+                        <div v-for="(attr, j) in token.attrs" :key="j">
+                          <div>
+                            <span class="tooltip-header">{{ j }}: </span>
+                            <span class="tooltip-info">{{ attr }}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </q-tooltip>
-                </q-chip>
+                    </q-tooltip>
+                    <span v-if="i < sentence.tokens.length - 1">{{
+                      sentence.tokens[i + 1].pos === "PUNCT" &&
+                      sentence.tokens[i + 1].text !== "-"
+                        ? ""
+                        : " "
+                    }}</span>
+                  </span>
+                </div>
               </q-card-section>
             </q-expansion-item>
           </q-card-section>
