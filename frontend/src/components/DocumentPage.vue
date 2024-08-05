@@ -64,7 +64,6 @@
             no-caps
             unelevated
             color="secondary"
-            icon="edit"
             :label="$t('edit')"
             class="button"
             :to="'/editDocument/' + document.id"
