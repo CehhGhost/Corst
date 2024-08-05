@@ -250,6 +250,11 @@ public class SentencesService {
     }
 
     @Transactional
+    public List<Sentence> getSentencesByTheirDocument(Document document) {
+        return sentencesRepository.findAllByDocumentOrderByNum(document);
+    }
+
+    @Transactional
     public List<AnnotationDTO> getAnnotationsByTheirSentenceId(Long sentenceId) {
         var sentence = this.getSentenceById(sentenceId);
         List<AnnotationDTO> annotationDTOs = new ArrayList<>();

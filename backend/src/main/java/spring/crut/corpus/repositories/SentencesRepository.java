@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface SentencesRepository extends JpaRepository<Sentence, Long> {
     List<Sentence> findAllByDocument(Document document);
+    List<Sentence> findAllByDocumentOrderByNum(Document document);
 }
