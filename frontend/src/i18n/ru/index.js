@@ -88,4 +88,5 @@ export default {
   add_academic_major: "Добавить академическую специальность",
   edit_academic_major: "Изменить академическую специальность",
   error_tags: "Теги ошибок",
+  save: "Сохранить",
 };
