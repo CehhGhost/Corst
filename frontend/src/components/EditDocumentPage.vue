@@ -149,11 +149,17 @@ export default {
         }
         return;
       }
-      if (this.$i18n.locale == "ru") {
+      let userConfirmed = confirm(
+        "При редактировании документа будут удалены все аннотации. Вы уверены, что хотите продолжить?"
+      );
+      if (!userConfirmed) return;
+      if (!this.authorsGenders.includes(this.authorsGender)) {
         this.authorsGender =
           this.authorsGenders[
             this.authorsGendersLoc.indexOf(this.authorsGender)
           ];
+      }
+      if (this.$i18n.locale == "ru") {
       }
       const response = await fetch(
         serverAdress + "/documents/update/" + this.$route.params.id,
