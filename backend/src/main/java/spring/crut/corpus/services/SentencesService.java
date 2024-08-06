@@ -255,7 +255,7 @@ public class SentencesService {
     }
 
     @Transactional
-    public List<AnnotationDTO> getAnnotationsByTheirSentenceId(Long sentenceId) {
+    public List<AnnotationDTO> getTransformedAnnotationsByTheirSentenceId(Long sentenceId) {
         var sentence = this.getSentenceById(sentenceId);
         List<AnnotationDTO> annotationDTOs = new ArrayList<>();
         for (var annotation : sentence.getAnnotations()) {

@@ -13,7 +13,6 @@ import spring.crut.corpus.dto.CreateUpdateAnnotationDTO;
 import spring.crut.corpus.models.Annotation;
 import spring.crut.corpus.repositories.AnnotationsRepository;
 import spring.crut.corpus.services.info.ErrorTagsService;
-import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,7 +102,7 @@ public class AnnotationsService {
     }
 
     public List<AnnotationDTO> getAnnotationsBySentenceId(Long id) {
-        return sentencesService.getAnnotationsByTheirSentenceId(id);
+        return sentencesService.getTransformedAnnotationsByTheirSentenceId(id);
     }
 
     public List<AnnotationDTO> getAnnotationsByDocumentId(Long id) {

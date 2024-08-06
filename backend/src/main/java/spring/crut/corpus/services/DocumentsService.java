@@ -41,9 +41,20 @@ public class DocumentsService {
     private final ModelMapper modelMapper;
     private final ObjectMapper objectMapper;
 
+    private void getRidOfAllOddSpaces(CreateUpdateDocumentDTO createDocumentDTO) {
+        StringBuilder text = new StringBuilder(createDocumentDTO.getText());
+        var index = text.indexOf("  ");
+        while(index != -1) {
+            text.replace(index, index + 2, " ");
+            index = text.indexOf("  ");
+        }
+        createDocumentDTO.setText(text.toString());
+    }
+
     @Transactional
     public void createDocument(CreateUpdateDocumentDTO createDocumentDTO) {
         createDocumentDTO.setAuthorsGender(createDocumentDTO.getAuthorsGender().toUpperCase());
+        this.getRidOfAllOddSpaces(createDocumentDTO);
         var document = modelMapper.map(createDocumentDTO, Document.class);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CrutUserDetails userDetails = (CrutUserDetails) authentication.getPrincipal();
@@ -63,6 +74,7 @@ public class DocumentsService {
             throw new IllegalArgumentException("No such document with that id!");
         }
         var document = documentsRepository.findById(id).orElseThrow();
+        this.getRidOfAllOddSpaces(updateDocumentDTO);
         if (!document.getText().equals(updateDocumentDTO.getText())) {
             document.getSentences().removeAll(document.getSentences());
             sentencesService.deleteSentencesByTheirDocument(document);
