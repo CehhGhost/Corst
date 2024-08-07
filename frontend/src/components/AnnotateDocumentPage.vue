@@ -52,16 +52,30 @@
             </div>
           </q-card-section>
         </q-card>
-        <div class="row items-center">
-          <span class="text-h6" style="font-weight: bold">
-            {{ $t("document_status") }}:
-          </span>
-          <q-select
-            outlined
-            v-model="documentStatus"
-            :options="options"
-            class="q-mb-md"
-            style="width: 170px; margin-left: 10px"
+        <div
+          class="row items-center"
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <div style="display: flex; align-items: center">
+            <span class="text-h6" style="font-weight: bold">
+              {{ $t("document_status") }}:
+            </span>
+            <q-select
+              outlined
+              v-model="documentStatus"
+              :options="options"
+              class="q-mb-md"
+              style="width: 170px; margin-left: 10px"
+            />
+          </div>
+          <q-btn
+            :label="$t('save')"
+            color="primary"
+            :to="'/documents/' + document.id"
           />
         </div>
         <q-card

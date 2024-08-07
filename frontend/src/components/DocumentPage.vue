@@ -64,7 +64,6 @@
             no-caps
             unelevated
             color="secondary"
-            icon="edit"
             :label="$t('edit')"
             class="button"
             :to="'/editDocument/' + document.id"
@@ -73,9 +72,13 @@
         </div>
         <q-card flat bordered class="rounded-borders q-mb-xs">
           <q-card-section class="row items-center">
-            <span class="info-value" id="main-text" v-if="document != null">
-              {{ document.text }}
-            </span>
+            <span
+              class="info-value"
+              id="main-text"
+              v-if="document"
+              v-html="formatText(document.text)"
+              style="white-space: pre-wrap"
+            ></span>
           </q-card-section>
         </q-card>
       </div>
@@ -130,6 +133,12 @@ export default {
         serverAdress + "/annotations/get_by_document/" + this.document.id
       );
     },
+    formatText(text) {
+      if (text) {
+        return text.replace(/\n/g, "&#8203;<br>");
+      }
+      return "";
+    },
   },
   async mounted() {
     if (localStorage.getItem("corst_locale")) {
@@ -176,6 +185,6 @@ export default {
 
 .info-value {
   font-size: 16px;
-  white-space: pre-line;
+  white-space: pre-wrap;
 }
 </style>
