@@ -179,6 +179,10 @@ export default {
       try {
         const response = await fetch(serverAdress + "/articles", {
           method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("corst_token"),
+          },
         });
         if (response.ok) {
           const data = await response.json();
@@ -219,6 +223,10 @@ export default {
             serverAdress + "/articles/" + article.id,
             {
               method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + localStorage.getItem("corst_token"),
+              },
             }
           );
         } catch (error) {

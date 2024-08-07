@@ -48,6 +48,10 @@ export default {
       try {
         const response = await fetch(serverAdress + "/authorities", {
           method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("corst_token"),
+          },
         });
         if (response.ok) {
           return await response.json();

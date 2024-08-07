@@ -121,6 +121,10 @@ export default {
       if (!confirmation) return;
       fetch(serverAdress + "/articles/delete/" + this.$route.params.id, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("corst_token"),
+        },
       });
       this.$router.push("/news");
     },

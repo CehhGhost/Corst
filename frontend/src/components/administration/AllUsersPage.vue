@@ -187,7 +187,13 @@ export default {
   methods: {
     async getAllUsers() {
       try {
-        const response = await fetch(serverAdress + "/admin/users");
+        const response = await fetch(serverAdress + "/admin/users", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("corst_token"),
+          },
+        });
         const data = await response.json();
         return data;
       } catch (error) {
@@ -223,6 +229,10 @@ export default {
             serverAdress + "/admin/users/" + user.id,
             {
               method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + localStorage.getItem("corst_token"),
+              },
             }
           );
           this.rows = this.rows.filter((row) => !this.selected.includes(row));

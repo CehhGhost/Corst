@@ -84,7 +84,7 @@ export default {
       const response = await fetch(`${serverAdress}/roles`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("corst_token")}`,
+          Authorization: "Bearer " + localStorage.getItem("corst_token"),
         },
       });
       if (response.ok) {
@@ -98,7 +98,7 @@ export default {
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("corst_token")}`,
+            Authorization: "Bearer " + localStorage.getItem("corst_token"),
           },
         }
       );

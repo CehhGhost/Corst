@@ -147,6 +147,10 @@ export default {
       try {
         const response = await fetch(serverAdress + "/info/error_tags/", {
           method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("corst_token"),
+          },
         });
         if (response.ok) {
           const data = await response.json();
@@ -182,6 +186,10 @@ export default {
             serverAdress + "/info/error_tags/" + tag.id,
             {
               method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + localStorage.getItem("corst_token"),
+              },
             }
           );
           this.rows = this.rows.filter((row) => !this.selected.includes(row));

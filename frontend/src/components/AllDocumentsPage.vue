@@ -174,6 +174,10 @@ export default {
       try {
         const response = await fetch(serverAdress + "/documents", {
           method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("corst_token"),
+          },
         });
         this.responseSuccess = true;
         if (response.ok) {

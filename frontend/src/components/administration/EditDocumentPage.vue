@@ -206,6 +206,10 @@ export default {
       try {
         const response = await fetch(serverAdress + "/info/document", {
           method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("corst_token"),
+          },
         });
         this.responseSuccess = response.ok;
         if (response.ok) {
@@ -222,6 +226,10 @@ export default {
           serverAdress + "/documents/" + this.$route.params.id,
           {
             method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("corst_token"),
+            },
           }
         );
         this.responseSuccess = response.ok;
@@ -344,6 +352,10 @@ export default {
       if (!confirmation) return;
       fetch(serverAdress + "/documents/delete/" + this.$route.params.id, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("corst_token"),
+        },
       })
         .then((response) => {
           if (response.ok) {

@@ -114,6 +114,10 @@ export default {
         for (let i = 0; i < this.selected.length; i++) {
           fetch(serverAdress + "/articles/delete/" + this.selected[i].id, {
             method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("corst_token"),
+            },
           });
         }
         this.rows = this.rows.filter((row) => !this.selected.includes(row));

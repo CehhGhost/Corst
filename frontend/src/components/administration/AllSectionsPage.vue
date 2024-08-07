@@ -193,6 +193,10 @@ export default {
       try {
         const response = await fetch(serverAdress + "/sections", {
           method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("corst_token"),
+          },
         });
         if (response.ok) {
           const data = await response.json();
@@ -234,6 +238,10 @@ export default {
             serverAdress + "/sections/" + section.id,
             {
               method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + localStorage.getItem("corst_token"),
+              },
             }
           );
           this.rows = this.rows.filter((row) => !this.selected.includes(row));
