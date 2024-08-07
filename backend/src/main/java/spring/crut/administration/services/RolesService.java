@@ -94,7 +94,8 @@ public class RolesService {
 
     @Transactional
     public void createDefaultRoles() {
-        if (rolesRepository.findByName("ROLE_ADMIN").isEmpty()) {
+        var adminOptional = rolesRepository.findByName("ROLE_ADMIN");
+        if (adminOptional.isEmpty()) {
             var admin = new Role();
             admin.setName("ROLE_ADMIN");
             Set<Authority> authorities = new HashSet<>();
@@ -104,6 +105,14 @@ public class RolesService {
             }
             admin.setAuthorities(authorities);
             rolesRepository.save(admin);
+        } else {
+            Set<Authority> authorities = new HashSet<>();
+            for (var authority : authoritiesService.getAllAuthoritiesNames()) {
+                var actualAuthority = authoritiesService.getByName(authority);
+                authorities.add(actualAuthority);
+            }
+            adminOptional.get().setAuthorities(authorities);
+            rolesRepository.save(adminOptional.get());
         }
         if (rolesRepository.findByName("ROLE_DEFAULT_USER").isEmpty()) {
             var defaultUser = new Role();
