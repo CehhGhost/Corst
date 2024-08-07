@@ -22,3 +22,23 @@ export async function isLogin() {
     return true;
   }
 }
+
+export async function getAuthorities() {
+  try {
+    const response = await fetch(serverAdress + "/auth/get_auth_info", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("corst_token"),
+      },
+    });
+    if (!response.ok) {
+      return null;
+    }
+    const data = await response.json();
+    console.log(data.authorities);
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+    return null;
+  }
+}
