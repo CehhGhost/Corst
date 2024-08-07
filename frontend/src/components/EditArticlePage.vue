@@ -33,7 +33,7 @@
 
 <script>
 import { serverAdress } from "../global/globalVaribles.js";
-import { isLogin } from "../global/globalFunctions.js";
+import { checkAuthorities } from "../global/globalFunctions.js";
 
 export default {
   data() {
@@ -59,7 +59,7 @@ export default {
     },
 
     async submitForm() {
-      this.userStatus = await isLogin();
+      this.userStatus = await checkAuthorities("CREATE_UPDATE_DELETE_ARTICLES");
       if (!this.userStatus) {
         this.$router.push("/login");
       }
@@ -102,7 +102,7 @@ export default {
     if (localStorage.getItem("corst_locale")) {
       this.$i18n.locale = localStorage.getItem("corst_locale");
     }
-    this.userStatus = await isLogin();
+    this.userStatus = await checkAuthorities("CREATE_UPDATE_DELETE_ARTICLES");
     if (!this.userStatus) {
       this.$router.push("/");
     } else {

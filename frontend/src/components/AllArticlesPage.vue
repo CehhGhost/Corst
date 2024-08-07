@@ -73,7 +73,7 @@
 
 <script>
 import { serverAdress } from "../global/globalVaribles.js";
-import { isLogin } from "../global/globalFunctions.js";
+import { checkAuthorities } from "../global/globalFunctions.js";
 
 export default {
   data() {
@@ -134,7 +134,7 @@ export default {
     if (localStorage.getItem("corst_locale")) {
       this.$i18n.locale = localStorage.getItem("corst_locale");
     }
-    this.userStatus = await isLogin();
+    this.userStatus = await checkAuthorities("CREATE_UPDATE_DELETE_ARTICLES");
     await this.loadAllArticles();
     this.loadingComplete = true;
   },

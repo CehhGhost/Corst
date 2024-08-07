@@ -41,3 +41,11 @@ export async function getAuthorities() {
     return null;
   }
 }
+
+export async function checkAuthorities(authority) {
+  const authorities = await getAuthorities();
+  if (authorities == null) {
+    return false;
+  }
+  return authorities.some((auth) => auth.authority === authority);
+}
