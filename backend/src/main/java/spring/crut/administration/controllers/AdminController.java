@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import spring.crut.administration.dto.CreateUserDTO;
@@ -24,6 +25,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin")
+@PreAuthorize("hasAuthority('CREATE_UPDATE_DELETE_USERS')")
 public class AdminController {
     private final UsersService usersService;
     private final ModelMapper modelMapper;

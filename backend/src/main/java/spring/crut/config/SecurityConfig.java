@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -19,6 +20,7 @@ import spring.crut.administration.services.CrutUserDetailsService;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CrutUserDetailsService crutUserDetailsService;
@@ -30,13 +32,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
+
                 .antMatchers(HttpMethod.POST, "/sections/create").hasAuthority("CREATE_UPDATE_DELETE_SECTIONS")
                 .antMatchers(HttpMethod.DELETE, "/sections/{id}").hasAuthority("CREATE_UPDATE_DELETE_SECTIONS")
                 .antMatchers(HttpMethod.PUT, "/sections/{id}").hasAuthority("CREATE_UPDATE_DELETE_SECTIONS")
                 .antMatchers(HttpMethod.PATCH, "/sections/{id}/set_num/{num}").hasAuthority("CREATE_UPDATE_DELETE_SECTIONS")
+
                 .antMatchers(HttpMethod.POST, "/articles/create").hasAuthority("CREATE_UPDATE_DELETE_ARTICLES")
                 .antMatchers(HttpMethod.DELETE, "/articles/{id}").hasAuthority("CREATE_UPDATE_DELETE_ARTICLES")
                 .antMatchers(HttpMethod.PUT, "/articles/{id}").hasAuthority("CREATE_UPDATE_DELETE_ARTICLES")
+
+                .antMatchers(HttpMethod.GET, "/documents").hasAnyAuthority("SEE_READ_ALLDOCUMENTS", "UPDATE_DELETE_ALLDOCUMENTS", "ANNOTATE_ALLDOCUMENTS")
+                .antMatchers(HttpMethod.GET, "/documents/{id}").hasAnyAuthority("SEE_READ_ALLDOCUMENTS", "UPDATE_DELETE_ALLDOCUMENTS", "ANNOTATE_ALLDOCUMENTS")
+                .antMatchers(HttpMethod.POST, "/documents/create").hasAuthority("CREATE_DOCUMENTS")
+                .antMatchers(HttpMethod.PUT, "/documents/update/{id}").hasAuthority("UPDATE_DELETE_ALLDOCUMENTS")
+                .antMatchers(HttpMethod.DELETE, "/documents/delete/{id}").hasAuthority("UPDATE_DELETE_ALLDOCUMENTS")
+                .antMatchers(HttpMethod.PATCH, "/documents/{id}/set_status/{status}").hasAuthority("CHECK_ANNOTATEDDOCUMENTS")
+
                 .anyRequest().permitAll()
                 .and()
                 .sessionManagement()
