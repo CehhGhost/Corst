@@ -187,6 +187,10 @@ export default {
           serverAdress + "/documents/" + this.$route.params.id,
           {
             method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("corst_token"),
+            },
           }
         );
         this.responseSuccess = response.ok;
@@ -216,7 +220,10 @@ export default {
           {
             method: "PATCH",
             headers: {
-              "Content-Type": "application/json",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + localStorage.getItem("corst_token"),
+              },
             },
           }
         );
@@ -296,6 +303,7 @@ export default {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("corst_token"),
             },
             body: JSON.stringify({
               sentenceId: sentenceId,
@@ -318,6 +326,7 @@ export default {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("corst_token"),
             },
             body: JSON.stringify({
               sentenceId: sentenceId,

@@ -66,7 +66,13 @@ export default {
   methods: {
     async loadSection() {
       const response = await fetch(
-        `${serverAdress}/sections/${this.$route.params.id}`
+        `${serverAdress}/sections/${this.$route.params.id}`,
+        {
+          type: "GET",
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("corst_token"),
+          },
+        }
       );
       const data = await response.json();
       this.number = data.number;

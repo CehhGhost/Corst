@@ -235,6 +235,10 @@ export default {
       try {
         const response = await fetch(serverAdress + "/documents", {
           method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("corst_token"),
+          },
         });
         if (response.ok) {
           const data = await response.json();
@@ -275,6 +279,10 @@ export default {
       for (let i = 0; i < this.selected.length; i++) {
         fetch(serverAdress + "/documents/delete/" + this.selected[i].id, {
           method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("corst_token"),
+          },
         });
       }
       this.rows = this.rows.filter((row) => !this.selected.includes(row));

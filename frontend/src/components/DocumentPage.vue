@@ -113,7 +113,13 @@ export default {
     async loadDocument() {
       const documentId = this.$route.params.id;
       const url = serverAdress + `/documents/${documentId}`;
-      await fetch(url)
+      await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("corst_token"),
+        },
+      })
         .then((response) => response.json())
         .then((data) => {
           this.document = data;

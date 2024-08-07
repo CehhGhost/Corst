@@ -81,6 +81,10 @@ export default {
       try {
         const response = await fetch(serverAdress + "/roles", {
           method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("corst_token"),
+          },
         });
         this.responseSuccess = response.ok;
         if (response.ok) {
