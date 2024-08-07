@@ -27,9 +27,9 @@ public class DataLoader implements ApplicationRunner {
     private final DomainsService domainsService;
     private final GenresService genresService;
 
-    // TODO добавить загрузку всех разрешений
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        authoritiesService.createDefaultAuthorities();
         rolesService.createDefaultRoles();
         usersService.createDefaultUsers();
         academicMajorsService.createDefaultInfo();

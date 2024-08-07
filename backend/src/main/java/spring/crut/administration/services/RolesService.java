@@ -21,6 +21,7 @@ public class RolesService {
     private final RolesRepository rolesRepository;
     private final AuthoritiesService authoritiesService;
 
+    @Transactional
     public void setAuthorities(Long id, List<Authority> authorities) {
         var role = rolesRepository.findById(id);
         if (role.isEmpty()) {
@@ -61,6 +62,7 @@ public class RolesService {
         rolesRepository.delete(role.get());
     }
 
+    @Transactional
     public List<Role> getAllRoles() {
         return rolesRepository.findAll();
     }
