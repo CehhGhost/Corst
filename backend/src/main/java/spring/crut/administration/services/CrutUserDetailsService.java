@@ -51,7 +51,12 @@ private final RolesService rolesService;
     public AuthInfoDTO getAuthInfo() {
         AuthInfoDTO authInfoDTO = new AuthInfoDTO();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CrutUserDetails userDetails = (CrutUserDetails) authentication.getPrincipal();
+        CrutUserDetails userDetails;
+        try {
+            userDetails = (CrutUserDetails) authentication.getPrincipal();
+        } catch(ClassCastException e) {
+            return null;
+        }
         authInfoDTO.setAuthorities(this.getAuthorities(userDetails.getUser()));
         authInfoDTO.setName(userDetails.getUser().getName());
         authInfoDTO.setSurname(userDetails.getUser().getSurname());
