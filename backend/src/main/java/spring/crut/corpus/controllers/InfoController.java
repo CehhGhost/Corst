@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import spring.crut.corpus.dto.DocumentInfoDTO;
 import spring.crut.corpus.dto.InfoDTO;
@@ -40,17 +41,20 @@ public class InfoController {
     }
 
     @PostMapping("/academic_majors/create")
+    @PreAuthorize("hasAuthority('CREATE_INFO')")
     public ResponseEntity<?> createAcademicMajor(@RequestBody InfoDTO infoDTO) {
         academicMajorsService.create(infoDTO.getName());
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @DeleteMapping("/academic_majors/{id}")
+    @PreAuthorize("hasAuthority('UPDATE_DELETE_INFO')")
     public ResponseEntity<?> deleteAcademicMajorById(@PathVariable Long id) {
         academicMajorsService.deleteInfoById(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @PutMapping("/academic_majors/{id}")
+    @PreAuthorize("hasAuthority('UPDATE_DELETE_INFO')")
     public ResponseEntity<?> updateAcademicMajorById(@PathVariable Long id, @RequestBody InfoDTO infoDTO) {
         academicMajorsService.updateInfoById(id, infoDTO.getName());
         return ResponseEntity.ok(HttpStatus.OK);
@@ -67,17 +71,20 @@ public class InfoController {
     }
 
     @PostMapping("/courses/create")
+    @PreAuthorize("hasAuthority('CREATE_INFO')")
     public ResponseEntity<?> createCourse(@RequestBody InfoDTO infoDTO) {
         coursesService.create(infoDTO.getName());
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @DeleteMapping("/courses/{id}")
+    @PreAuthorize("hasAuthority('UPDATE_DELETE_INFO')")
     public ResponseEntity<?> deleteCourseById(@PathVariable Long id) {
         coursesService.deleteInfoById(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @PutMapping("/courses/{id}")
+    @PreAuthorize("hasAuthority('UPDATE_DELETE_INFO')")
     public ResponseEntity<?> updateCourseById(@PathVariable Long id, @RequestBody InfoDTO infoDTO) {
         coursesService.updateInfoById(id, infoDTO.getName());
         return ResponseEntity.ok(HttpStatus.OK);
@@ -94,17 +101,20 @@ public class InfoController {
     }
 
     @PostMapping("/domains/create")
+    @PreAuthorize("hasAuthority('CREATE_INFO')")
     public ResponseEntity<?> createDomain(@RequestBody InfoDTO infoDTO) {
         domainsService.create(infoDTO.getName());
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @DeleteMapping("/domains/{id}")
+    @PreAuthorize("hasAuthority('UPDATE_DELETE_INFO')")
     public ResponseEntity<?> deleteDomainById(@PathVariable Long id) {
         domainsService.deleteInfoById(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @PutMapping("/domains/{id}")
+    @PreAuthorize("hasAuthority('UPDATE_DELETE_INFO')")
     public ResponseEntity<?> updateDomainById(@PathVariable Long id, @RequestBody InfoDTO infoDTO) {
         domainsService.updateInfoById(id, infoDTO.getName());
         return ResponseEntity.ok(HttpStatus.OK);
@@ -121,17 +131,20 @@ public class InfoController {
     }
 
     @PostMapping("/genres/create")
+    @PreAuthorize("hasAuthority('CREATE_INFO')")
     public ResponseEntity<?> createGenre(@RequestBody InfoDTO infoDTO) {
         genresService.create(infoDTO.getName());
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @DeleteMapping("/genres/{id}")
+    @PreAuthorize("hasAuthority('UPDATE_DELETE_INFO')")
     public ResponseEntity<?> deleteGenreById(@PathVariable Long id) {
         genresService.deleteInfoById(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @PutMapping("/genres/{id}")
+    @PreAuthorize("hasAuthority('UPDATE_DELETE_INFO')")
     public ResponseEntity<?> updateGenreById(@PathVariable Long id, @RequestBody InfoDTO infoDTO) {
         genresService.updateInfoById(id, infoDTO.getName());
         return ResponseEntity.ok(HttpStatus.OK);

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import spring.crut.administration.dto.AuthorityDTO;
 import spring.crut.administration.dto.CreateUpdateRoleDTO;
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/roles")
+@PreAuthorize("hasAuthority('CREATE_UPDATE_DELETE_ROLES')")
 public class RolesController {
     private final RolesService rolesService;
     private final ModelMapper modelMapper;
