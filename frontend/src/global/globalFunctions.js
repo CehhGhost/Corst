@@ -35,8 +35,7 @@ export async function getAuthorities() {
       return null;
     }
     const data = await response.json();
-    console.log(data.authorities);
-    return data;
+    return data.authorities;
   } catch (error) {
     console.error("Error:", error);
     return null;
