@@ -171,7 +171,7 @@ export default {
     if (localStorage.getItem("corst_locale")) {
       this.$i18n.locale = localStorage.getItem("corst_locale");
     }
-    this.authorities = getAuthorities();
+    this.authorities = await getAuthorities();
     this.userStatus =
       this.authorities.some(
         (auth) => auth.authority === "SEE_READ_ALLDOCUMENTS"
