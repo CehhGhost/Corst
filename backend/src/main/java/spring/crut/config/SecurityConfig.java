@@ -48,7 +48,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/documents/create").hasAuthority("CREATE_DOCUMENTS")
                 .antMatchers(HttpMethod.PUT, "/documents/update/{id}").hasAuthority("UPDATE_DELETE_ALLDOCUMENTS")
                 .antMatchers(HttpMethod.DELETE, "/documents/delete/{id}").hasAuthority("UPDATE_DELETE_ALLDOCUMENTS")
-                .antMatchers(HttpMethod.PATCH, "/documents/{id}/set_status/{status}").hasAuthority("CHECK_ANNOTATEDDOCUMENTS")
+                .antMatchers(HttpMethod.PATCH, "/documents/{id}/set_status/0").hasAnyAuthority("ANNOTATE_ALLDOCUMENTS", "CHECK_ANNOTATEDDOCUMENTS")
+                .antMatchers(HttpMethod.PATCH, "/documents/{id}/set_status/1").hasAnyAuthority("ANNOTATE_ALLDOCUMENTS", "CHECK_ANNOTATEDDOCUMENTS")
+                .antMatchers(HttpMethod.PATCH, "/documents/{id}/set_status/2").hasAuthority("CHECK_ANNOTATEDDOCUMENTS")
 
                 .antMatchers(HttpMethod.POST, "/info/error_tags/create").hasAuthority("CREATE_UPDATE_DELETE_ERRORTAGS")
                 .antMatchers(HttpMethod.DELETE, "/info/error_tags/{id}").hasAuthority("CREATE_UPDATE_DELETE_ERRORTAGS")
