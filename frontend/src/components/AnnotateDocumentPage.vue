@@ -219,10 +219,8 @@ export default {
           {
             method: "PATCH",
             headers: {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + localStorage.getItem("corst_token"),
-              },
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("corst_token"),
             },
           }
         );
@@ -237,13 +235,16 @@ export default {
     },
 
     async loadReadOnlyRecogito() {
-      const recogito = new Recogito({
-        content: "main-text",
-        readOnly: true,
+      this.document.sentences.forEach((sentence, i) => {
+        const recogito = new Recogito({
+          readOnly: true,
+          content: "a-card-" + sentence.id,
+        });
+        recogito.loadAnnotations(
+          serverAdress + "/annotations/get_by_sentence/" + sentence.id
+        );
+        this.recogitoInstances.push(recogito);
       });
-      recogito.loadAnnotations(
-        serverAdress + "/annotations/get_by_document/" + this.document.id
-      );
     },
 
     async loadRecogito() {

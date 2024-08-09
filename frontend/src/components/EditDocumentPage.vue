@@ -329,7 +329,7 @@ export default {
     if (localStorage.getItem("corst_locale")) {
       this.$i18n.locale = localStorage.getItem("corst_locale");
     }
-    this.userStatus = await checkAuthorities("UPDATE_DELETE_DOCUMENTS");
+    this.userStatus = await checkAuthorities("UPDATE_DELETE_ALLDOCUMENTS");
     if (!this.userStatus) {
       this.$router.push("/");
     }
