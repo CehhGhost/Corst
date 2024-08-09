@@ -261,8 +261,8 @@ export default {
         this.filteredAuthorsAcademicMajors.push(this.authorsAcademicMajors[i]);
       }
     },
-    createValue(val, done) {
-      if (checkAuthorities("CREATE_INFO")) {
+    async createValue(val, done) {
+      if (await checkAuthorities("CREATE_INFO")) {
         if (val.length > 0) {
           done(val, "add-unique");
         }
