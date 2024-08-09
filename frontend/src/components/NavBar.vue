@@ -84,6 +84,7 @@
       </div>
       <div v-else>
         <q-btn
+          v-if="canAddDocument"
           flat
           dense
           to="/addDocument"
@@ -93,6 +94,7 @@
           {{ $t("add_document") }}
         </q-btn>
         <q-btn
+          v-if="canSeeDocuments"
           flat
           dense
           to="/documents"
@@ -102,6 +104,7 @@
           {{ $t("all_documents") }}
         </q-btn>
         <q-btn
+          v-if="canAdministrate"
           flat
           dense
           active-class="text-white"
@@ -126,11 +129,66 @@
 
 <script>
 import router from "src/router";
+import { getAuthorities } from "src/global/globalFunctions";
 
 export default {
   name: "AppHeader",
   data() {
-    return {};
+    return {
+      authorities: [],
+    };
+  },
+  computed: {
+    canAddDocument() {
+      return this.authorities.some(
+        (auth) => auth.authority === "CREATE_DOCUMENTS"
+      );
+    },
+    canSeeDocuments() {
+      return (
+        this.authorities.some(
+          (auth) => auth.authority === "SEE_READ_ALLDOCUMENTS"
+        ) ||
+        this.authorities.some(
+          (auth) => auth.authority === "CREATE_DOCUMENTS"
+        ) ||
+        this.authorities.some(
+          (auth) => auth.authority === "UPDATE_DELETE_ALLDOCUMENTS"
+        ) ||
+        this.authorities.some(
+          (auth) => auth.authority === "ANNOTATE_ALLDOCUMENTS"
+        )
+      );
+    },
+    canAdministrate() {
+      return (
+        this.authorities.some(
+          (auth) => auth.authority === "CREATE_UPDATE_DELETE_SECTIONS"
+        ) ||
+        this.authorities.some(
+          (auth) => auth.authority === "CREATE_UPDATE_DELETE_ARTICLES"
+        ) ||
+        this.authorities.some(
+          (auth) => auth.authority === "CREATE_DOCUMENTS"
+        ) ||
+        this.authorities.some(
+          (auth) => auth.authority === "UPDATE_DELETE_ALLDOCUMENTS"
+        ) ||
+        this.authorities.some((auth) => auth.authority === "CREATE_INFO") ||
+        this.authorities.some(
+          (auth) => auth.authority === "UPDATE_DELETE_INFO"
+        ) ||
+        this.authorities.some(
+          (auth) => auth.authority === "CREATE_UPDATE_DELETE_ERRORTAGS"
+        ) ||
+        this.authorities.some(
+          (auth) => auth.authority === "CREATE_UPDATE_DELETE_ROLES"
+        ) ||
+        this.authorities.some(
+          (auth) => auth.authority === "CREATE_UPDATE_DELETE_USERS"
+        )
+      );
+    },
   },
   methods: {
     checkLogin() {
@@ -147,10 +205,11 @@ export default {
       localStorage.setItem("corst_locale", locale);
     },
   },
-  mounted() {
+  async mounted() {
     if (localStorage.getItem("corst_locale")) {
       this.$i18n.locale = localStorage.getItem("corst_locale");
     }
+    this.authorities = await getAuthorities();
   },
 };
 </script>
