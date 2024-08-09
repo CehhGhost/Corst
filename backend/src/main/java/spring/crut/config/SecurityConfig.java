@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/articles/{id}").hasAuthority("CREATE_UPDATE_DELETE_ARTICLES")
                 .antMatchers(HttpMethod.PUT, "/articles/{id}").hasAuthority("CREATE_UPDATE_DELETE_ARTICLES")
 
-                .antMatchers(HttpMethod.GET, "/documents").hasAnyAuthority("SEE_READ_ALLDOCUMENTS", "UPDATE_DELETE_ALLDOCUMENTS", "ANNOTATE_ALLDOCUMENTS")
+                .antMatchers(HttpMethod.GET, "/documents").hasAnyAuthority("CREATE_DOCUMENTS", "SEE_READ_ALLDOCUMENTS", "UPDATE_DELETE_ALLDOCUMENTS", "ANNOTATE_ALLDOCUMENTS")
                 .antMatchers(HttpMethod.GET, "/documents/{id}").hasAnyAuthority("SEE_READ_ALLDOCUMENTS", "UPDATE_DELETE_ALLDOCUMENTS", "ANNOTATE_ALLDOCUMENTS")
                 .antMatchers(HttpMethod.GET, "/info/document").hasAnyAuthority("SEE_READ_ALLDOCUMENTS", "UPDATE_DELETE_ALLDOCUMENTS", "ANNOTATE_ALLDOCUMENTS")
                 .antMatchers(HttpMethod.POST, "/documents/create").hasAuthority("CREATE_DOCUMENTS")
