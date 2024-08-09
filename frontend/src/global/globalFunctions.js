@@ -22,3 +22,30 @@ export async function isLogin() {
     return true;
   }
 }
+
+export async function getAuthorities() {
+  try {
+    const response = await fetch(serverAdress + "/auth/get_auth_info", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("corst_token"),
+      },
+    });
+    if (!response.ok) {
+      return null;
+    }
+    const data = await response.json();
+    return data.authorities;
+  } catch (error) {
+    console.error("Error:", error);
+    return null;
+  }
+}
+
+export async function checkAuthorities(authority) {
+  const authorities = await getAuthorities();
+  if (authorities == null) {
+    return false;
+  }
+  return authorities.some((auth) => auth.authority === authority);
+}

@@ -54,6 +54,7 @@
         </q-card>
         <div class="row-auto" style="margin-bottom: 15px">
           <q-btn
+            v-if="canAnnotate"
             unelevated
             color="primary"
             :label="$t('annotate')"
@@ -61,6 +62,7 @@
             :to="'/annotateDocument/' + document.id"
           />
           <q-btn
+            v-if="canEdit"
             no-caps
             unelevated
             color="secondary"
@@ -94,20 +96,39 @@
 
 <script>
 import { serverAdress } from "../global/globalVaribles.js";
-import { isLogin } from "../global/globalFunctions.js";
+import { getAuthorities } from "../global/globalFunctions.js";
 import { Recogito } from "@recogito/recogito-js";
 import "@recogito/recogito-js/dist/recogito.min.css";
 
 export default {
   data() {
     return {
+      authorities: [],
       document: null,
       responseSuccess: true,
+      userStatus: false,
 
       documentAdditionalInformation: {
         statuses: ["Not annotated", "Annotated", "Checked"],
       },
     };
+  },
+  computed: {
+    canCreate() {
+      return this.authorities.some(
+        (auth) => auth.authority === "CREATE_DOCUMENTS"
+      );
+    },
+    canEdit() {
+      return this.authorities.some(
+        (auth) => auth.authority === "UPDATE_DELETE_ALLDOCUMENTS"
+      );
+    },
+    canAnnotate() {
+      return this.authorities.some(
+        (auth) => auth.authority === "ANNOTATE_ALLDOCUMENTS"
+      );
+    },
   },
   methods: {
     async loadDocument() {
@@ -150,7 +171,19 @@ export default {
     if (localStorage.getItem("corst_locale")) {
       this.$i18n.locale = localStorage.getItem("corst_locale");
     }
-    if (!isLogin()) {
+    this.authorities = await getAuthorities();
+    this.userStatus =
+      this.authorities.some(
+        (auth) => auth.authority === "SEE_READ_ALLDOCUMENTS"
+      ) ||
+      this.authorities.some((auth) => auth.authority === "CREATE_DOCUMENTS") ||
+      this.authorities.some(
+        (auth) => auth.authority === "UPDATE_DELETE_ALLDOCUMENTS"
+      ) ||
+      this.authorities.some(
+        (auth) => auth.authority === "ANNOTATE_ALLDOCUMENTS"
+      );
+    if (!this.authorities) {
       this.$router.push("/login");
     } else {
       await this.loadDocument();

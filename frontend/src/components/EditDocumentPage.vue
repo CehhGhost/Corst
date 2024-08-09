@@ -97,7 +97,7 @@
 
 <script>
 import { serverAdress } from "../global/globalVaribles.js";
-import { isLogin } from "../global/globalFunctions.js";
+import { checkAuthorities } from "../global/globalFunctions.js";
 
 export default {
   data() {
@@ -129,9 +129,8 @@ export default {
   },
   methods: {
     async saveDocument() {
-      this.userStatus = await isLogin();
       if (!this.userStatus) {
-        this.$router.push("/login");
+        this.$router.push("/");
       }
       if (
         !this.title ||
@@ -263,8 +262,10 @@ export default {
       }
     },
     createValue(val, done) {
-      if (val.length > 0) {
-        done(val, "add-unique");
+      if (checkAuthorities("CREATE_INFO")) {
+        if (val.length > 0) {
+          done(val, "add-unique");
+        }
       }
     },
     filterGenres(val, update) {
@@ -328,11 +329,10 @@ export default {
     if (localStorage.getItem("corst_locale")) {
       this.$i18n.locale = localStorage.getItem("corst_locale");
     }
-    this.userStatus = await isLogin();
+    this.userStatus = await checkAuthorities("UPDATE_DELETE_DOCUMENTS");
     if (!this.userStatus) {
       this.$router.push("/");
     }
-
     try {
       const data = await this.getDocumentInfo();
       const document = await this.getDocument();

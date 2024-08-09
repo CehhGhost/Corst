@@ -4,6 +4,7 @@
       <div class="q-gutter-xs">
         <h1></h1>
         <q-btn
+          v-if="canCreate"
           push
           icon="add"
           color="primary"
@@ -107,6 +108,7 @@
                 <div class="row justify-between">
                   <div class="row-auto">
                     <q-btn
+                      v-if="canAnnotate"
                       unelevated
                       color="primary"
                       :label="$t('annotate')"
@@ -124,6 +126,7 @@
                   </div>
                   <div class="row-auto">
                     <q-btn
+                      v-if="canEdit"
                       no-caps
                       unelevated
                       color="secondary"
@@ -134,6 +137,7 @@
                       style="margin-right: 10px"
                     />
                     <q-btn
+                      v-if="canEdit"
                       unelevated
                       color="negative"
                       icon="delete"
@@ -153,12 +157,13 @@
 
 <script>
 import { serverAdress } from "../global/globalVaribles.js";
-import { isLogin } from "../global/globalFunctions.js";
+import { getAuthorities, checkAuthorities } from "../global/globalFunctions.js";
 
 export default {
   data() {
     return {
       documents: [],
+      authorities: [],
       responseSuccess: true,
       loadingComplete: false,
       userStatus: false,
@@ -168,6 +173,23 @@ export default {
         statuses: this.statuses(),
       },
     };
+  },
+  computed: {
+    canCreate() {
+      return this.authorities.some(
+        (auth) => auth.authority === "CREATE_DOCUMENTS"
+      );
+    },
+    canEdit() {
+      return this.authorities.some(
+        (auth) => auth.authority === "UPDATE_DELETE_ALLDOCUMENTS"
+      );
+    },
+    canAnnotate() {
+      return this.authorities.some(
+        (auth) => auth.authority === "ANNOTATE_ALLDOCUMENTS"
+      );
+    },
   },
   methods: {
     async loadAllDocuments() {
@@ -224,7 +246,18 @@ export default {
     if (localStorage.getItem("corst_locale")) {
       this.$i18n.locale = localStorage.getItem("corst_locale");
     }
-    this.userStatus = await isLogin();
+    this.authorities = await getAuthorities();
+    this.userStatus =
+      this.authorities.some(
+        (auth) => auth.authority === "SEE_READ_ALLDOCUMENTS"
+      ) ||
+      this.authorities.some((auth) => auth.authority === "CREATE_DOCUMENTS") ||
+      this.authorities.some(
+        (auth) => auth.authority === "UPDATE_DELETE_ALLDOCUMENTS"
+      ) ||
+      this.authorities.some(
+        (auth) => auth.authority === "ANNOTATE_ALLDOCUMENTS"
+      );
     if (this.userStatus) {
       await this.loadAllDocuments();
       this.loadingComplete = true;

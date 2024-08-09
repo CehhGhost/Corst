@@ -68,6 +68,7 @@
               outlined
               v-model="documentStatus"
               :options="options"
+              :disable="disableSelect"
               class="q-mb-md"
               style="width: 170px; margin-left: 10px"
             />
@@ -154,7 +155,7 @@
 
 <script>
 import { serverAdress } from "../global/globalVaribles.js";
-import { isLogin } from "../global/globalFunctions.js";
+import { getAuthorities } from "../global/globalFunctions.js";
 import { Recogito } from "@recogito/recogito-js";
 import "@recogito/recogito-js/dist/recogito.min.css";
 
@@ -167,11 +168,13 @@ export default {
       recogitoInstances: [],
       documentStatus: "Not annotated",
       options: this.statuses(),
+      authorities: [],
       userStatus: false,
-
+      disableSelect: false,
       tags: [],
     };
   },
+  compute: {},
   watch: {
     documentStatus: {
       handler() {
@@ -206,10 +209,6 @@ export default {
       }
     },
     async changeStatus() {
-      this.userStatus = await isLogin();
-      if (!this.userStatus) {
-        this.$router.push("/login");
-      }
       try {
         const response = await fetch(
           serverAdress +
@@ -235,6 +234,16 @@ export default {
       } catch (error) {
         console.error("Error:", error);
       }
+    },
+
+    async loadReadOnlyRecogito() {
+      const recogito = new Recogito({
+        content: "main-text",
+        readOnly: true,
+      });
+      recogito.loadAnnotations(
+        serverAdress + "/annotations/get_by_document/" + this.document.id
+      );
     },
 
     async loadRecogito() {
@@ -268,9 +277,12 @@ export default {
       });
     },
     async sendAnnotation(annotation, sentenceId) {
-      this.userStatus = await isLogin();
-      if (!this.userStatus) {
-        this.$router.push("/login");
+      if (
+        !this.authorities.some(
+          (auth) => auth.authority === "ANNOTATE_ALLDOCUMENTS"
+        )
+      ) {
+        this.$router.push("/");
       }
       try {
         const response = await fetch(serverAdress + "/annotations/create", {
@@ -292,8 +304,11 @@ export default {
       }
     },
     async updateAnnotation(annotation, sentenceId) {
-      this.userStatus = await isLogin();
-      if (!this.userStatus) {
+      if (
+        !this.authorities.some(
+          (auth) => auth.authority === "ANNOTATE_ALLDOCUMENTS"
+        )
+      ) {
         this.$router.push("/login");
       }
       try {
@@ -365,24 +380,52 @@ export default {
     },
 
     statuses() {
-      return this.$i18n.locale === "ru"
-        ? ["Не аннотирован", "Аннотирован", "Проверен"]
-        : ["Not annotated", "Annotated", "Checked"];
+      if (this.$i18n.locale === "ru") {
+        return ["Не аннотирован", "Аннотирован", "Проверен"];
+      } else {
+        return ["Not annotated", "Annotated", "Checked"];
+      }
     },
   },
   async mounted() {
     if (localStorage.getItem("corst_locale")) {
       this.$i18n.locale = localStorage.getItem("corst_locale");
     }
-    this.userStatus = await isLogin();
+    this.authorities = await getAuthorities();
+    this.options = this.statuses();
+    this.userStatus =
+      this.authorities.some(
+        (auth) => auth.authority === "CHECK_ANNOTATEDDOCUMENTS"
+      ) ||
+      this.authorities.some(
+        (auth) => auth.authority === "ANNOTATE_ALLDOCUMENTS"
+      );
     if (!this.userStatus) {
       this.$router.push("/");
+    }
+    if (
+      !this.authorities.some(
+        (auth) => auth.authority === "CHECK_ANNOTATEDDOCUMENTS"
+      )
+    ) {
+      this.disableSelect = this.documentStatus === "Checked";
+      this.options = this.options.map((status) => {
+        return status === "Checked" ? { label: status, disable: true } : status;
+      });
     }
     if (this.responseSuccess) {
       await this.loadDocument();
       this.loadingComplete = true;
       this.tags = this.parseTags(await this.getAllErrorTags());
-      await this.loadRecogito();
+      if (
+        this.authorities.some(
+          (auth) => auth.authority === "ANNOTATE_ALLDOCUMENTS"
+        )
+      ) {
+        this.loadRecogito();
+      } else {
+        this.loadReadOnlyRecogito();
+      }
     }
   },
   beforeUnmount() {
