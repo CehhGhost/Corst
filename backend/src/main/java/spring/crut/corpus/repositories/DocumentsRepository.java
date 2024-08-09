@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface DocumentsRepository extends JpaRepository<Document, Long> {
     public List<Document> findAllByOwner(User owner);
+    public List<Document> findAllByOwnerOrderByIdAsc(User owner);
 }

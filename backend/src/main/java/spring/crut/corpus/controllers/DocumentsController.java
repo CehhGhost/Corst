@@ -76,7 +76,6 @@ public class DocumentsController {
         documentDTO.getSentences().sort(Comparator.comparing(SentenceDTO::getNum));
         return ResponseEntity.ok(documentDTO);
     }
-    // TODO здесь ставиться любой статус, но нет такого, что статусы автоматически устанавливаются в зависимости от ситуации
     @PatchMapping ("/{id}/set_status/{status}")
     public ResponseEntity<?> updateStatusForDocumentById(@PathVariable Long id, @PathVariable Integer status) {
         documentsService.setStatusById(id, status);
