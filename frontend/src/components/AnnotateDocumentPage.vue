@@ -141,13 +141,7 @@
         <p>
           {{ $t("error_loading_document") }}
         </p>
-        <q-btn
-          push
-          color="secondary"
-          label="Back"
-          class="q-mt-md"
-          to="/documents"
-        />
+        <q-btn push color="secondary" label="Back" class="q-mt-md" to="/" />
       </div>
     </q-page>
   </q-page-container>
