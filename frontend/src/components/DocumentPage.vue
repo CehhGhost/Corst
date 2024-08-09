@@ -125,8 +125,13 @@ export default {
       );
     },
     canAnnotate() {
-      return this.authorities.some(
-        (auth) => auth.authority === "ANNOTATE_ALLDOCUMENTS"
+      return (
+        this.authorities.some(
+          (auth) => auth.authority === "ANNOTATE_ALLDOCUMENTS"
+        ) ||
+        this.authorities.some(
+          (auth) => auth.authority === "CHECK_ANNOTATEDDOCUMENTS"
+        )
       );
     },
   },
