@@ -170,7 +170,7 @@ export default {
       options: this.statuses(),
       authorities: [],
       userStatus: false,
-      disableSelect: false,
+      disableSelect: true,
       tags: [],
     };
   },
@@ -381,11 +381,7 @@ export default {
     },
 
     statuses() {
-      if (this.$i18n.locale === "ru") {
-        return ["Не аннотирован", "Аннотирован", "Проверен"];
-      } else {
-        return ["Not annotated", "Annotated", "Checked"];
-      }
+      return ["Не аннотирован", "Аннотирован", "Проверен"];
     },
   },
   async mounted() {
@@ -404,16 +400,6 @@ export default {
     if (!this.userStatus) {
       this.$router.push("/");
     }
-    if (
-      !this.authorities.some(
-        (auth) => auth.authority === "CHECK_ANNOTATEDDOCUMENTS"
-      )
-    ) {
-      this.disableSelect = this.documentStatus === "Checked";
-      this.options = this.options.map((status) => {
-        return status === "Checked" ? { label: status, disable: true } : status;
-      });
-    }
     if (this.responseSuccess) {
       await this.loadDocument();
       this.loadingComplete = true;
@@ -427,6 +413,21 @@ export default {
       } else {
         this.loadReadOnlyRecogito();
       }
+    }
+    if (
+      !this.authorities.some(
+        (auth) => auth.authority === "CHECK_ANNOTATEDDOCUMENTS"
+      )
+    ) {
+      this.disableSelect = this.documentStatus === "Проверен";
+      this.options = this.options.map((status) => {
+        return status === "Проверен"
+          ? { label: status, disable: true }
+          : status;
+      });
+      console.log(this.options);
+    } else {
+      this.disableSelect = false;
     }
   },
   beforeUnmount() {
