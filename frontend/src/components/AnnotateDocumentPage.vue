@@ -219,10 +219,8 @@ export default {
           {
             method: "PATCH",
             headers: {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + localStorage.getItem("corst_token"),
-              },
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("corst_token"),
             },
           }
         );
