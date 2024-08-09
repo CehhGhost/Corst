@@ -214,8 +214,8 @@ export default {
           console.error("Error:", error);
         });
     },
-    createValue(val, done) {
-      if (checkAuthorities("CREATE_INFO")) {
+    async createValue(val, done) {
+      if (await checkAuthorities("CREATE_INFO")) {
         if (val.length > 0) {
           done(val, "add-unique");
         }
@@ -282,7 +282,7 @@ export default {
     if (localStorage.getItem("corst_locale")) {
       this.$i18n.locale = localStorage.getItem("corst_locale");
     }
-    this.userStatus = await checkAuthorities("UPDATE_DELETE_DOCUMENTS");
+    this.userStatus = await checkAuthorities("CREATE_DOCUMENTS");
     if (!this.userStatus) {
       this.$router.push("/");
     }
