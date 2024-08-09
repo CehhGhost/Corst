@@ -2,11 +2,13 @@ package spring.crut.corpus.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import spring.crut.administration.security.CrutUserDetails;
 import spring.crut.corpus.dto.*;
 import spring.crut.corpus.enums.Status;
@@ -70,6 +72,18 @@ public class DocumentsController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getDocumentByID(@PathVariable Long id) {
         Document document = documentsService.getDocumentByID(id);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CrutUserDetails userDetails = (CrutUserDetails) authentication.getPrincipal();
+        boolean flag = false;
+        for (var authority : userDetails.getAuthorities()) {
+            if (authority.getAuthority().equals("SEE_READ_ALLDOCUMENTS")) {
+                flag = true;
+                break;
+            }
+        }
+        if (!flag && userDetails.getUser() != document.getOwner()) {
+            return ResponseEntity.badRequest().build();
+        }
         var documentDTO = modelMapper.map(document, DocumentDTO.class);
         documentDTO.setStatusNum(Status.valueOf(document.getStatus().name()).ordinal());
         documentsService.setAttrsForTokensInDocumentDTO(documentDTO);
