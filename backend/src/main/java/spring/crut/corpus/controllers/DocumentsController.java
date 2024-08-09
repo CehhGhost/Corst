@@ -81,7 +81,7 @@ public class DocumentsController {
                 break;
             }
         }
-        if (!flag && userDetails.getUser() != document.getOwner()) {
+        if (!flag && !userDetails.getUser().getId().equals(document.getOwner().getId())) {
             return ResponseEntity.badRequest().build();
         }
         var documentDTO = modelMapper.map(document, DocumentDTO.class);
