@@ -119,7 +119,14 @@ public class DocumentsService {
 
     @Transactional
     public List<Document> getAllDocuments() {
-        return documentsRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CrutUserDetails userDetails = (CrutUserDetails) authentication.getPrincipal();
+        for (var authority : userDetails.getAuthorities()) {
+            if (authority.getAuthority().equals("SEE_READ_ALLDOCUMENTS")) {
+                return documentsRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+            }
+        }
+        return documentsRepository.findAllByOwnerOrderByIdAsc(userDetails.getUser());
     }
 
     @Transactional
