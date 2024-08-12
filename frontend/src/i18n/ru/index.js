@@ -48,7 +48,7 @@ export default {
   from: "C",
   to: "По",
   authors_gender: "Пол автора",
-  type_of_assignment: "Тип задания",
+  type_of_assignment: "Жанр",
   authors_academic_major_2: "Cпециальность",
   text_features: "Текстовые признаки",
   display_options_2: "Настройки",
