@@ -12,6 +12,8 @@ import java.util.List;
 @NoArgsConstructor
 public class LexGramSearchDTO {
     private SubcorpusDataDTO subcorpusData;
+    private Long lastSentencePos;
+    private Long matchesPerPage;
     @JsonProperty("lexgramBlocks")
     private List<LexGramTokenDTO> lexGramTokensDTO;
 }
