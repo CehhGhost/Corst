@@ -49,13 +49,15 @@
                             placeholder="2014"
                             outlined
                             style="width: 48%; margin-right: 4%"
+                            @change="blockLoadMore"
                           />
                           <q-input
                             v-model="subcorpusData.periodTo"
                             :label="$t('to')"
-                            placeholder="2015"
+                            placeholder="2024"
                             outlined
                             style="width: 48%"
+                            @change="blockLoadMore"
                           />
                         </div>
                       </q-card-actions>
@@ -86,6 +88,7 @@
                             v-model="subcorpusData.authorsGenders"
                             :val="gender.toLowerCase()"
                             :label="gender"
+                            @change="blockLoadMore"
                           ></q-checkbox>
                         </div>
                       </q-card-actions>
@@ -305,7 +308,7 @@
                       v-model="exactSearchInput"
                       :placeholder="$t('exact_search')"
                       outlined
-                      @input="blockLoadMore"
+                      @change="blockLoadMore"
                     />
                   </div>
                   <div class="col-auto">
@@ -361,7 +364,7 @@
                           style="width: 50px"
                           :ref="'fromInput' + index"
                           id="from"
-                          @input="blockLoadMore"
+                          @change="blockLoadMore"
                         />
                         <q-btn
                           unelevated
@@ -378,7 +381,7 @@
                           dense
                           :ref="'toInput' + index"
                           id="to"
-                          @input="blockLoadMore"
+                          @change="blockLoadMore"
                         />
                       </div>
                     </div>
@@ -393,6 +396,7 @@
                           v-model="block.wordform"
                           :placeholder="$t('wordform')"
                           dense
+                          @change="blockLoadMore"
                         />
                       </div>
                       <div class="col-3">
@@ -405,6 +409,7 @@
                           v-model="block.partOfSpeech"
                           :placeholder="$t('part_of_speech')"
                           dense
+                          @change="blockLoadMore"
                         >
                           <template v-slot:append>
                             <q-icon name="menu" class="cursor-pointer">
@@ -503,7 +508,6 @@
                           </template>
                         </q-input>
                       </div>
-                      <!-- Include gram select component here -->
                       <div class="col-3">
                         <label v-if="!showDeleteButton || !index > 0">
                           {{ $t("grammar") }}
@@ -514,6 +518,7 @@
                           v-model="block.grammar"
                           :placeholder="$t('grammar')"
                           dense
+                          @change="blockLoadMore"
                         >
                           <template v-slot:append>
                             <q-icon name="menu" class="cursor-pointer">
@@ -612,7 +617,7 @@
                           outlined
                           v-model="block.errors"
                           :placeholder="$t('tags')"
-                          @input="blockLoadMore"
+                          @change="blockLoadMore"
                           dense
                         >
                           <template v-slot:append>
@@ -702,7 +707,6 @@
                 <q-card-section>
                   <div class="row q-gutter-md items-center">
                     <div>
-                      <!-- TODO Уточнить, что должно быть в названии -->
                       <h3 class="text-h6">{{ result.documentTitle }}</h3>
                       <p>{{ result.text }}</p>
                     </div>
