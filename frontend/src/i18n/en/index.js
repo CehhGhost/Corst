@@ -89,4 +89,5 @@ export default {
   edit_course: "Edit course",
   error_tags: "Error tags",
   save: "Save",
+  load_more: "Load more",
 };

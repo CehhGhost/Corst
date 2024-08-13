@@ -812,7 +812,7 @@ export default {
       },
 
       displayOptionsSettingsOptions: {
-        matchesPerPage: [10, 20, 50, 100, 250, 500, 1000],
+        matchesPerPage: [2, 10, 20, 50, 100, 250, 500, 1000],
         sentencesInExpandedContext: [1, 2, 3],
       },
 
