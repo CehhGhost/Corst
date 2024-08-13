@@ -340,7 +340,7 @@ export default {
       authorsCourses: [],
       authorsAcademicMajors: [],
       authorsGenders: ["Мужской", "Женский", "Неизвестно"],
-      documentStatuses: ["Не аннотирован", "Аннотирован", "Проверен"],
+      documentStatuses: ["Not Annotated", "Annotated", "Checked"],
 
       filteredGenres: [],
       filteredOwners: [],
@@ -348,7 +348,7 @@ export default {
       filteredAuthorsCourses: [],
       filteredAuthorsAcademicMajors: [],
       filteredAuthorsGenders: ["Мужской", "Женский", "Неизвестно"],
-      filteredStatuses: ["Не аннотирован", "Аннотирован", "Проверен"],
+      filteredStatuses: ["Not Annotated", "Annotated", "Checked"],
 
       documentAdditionalInformation: {
         statuses: this.statuses(),
