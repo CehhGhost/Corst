@@ -67,6 +67,7 @@ public class DocumentsController {
             documentDTO.getSentences().sort(Comparator.comparing(SentenceDTO::getNum));
             documentsDTO.add(documentDTO);
         }
+        documentsDTO.sort(Comparator.comparing(DocumentDTO::getCreatedAt));
         return ResponseEntity.ok(documentsDTO);
     }
     @GetMapping("/{id}")
@@ -105,6 +106,7 @@ public class DocumentsController {
             documentDTO.getSentences().sort(Comparator.comparing(SentenceDTO::getNum));
             documentsDTO.add(documentDTO);
         }
+        documentsDTO.sort(Comparator.comparing(DocumentDTO::getCreatedAt));
         return ResponseEntity.ok(documentsDTO);
     }
     @PatchMapping ("/{id}/set_status/{status}")
