@@ -138,10 +138,14 @@ public class SentencesService {
     }
 
     @Transactional
-    public List<SearchSentenceDTO> getByLexGramSearch(List<Document> documents, List<LexGramTokenDTO> lexGramTokensDTO) {
+    public OneMatchPerSearchDTO getByLexGramSearch(List<Document> documents, LexGramSearchDTO lexGramSearchDTO) {
+        OneMatchPerSearchDTO result = new OneMatchPerSearchDTO();
         List<SearchSentenceDTO> sentencesDTO = new ArrayList<>();
+        var lexGramTokensDTO = lexGramSearchDTO.getLexGramTokensDTO();
         if (lexGramTokensDTO == null || lexGramTokensDTO.isEmpty()) {
-            return sentencesDTO;
+            result.setLastSentencePos(-1L);
+            result.setSearchSentenceDTOs(sentencesDTO);
+            return result;
         }
         Map<Integer, List<Integer>> checkMap = new HashMap<>();
         List<String> errors = new ArrayList<>();
@@ -166,9 +170,18 @@ public class SentencesService {
         Boolean[] positionArray = new Boolean[checkMap.size()];
         var positions = checkMap.keySet().toArray();
         List<Sentence> resultSentences = new ArrayList<>();
+        long counter = 0L;
+        boolean flag = false;
         for (var document : documents) {
+            if (counter + document.getSentences().size() <= lexGramSearchDTO.getLastSentencePos()) {
+                counter += document.getSentences().size();
+                continue;
+            }
             var sentences = document.getSentences();
             for (var sentence : sentences) {
+                if (counter++ <= lexGramSearchDTO.getLastSentencePos()) {
+                    continue;
+                }
                 if (!errorTags.isEmpty()) {
                     boolean errorTagCheck = false;
                     for (var annotation : sentence.getAnnotations()) {
@@ -223,21 +236,33 @@ public class SentencesService {
                             }
                             if (correctSentence) {
                                 resultSentences.add(sentence);
+                                if (resultSentences.size() >= lexGramSearchDTO.getMatchesPerPage()) {
+                                    flag = true;
+                                    break;
+                                }
                             }
                         }
                     }
                 }
             }
+            if (flag) {
+                break;
+            }
         }
 
-
+        if (resultSentences.size() < lexGramSearchDTO.getMatchesPerPage()) {
+            result.setLastSentencePos(-1L);
+        } else {
+            result.setLastSentencePos(counter);
+        }
         for (var sentence : resultSentences) {
             var sentenceDTO = modelMapper.map(sentence, SearchSentenceDTO.class);
             sentenceDTO.setDocumentTitle(sentence.getDocument().getTitle());
             tokensService.setAttrsForTokensDTO(sentenceDTO.getTokens(), sentence.getTokens());
             sentencesDTO.add(sentenceDTO);
         }
-        return sentencesDTO;
+        result.setSearchSentenceDTOs(sentencesDTO);
+        return result;
     }
 
     public Sentence getSentenceById(Long id) {

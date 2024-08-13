@@ -54,7 +54,7 @@ public class DocumentsController {
     @PostMapping("/search/lex_gram")
     public ResponseEntity<?> lexGramSearch(@RequestBody LexGramSearchDTO lexGramSearchDTO) {
         List<Document> documents = documentsService.specifySubcorpus(lexGramSearchDTO.getSubcorpusData());
-        return ResponseEntity.ok(sentencesService.getByLexGramSearch(documents, lexGramSearchDTO.getLexGramTokensDTO()));
+        return ResponseEntity.ok(sentencesService.getByLexGramSearch(documents, lexGramSearchDTO));
     }
     @GetMapping
     public ResponseEntity<?> getAllDocuments() {
