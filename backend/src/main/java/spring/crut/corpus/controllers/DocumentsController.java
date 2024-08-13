@@ -88,7 +88,7 @@ public class DocumentsController {
         var documentDTO = modelMapper.map(document, DocumentDTO.class);
         documentDTO.setStatusNum(Status.valueOf(document.getStatus().name()).ordinal());
         documentsService.setAttrsForTokensInDocumentDTO(documentDTO);
-        documentDTO.getSentences().sort(Comparator.comparing(SentenceDTO::getNum));
+        documentDTO.getSentences().sort(Comparator.comparing(SentenceDTO::getNum).reversed());
         return ResponseEntity.ok(documentDTO);
     }
     @GetMapping("/get_all_owners")
@@ -106,7 +106,7 @@ public class DocumentsController {
             documentDTO.getSentences().sort(Comparator.comparing(SentenceDTO::getNum));
             documentsDTO.add(documentDTO);
         }
-        documentsDTO.sort(Comparator.comparing(DocumentDTO::getCreatedAt));
+        documentsDTO.sort(Comparator.comparing(DocumentDTO::getCreatedAt).reversed());
         return ResponseEntity.ok(documentsDTO);
     }
     @PatchMapping ("/{id}/set_status/{status}")
