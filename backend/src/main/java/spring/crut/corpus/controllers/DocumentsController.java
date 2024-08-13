@@ -49,7 +49,7 @@ public class DocumentsController {
     @PostMapping("/search/certain")
     public ResponseEntity<?> certainSearch(@RequestBody CertainSearchDTO certainSearchDTO) {
         List<Document> documents = documentsService.specifySubcorpus(certainSearchDTO.getSubcorpusData());
-        return ResponseEntity.ok(sentencesService.getByCertainSearch(documents, certainSearchDTO.getWordform()));
+        return ResponseEntity.ok(sentencesService.getByCertainSearch(documents, certainSearchDTO));
     }
     @PostMapping("/search/lex_gram")
     public ResponseEntity<?> lexGramSearch(@RequestBody LexGramSearchDTO lexGramSearchDTO) {
