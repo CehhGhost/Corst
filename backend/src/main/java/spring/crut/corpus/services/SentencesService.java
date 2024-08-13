@@ -68,10 +68,14 @@ public class SentencesService {
     }
 
     @Transactional
-    public List<SearchSentenceDTO> getByCertainSearch(List<Document> documents, String wordform) {
+    public OneMatchPerSearchDTO getByCertainSearch(List<Document> documents, CertainSearchDTO certainSearchDTO) {
+        OneMatchPerSearchDTO result = new OneMatchPerSearchDTO();
         List<SearchSentenceDTO> sentencesDTO = new ArrayList<>();
+        String wordform = certainSearchDTO.getWordform();
         if (wordform == null || wordform.isEmpty()) {
-            return sentencesDTO;
+            result.setLastSentencePos(-1L);
+            result.setSearchSentenceDTOs(sentencesDTO);
+            return result;
         }
 
         String natashaServiceUrl = "http://127.0.0.1:5000/lemmatize";
@@ -94,13 +98,34 @@ public class SentencesService {
             throw new RuntimeException(e);
         }
         List<Sentence> resultSentences = new ArrayList<>();
+        long counter = 0L;
+        boolean flag = false;
         for (var document : documents) {
+            if (counter + document.getSentences().size() <= certainSearchDTO.getLastSentencePos()) {
+                counter += document.getSentences().size();
+                continue;
+            }
             List<Sentence> sentences = document.getSentences();
             for (var sentence : sentences) {
+                if (counter++ <= certainSearchDTO.getLastSentencePos()) {
+                    continue;
+                }
                 if (sentence.getLemmatizedText().contains(lemmatizedWordform.getText())) {
                     resultSentences.add(sentence);
+                    if (resultSentences.size() >= certainSearchDTO.getMatchesPerPage()) {
+                        flag = true;
+                        break;
+                    }
                 }
             }
+            if (flag) {
+                break;
+            }
+        }
+        if (resultSentences.size() < certainSearchDTO.getMatchesPerPage()) {
+            result.setLastSentencePos(-1L);
+        } else {
+            result.setLastSentencePos(counter);
         }
         for (var sentence : resultSentences) {
             var sentenceDTO = modelMapper.map(sentence, SearchSentenceDTO.class);
@@ -108,7 +133,8 @@ public class SentencesService {
             tokensService.setAttrsForTokensDTO(sentenceDTO.getTokens(), sentence.getTokens());
             sentencesDTO.add(sentenceDTO);
         }
-        return sentencesDTO;
+        result.setSearchSentenceDTOs(sentencesDTO);
+        return result;
     }
 
     @Transactional

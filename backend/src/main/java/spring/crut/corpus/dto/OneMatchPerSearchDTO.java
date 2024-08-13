@@ -9,9 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CertainSearchDTO {
-    private SubcorpusDataDTO subcorpusData;
-    private String wordform;
+public class OneMatchPerSearchDTO {
     private Long lastSentencePos;
-    private Long matchesPerPage;
+    private List<SearchSentenceDTO> searchSentenceDTOs;
 }
