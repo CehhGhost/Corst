@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -222,5 +223,16 @@ public class DocumentsService {
 
     public List<String> getAllOwners() {
         return documentsRepository.findDistinctOwnersUsernames();
+    }
+
+    public List<Document> filterAllDocuments(FilterDocumentsDTO filterDocumentsDTO) {
+        var documents = this.specifySubcorpus(filterDocumentsDTO.getSubcorpusData());
+        List<Document> result = new ArrayList<>();
+        for (var document : documents) {
+            if (filterDocumentsDTO.getOwners() == null || filterDocumentsDTO.getOwners().isEmpty() || filterDocumentsDTO.getOwners().contains(document.getOwner().getUsername())) {
+                result.add(document);
+            }
+        }
+        return result;
     }
 }

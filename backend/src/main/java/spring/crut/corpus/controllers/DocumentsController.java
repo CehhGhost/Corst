@@ -94,6 +94,19 @@ public class DocumentsController {
     public ResponseEntity<?> getAllOwners() {
         return ResponseEntity.ok(documentsService.getAllOwners());
     }
+    @GetMapping("/filter")
+    public ResponseEntity<?> filterAllDocuments(@RequestBody FilterDocumentsDTO filterDocumentsDTO) {
+        List<DocumentDTO> documentsDTO = new ArrayList<>();
+        for (var document: documentsService.filterAllDocuments(filterDocumentsDTO)) {
+            var documentDTO = modelMapper.map(document, DocumentDTO.class);
+            documentDTO.setOwnerUsername(document.getOwner().getUsername());
+            documentDTO.setStatusNum(Status.valueOf(document.getStatus().name()).ordinal());
+            documentsService.setAttrsForTokensInDocumentDTO(documentDTO);
+            documentDTO.getSentences().sort(Comparator.comparing(SentenceDTO::getNum));
+            documentsDTO.add(documentDTO);
+        }
+        return ResponseEntity.ok(documentsDTO);
+    }
     @PatchMapping ("/{id}/set_status/{status}")
     public ResponseEntity<?> updateStatusForDocumentById(@PathVariable Long id, @PathVariable Integer status) {
         documentsService.setStatusById(id, status);
