@@ -219,4 +219,8 @@ public class DocumentsService {
                 (subcorpusDataDTO.getPeriodFrom() == null || subcorpusDataDTO.getPeriodFrom() <= documentCreatedAtYear) &&
                 (subcorpusDataDTO.getPeriodTo() == null || documentCreatedAtYear <= subcorpusDataDTO.getPeriodTo());
     }
+
+    public List<String> getAllOwners() {
+        return documentsRepository.findDistinctOwnersUsernames();
+    }
 }

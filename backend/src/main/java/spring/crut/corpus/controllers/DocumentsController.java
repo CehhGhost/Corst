@@ -90,6 +90,10 @@ public class DocumentsController {
         documentDTO.getSentences().sort(Comparator.comparing(SentenceDTO::getNum));
         return ResponseEntity.ok(documentDTO);
     }
+    @GetMapping("/get_all_owners")
+    public ResponseEntity<?> getAllOwners() {
+        return ResponseEntity.ok(documentsService.getAllOwners());
+    }
     @PatchMapping ("/{id}/set_status/{status}")
     public ResponseEntity<?> updateStatusForDocumentById(@PathVariable Long id, @PathVariable Integer status) {
         documentsService.setStatusById(id, status);
