@@ -40,6 +40,7 @@
             @filter="filterOwners"
             input-debounce="0"
             :label="$t('owner')"
+            class="fixed-height-select"
           />
         </div>
         <div class="row-auto" style="flex: 1; min-width: 150px; max-width: 25%">
@@ -52,6 +53,7 @@
             @filter="filterAuthorsGenders"
             input-debounce="0"
             :label="$t('gender')"
+            class="fixed-height-select"
           />
         </div>
         <div class="row-auto" style="flex: 1; min-width: 150px; max-width: 25%">
@@ -64,6 +66,7 @@
             @filter="filterStatuses"
             input-debounce="0"
             :label="$t('status')"
+            class="fixed-height-select"
           />
         </div>
       </div>
@@ -81,6 +84,7 @@
             @filter="filterGenres"
             input-debounce="0"
             :label="$t('genre')"
+            class="fixed-height-select"
           />
         </div>
         <div class="row-auto" style="flex: 1; min-width: 150px; max-width: 25%">
@@ -93,6 +97,7 @@
             @filter="filterAuthorsDomains"
             input-debounce="0"
             :label="$t('domain')"
+            class="fixed-height-select"
           />
         </div>
         <div class="row-auto" style="flex: 1; min-width: 150px; max-width: 25%">
@@ -105,6 +110,7 @@
             @filter="filterAuthorsCourses"
             input-debounce="0"
             :label="$t('authors_course')"
+            class="fixed-height-select"
           />
         </div>
         <div class="row-auto" style="flex: 1; min-width: 150px; max-width: 25%">
@@ -117,6 +123,7 @@
             @filter="filterAuthorsAcademicMajors"
             input-debounce="0"
             :label="$t('authors_academic_major')"
+            class="fixed-height-select"
           />
         </div>
       </div>
@@ -582,5 +589,17 @@ export default {
 .info-label {
   font-weight: bold;
   margin-right: 5px;
+}
+
+.fixed-height-select .q-field__native {
+  min-height: 31px;
+  max-height: 32px;
+  overflow-y: auto;
+}
+
+.fixed-height-select .q-field__control {
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 </style>
