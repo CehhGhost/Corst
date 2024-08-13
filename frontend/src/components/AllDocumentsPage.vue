@@ -497,7 +497,6 @@ export default {
         },
         body: JSON.stringify(data),
       });
-      console.log(response);
       if (response.ok) {
         const data = await response.json();
         this.documents = data;
