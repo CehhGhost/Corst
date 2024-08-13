@@ -94,7 +94,7 @@ public class DocumentsController {
     public ResponseEntity<?> getAllOwners() {
         return ResponseEntity.ok(documentsService.getAllOwners());
     }
-    @GetMapping("/filter")
+    @PostMapping("/filter")
     public ResponseEntity<?> filterAllDocuments(@RequestBody FilterDocumentsDTO filterDocumentsDTO) {
         List<DocumentDTO> documentsDTO = new ArrayList<>();
         for (var document: documentsService.filterAllDocuments(filterDocumentsDTO)) {
