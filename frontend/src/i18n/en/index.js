@@ -90,4 +90,7 @@ export default {
   error_tags: "Error tags",
   save: "Save",
   load_more: "Load more",
+  filter: "Filter",
+  Clear: "Clear",
+  download_filtered: "Download filtered",
 };

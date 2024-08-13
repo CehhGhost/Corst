@@ -72,7 +72,12 @@
       </div>
       <div
         class="row"
-        style="display: flex; justify-content: space-between; width: 100%"
+        style="
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+          margin-bottom: 10px;
+        "
       >
         <div class="row-auto" style="flex: 1; min-width: 150px; max-width: 25%">
           <q-select
@@ -125,6 +130,41 @@
             :label="$t('authors_academic_major')"
             class="fixed-height-select"
           />
+        </div>
+      </div>
+
+      <div class="q-pa-xs">
+        <div class="row justify-between">
+          <div class="row-auto">
+            <q-btn
+              unelevated
+              color="primary"
+              icon="download"
+              :label="$t('download_filtered')"
+              class="button"
+            />
+          </div>
+          <div class="row-auto">
+            <q-btn
+              @click="clearFilters"
+              no-caps
+              outline
+              color="secondary"
+              :label="$t('Clear')"
+              class="button"
+              style="margin-right: 10px"
+            />
+            <q-btn
+              @click="filterDocuments"
+              no-caps
+              unelevated
+              color="secondary"
+              icon="filter_list"
+              :label="$t('filter')"
+              class="button"
+              style="margin-right: 10px"
+            />
+          </div>
         </div>
       </div>
 
@@ -371,7 +411,6 @@ export default {
         );
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
           this.owners = data;
         }
       } catch (error) {
@@ -407,7 +446,7 @@ export default {
             Authorization: "Bearer " + localStorage.getItem("corst_token"),
           },
         });
-        this.responseSuccess = true;
+        this.responseSuccess = response.ok;
         if (response.ok) {
           const data = await response.json();
           this.documents = data;
@@ -431,6 +470,38 @@ export default {
         }
       } catch (error) {
         console.error("Error:", error);
+      }
+    },
+
+    async filterDocuments() {
+      const subcorpusData = {
+        periodFrom: this.selectedFrom,
+        periodTo: this.selectedTo,
+        genres: this.selectedGenres,
+        statuses: this.selectedStatuses,
+        authorsGenders: this.selectedAuthorsGenders,
+        domains: this.selectedAuthorsDomains,
+        authorsCourses: this.selectedAuthorsCourses,
+        authorsAcademicMajors: this.selectedAuthorsAcademicMajors,
+      };
+      const data = {
+        subcorpusData: subcorpusData,
+        owners: this.selectedOwners,
+      };
+      this.loadingComplete = false;
+      const response = await fetch(serverAdress + "/documents/filter", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("corst_token"),
+        },
+        body: JSON.stringify(data),
+      });
+      console.log(response);
+      if (response.ok) {
+        const data = await response.json();
+        this.documents = data;
+        this.loadingComplete = true;
       }
     },
 
@@ -538,6 +609,19 @@ export default {
             );
         }
       });
+    },
+
+    async clearFilters() {
+      this.selectedFrom = 0;
+      this.selectedTo = 2024;
+      this.selectedGenres = [];
+      this.selectedOwners = [];
+      this.selectedStatuses = [];
+      this.selectedAuthorsGenders = [];
+      this.selectedAuthorsDomains = [];
+      this.selectedAuthorsCourses = [];
+      this.selectedAuthorsAcademicMajors = [];
+      await this.loadAllDocuments();
     },
   },
   async mounted() {
