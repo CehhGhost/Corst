@@ -14,6 +14,113 @@
           size="large"
         />
       </div>
+
+      <div
+        class="row"
+        style="
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+          margin-top: 20px;
+        "
+      >
+        <div class="row-auto" style="flex: 1; min-width: 75px; max-width: 12%">
+          <q-input v-model="selectedFrom" outlined :label="$t('from')" />
+        </div>
+        <div class="row-auto" style="flex: 1; min-width: 75px; max-width: 13%">
+          <q-input v-model="selectedTo" outlined :label="$t('to')" />
+        </div>
+        <div class="row-auto" style="flex: 1; min-width: 150px; max-width: 25%">
+          <q-select
+            v-model="selectedOwners"
+            :options="filteredOwners"
+            outlined
+            multiple
+            use-input
+            @filter="filterOwners"
+            input-debounce="0"
+            :label="$t('owner')"
+          />
+        </div>
+        <div class="row-auto" style="flex: 1; min-width: 150px; max-width: 25%">
+          <q-select
+            v-model="selectedAuthorsGenders"
+            :options="filteredAuthorsGenders"
+            outlined
+            multiple
+            use-input
+            @filter="filterAuthorsGenders"
+            input-debounce="0"
+            :label="$t('gender')"
+          />
+        </div>
+        <div class="row-auto" style="flex: 1; min-width: 150px; max-width: 25%">
+          <q-select
+            v-model="selectedStatuses"
+            :options="filteredStatuses"
+            outlined
+            multiple
+            use-input
+            @filter="filterStatuses"
+            input-debounce="0"
+            :label="$t('status')"
+          />
+        </div>
+      </div>
+      <div
+        class="row"
+        style="display: flex; justify-content: space-between; width: 100%"
+      >
+        <div class="row-auto" style="flex: 1; min-width: 150px; max-width: 25%">
+          <q-select
+            v-model="selectedGenres"
+            :options="filteredGenres"
+            outlined
+            multiple
+            use-input
+            @filter="filterGenres"
+            input-debounce="0"
+            :label="$t('genre')"
+          />
+        </div>
+        <div class="row-auto" style="flex: 1; min-width: 150px; max-width: 25%">
+          <q-select
+            v-model="selectedAuthorsDomains"
+            :options="filteredAuthorsDomains"
+            outlined
+            multiple
+            use-input
+            @filter="filterAuthorsDomains"
+            input-debounce="0"
+            :label="$t('domain')"
+          />
+        </div>
+        <div class="row-auto" style="flex: 1; min-width: 150px; max-width: 25%">
+          <q-select
+            v-model="selectedAuthorsCourses"
+            :options="filteredAuthorsCourses"
+            outlined
+            multiple
+            use-input
+            @filter="filterAuthorsCourses"
+            input-debounce="0"
+            :label="$t('authors_course')"
+          />
+        </div>
+        <div class="row-auto" style="flex: 1; min-width: 150px; max-width: 25%">
+          <q-select
+            v-model="selectedAuthorsAcademicMajors"
+            :options="filteredAuthorsAcademicMajors"
+            outlined
+            multiple
+            use-input
+            @filter="filterAuthorsAcademicMajors"
+            input-debounce="0"
+            :label="$t('authors_academic_major')"
+          />
+        </div>
+      </div>
+
       <div class="q-mt-xs">
         <div v-if="!loadingComplete" class="text-center text-grey-8">
           {{ $t("loading") }}
@@ -156,6 +263,7 @@
 </template>
 
 <script>
+import { ref } from "vue";
 import { serverAdress } from "../global/globalVaribles.js";
 import { getAuthorities, checkAuthorities } from "../global/globalFunctions.js";
 
@@ -168,6 +276,32 @@ export default {
       loadingComplete: false,
       userStatus: false,
       limit: 3000,
+
+      selectedFrom: 0,
+      selectedTo: 2024,
+      selectedGenres: [],
+      selectedOwners: [],
+      selectedStatuses: [],
+      selectedAuthorsGenders: [],
+      selectedAuthorsDomains: [],
+      selectedAuthorsCourses: [],
+      selectedAuthorsAcademicMajors: [],
+
+      genres: [],
+      owners: [],
+      authorsDomains: [],
+      authorsCourses: [],
+      authorsAcademicMajors: [],
+      authorsGenders: ["Мужской", "Женский", "Неизвестно"],
+      documentStatuses: ["Не аннотирован", "Аннотирован", "Проверен"],
+
+      filteredGenres: [],
+      filteredOwners: [],
+      filteredAuthorsDomains: [],
+      filteredAuthorsCourses: [],
+      filteredAuthorsAcademicMajors: [],
+      filteredAuthorsGenders: ["Мужской", "Женский", "Неизвестно"],
+      filteredStatuses: ["Не аннотирован", "Аннотирован", "Проверен"],
 
       documentAdditionalInformation: {
         statuses: this.statuses(),
@@ -197,6 +331,66 @@ export default {
     },
   },
   methods: {
+    async getDocumentInfo() {
+      try {
+        const response = await fetch(serverAdress + "/info/document", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("corst_token"),
+          },
+        });
+        this.responseSuccess = response.ok;
+        if (response.ok) {
+          const data = await response.json();
+          return data;
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    },
+
+    async getAllOwners() {
+      try {
+        const response = await fetch(
+          serverAdress + "/documents/get_all_owners",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("corst_token"),
+            },
+          }
+        );
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data);
+          this.owners = data;
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    },
+
+    parseData(data) {
+      this.genres = data.genres;
+      this.authorsDomains = data.domains;
+      this.authorsCourses = data.courses;
+      this.authorsAcademicMajors = data.academicMajors;
+      for (let i = 0; i < this.genres.length; i++) {
+        this.filteredGenres.push(this.genres[i]);
+      }
+      for (let i = 0; i < this.authorsDomains.length; i++) {
+        this.filteredAuthorsDomains.push(this.authorsDomains[i]);
+      }
+      for (let i = 0; i < this.authorsCourses.length; i++) {
+        this.filteredAuthorsCourses.push(this.authorsCourses[i]);
+      }
+      for (let i = 0; i < this.authorsAcademicMajors.length; i++) {
+        this.filteredAuthorsAcademicMajors.push(this.authorsAcademicMajors[i]);
+      }
+    },
+
     async loadAllDocuments() {
       try {
         const response = await fetch(serverAdress + "/documents", {
@@ -246,6 +440,98 @@ export default {
         ? ["Не аннотирован", "Аннотирован", "Проверен"]
         : ["Not annotated", "Annotated", "Checked"];
     },
+
+    filterGenres(val, update) {
+      update(() => {
+        if (val === "") {
+          this.filteredGenres = this.genres;
+        } else {
+          const needle = val.toLowerCase();
+          this.filteredGenres = this.genres.filter(
+            (v) => v.toLowerCase().indexOf(needle) > -1
+          );
+        }
+      });
+    },
+
+    filterOwners(val, update) {
+      update(() => {
+        if (val === "") {
+          this.filteredOwners = this.owners;
+        } else {
+          const needle = val.toLowerCase();
+          this.filteredOwners = this.owners.filter(
+            (v) => v.toLowerCase().indexOf(needle) > -1
+          );
+        }
+      });
+    },
+
+    filterStatuses(val, update) {
+      update(() => {
+        if (val === "") {
+          this.filteredStatuses = this.documentStatuses;
+        } else {
+          const needle = val.toLowerCase();
+          this.filteredStatuses = this.documentStatuses.filter(
+            (v) => v.toLowerCase().indexOf(needle) > -1
+          );
+        }
+      });
+    },
+
+    filterAuthorsGenders(val, update) {
+      update(() => {
+        if (val === "") {
+          this.filteredAuthorsGenders = this.authorsGenders;
+        } else {
+          const needle = val.toLowerCase();
+          this.filteredAuthorsGenders = this.authorsGenders.filter(
+            (v) => v.toLowerCase().indexOf(needle) > -1
+          );
+        }
+      });
+    },
+
+    filterAuthorsDomains(val, update) {
+      update(() => {
+        if (val === "") {
+          this.filteredAuthorsDomains = this.authorsDomains;
+        } else {
+          const needle = val.toLowerCase();
+          this.filteredAuthorsDomains = this.authorsDomains.filter(
+            (v) => v.toLowerCase().indexOf(needle) > -1
+          );
+        }
+      });
+    },
+
+    filterAuthorsCourses(val, update) {
+      update(() => {
+        if (val === "") {
+          this.filteredAuthorsCourses = this.authorsCourses;
+        } else {
+          const needle = val.toLowerCase();
+          this.filteredAuthorsCourses = this.authorsCourses.filter(
+            (v) => v.toLowerCase().indexOf(needle) > -1
+          );
+        }
+      });
+    },
+
+    filterAuthorsAcademicMajors(val, update) {
+      update(() => {
+        if (val === "") {
+          this.filteredAuthorsAcademicMajors = this.authorsAcademicMajors;
+        } else {
+          const needle = val.toLowerCase();
+          this.filteredAuthorsAcademicMajors =
+            this.authorsAcademicMajors.filter(
+              (v) => v.toLowerCase().indexOf(needle) > -1
+            );
+        }
+      });
+    },
   },
   async mounted() {
     if (localStorage.getItem("corst_locale")) {
@@ -264,6 +550,11 @@ export default {
         (auth) => auth.authority === "ANNOTATE_ALLDOCUMENTS"
       );
     if (this.userStatus) {
+      const data = await this.getDocumentInfo();
+      if (this.responseSuccess) {
+        this.parseData(data);
+      }
+      await this.getAllOwners();
       await this.loadAllDocuments();
       this.loadingComplete = true;
     } else {
