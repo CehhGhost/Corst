@@ -90,4 +90,7 @@ export default {
   error_tags: "Теги ошибок",
   save: "Сохранить",
   load_more: "Загрузить еще",
+  filter: "Фильтровать",
+  Clear: "Сброс",
+  download_filtered: "Скачать",
 };
