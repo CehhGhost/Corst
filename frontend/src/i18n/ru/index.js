@@ -89,4 +89,5 @@ export default {
   edit_academic_major: "Изменить академическую специальность",
   error_tags: "Теги ошибок",
   save: "Сохранить",
+  load_more: "Загрузить еще",
 };

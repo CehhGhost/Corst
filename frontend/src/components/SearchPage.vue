@@ -305,6 +305,7 @@
                       v-model="exactSearchInput"
                       :placeholder="$t('exact_search')"
                       outlined
+                      @input="blockLoadMore"
                     />
                   </div>
                   <div class="col-auto">
@@ -360,6 +361,7 @@
                           style="width: 50px"
                           :ref="'fromInput' + index"
                           id="from"
+                          @input="blockLoadMore"
                         />
                         <q-btn
                           unelevated
@@ -376,6 +378,7 @@
                           dense
                           :ref="'toInput' + index"
                           id="to"
+                          @input="blockLoadMore"
                         />
                       </div>
                     </div>
@@ -609,6 +612,7 @@
                           outlined
                           v-model="block.errors"
                           :placeholder="$t('tags')"
+                          @input="blockLoadMore"
                           dense
                         >
                           <template v-slot:append>
@@ -808,7 +812,7 @@ export default {
       },
 
       displayOptionsSettingsOptions: {
-        matchesPerPage: [10, 20, 50, 100, 250, 500, 1000],
+        matchesPerPage: [2, 10, 20, 50, 100, 250, 500, 1000],
         sentencesInExpandedContext: [1, 2, 3],
       },
 
@@ -918,9 +922,15 @@ export default {
 
       context: null,
       loadableMore: false,
+      lastSentencePos: 0,
+      currentType: "",
     };
   },
   methods: {
+    blockLoadMore() {
+      this.loadableMore = false;
+    },
+
     async getSubcorpusTextInfo() {
       try {
         const response = await fetch(serverAdress + "/info/document", {
@@ -946,12 +956,17 @@ export default {
         },
         body: JSON.stringify({
           wordform: this.exactSearchInput,
+          lastSentencePos: 0,
+          matchesPerPage: this.displayOptionsSettings.matchesPerPage,
           subcorpusData: this.subcorpusData,
         }),
       });
       if (response.ok) {
+        this.currentType = "exact";
         const data = await response.json();
-        this.searchResults = data;
+        this.searchResults = data.searchSentenceDTOs;
+        this.lastSentencePos = data.lastSentencePos;
+        this.loadableMore = this.lastSentencePos !== -1;
       } else {
         console.error(response);
       }
@@ -961,6 +976,8 @@ export default {
       this.searchResults = [];
       const data = {
         lexgramBlocks: this.lexgramBlocks,
+        lastSentencePos: 0,
+        matchesPerPage: this.displayOptionsSettings.matchesPerPage,
         subcorpusData: this.subcorpusData,
       };
       console.log(data);
@@ -976,8 +993,11 @@ export default {
           }
         );
         if (response.ok) {
+          this.currentType = "lexgram";
           const data = await response.json();
-          this.searchResults = data;
+          this.searchResults = data.searchSentenceDTOs;
+          this.lastSentencePos = data.lastSentencePos;
+          this.loadableMore = this.lastSentencePos !== -1;
         } else {
           console.log(response);
         }
@@ -986,6 +1006,71 @@ export default {
         console.error(error);
       }
     },
+
+    async loadMore() {
+      if (this.currentType === "exact") {
+        const response = await fetch(
+          serverAdress + "/documents/search/certain",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              wordform: this.exactSearchInput,
+              lastSentencePos: this.lastSentencePos,
+              matchesPerPage: this.displayOptionsSettings.matchesPerPage,
+              subcorpusData: this.subcorpusData,
+            }),
+          }
+        );
+        if (response.ok) {
+          const data = await response.json();
+          this.searchResults = [
+            ...this.searchResults,
+            ...data.searchSentenceDTOs,
+          ];
+          this.lastSentencePos = data.lastSentencePos;
+          this.loadableMore = this.lastSentencePos !== -1;
+        } else {
+          console.error(response);
+        }
+      } else if (this.currentType === "lexgram") {
+        const data = {
+          lexgramBlocks: this.lexgramBlocks,
+          lastSentencePos: this.lastSentencePos,
+          matchesPerPage: this.displayOptionsSettings.matchesPerPage,
+          subcorpusData: this.subcorpusData,
+        };
+        try {
+          const response = await fetch(
+            serverAdress + "/documents/search/lex_gram",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            }
+          );
+          if (response.ok) {
+            const data = await response.json();
+            this.searchResults = [
+              ...this.searchResults,
+              ...data.searchSentenceDTOs,
+            ];
+            this.lastSentencePos = data.lastSentencePos;
+            this.loadableMore = this.lastSentencePos !== -1;
+          } else {
+            console.log(response);
+          }
+        } catch (error) {
+          console.log("Error in lexgramSearch");
+          console.error(error);
+        }
+      }
+    },
+
     addLexgramBlock() {
       this.lexgramBlocks.push({
         wordform: "",
