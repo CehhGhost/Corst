@@ -984,7 +984,6 @@ export default {
         matchesPerPage: this.displayOptionsSettings.matchesPerPage,
         subcorpusData: this.subcorpusData,
       };
-      console.log(data);
       try {
         const response = await fetch(
           serverAdress + "/documents/search/lex_gram",
@@ -1192,7 +1191,6 @@ export default {
         });
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
           this.lexgrammFeaturesFixed.errors = data;
         } else {
           console.error(response);
