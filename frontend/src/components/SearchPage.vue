@@ -1005,7 +1005,6 @@ export default {
           console.log(response);
         }
       } catch (error) {
-        console.log("Error in lexgramSearch");
         console.error(error);
       }
     },
@@ -1068,7 +1067,6 @@ export default {
             console.log(response);
           }
         } catch (error) {
-          console.log("Error in lexgramSearch");
           console.error(error);
         }
       }
