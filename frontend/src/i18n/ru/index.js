@@ -92,5 +92,5 @@ export default {
   load_more: "Загрузить еще",
   filter: "Фильтровать",
   Clear: "Сброс",
-  download_filtered: "Скачать",
+  download_filtered: "Скачать выборку",
 };
