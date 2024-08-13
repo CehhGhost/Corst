@@ -411,7 +411,6 @@ export default {
         );
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
           this.owners = data;
         }
       } catch (error) {
@@ -490,14 +489,15 @@ export default {
         owners: this.selectedOwners,
       };
       this.loadingComplete = false;
-      const response = fetch(serverAdress + "/documents/filter", {
-        method: "GET",
+      const response = await fetch(serverAdress + "/documents/filter", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + localStorage.getItem("corst_token"),
         },
         body: JSON.stringify(data),
       });
+      console.log(response);
       if (response.ok) {
         const data = await response.json();
         this.documents = data;
