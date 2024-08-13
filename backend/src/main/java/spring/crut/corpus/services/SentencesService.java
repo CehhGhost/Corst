@@ -243,6 +243,12 @@ public class SentencesService {
                             }
                         }
                     }
+                    if (flag) {
+                        break;
+                    }
+                }
+                if (flag) {
+                    break;
                 }
             }
             if (flag) {
