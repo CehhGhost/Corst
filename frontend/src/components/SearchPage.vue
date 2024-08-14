@@ -720,6 +720,7 @@
                       Show Context
                     </q-btn>
                     <q-btn
+                      v-if="hasAuthority"
                       flat
                       dense
                       color="secondary"
@@ -776,6 +777,7 @@
 <script>
 import { serverAdress } from "src/global/globalVaribles";
 import { ref } from "vue";
+import { checkAuthorities } from "../global/globalFunctions.js";
 
 export default {
   setup() {
@@ -937,8 +939,11 @@ export default {
       loadableMore: false,
       lastSentencePos: 0,
       currentType: "",
+
+      hasAuthority: false,
     };
   },
+  compute: {},
   methods: {
     blockLoadMore() {
       this.loadableMore = false;
@@ -1219,6 +1224,7 @@ export default {
         data.academicMajors;
     });
     await this.getAllErrorTags();
+    this.hasAuthority = await checkAuthorities("CHECK_ORIGINALDOCUMENT");
   },
 };
 </script>
