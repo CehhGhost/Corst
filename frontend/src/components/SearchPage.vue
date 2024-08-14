@@ -719,6 +719,16 @@
                     >
                       Show Context
                     </q-btn>
+                    <q-btn
+                      v-if="hasAuthority"
+                      flat
+                      dense
+                      color="secondary"
+                      style="position: absolute; top: 30px; right: 10px"
+                      @click="showContext(result.id)"
+                    >
+                      Show Document
+                    </q-btn>
                     <q-dialog v-model="contextVisible">
                       <q-card>
                         <q-card-section class="row items-center q-pb-sm">
@@ -767,6 +777,7 @@
 <script>
 import { serverAdress } from "src/global/globalVaribles";
 import { ref } from "vue";
+import { checkAuthorities } from "../global/globalFunctions.js";
 
 export default {
   setup() {
@@ -928,8 +939,11 @@ export default {
       loadableMore: false,
       lastSentencePos: 0,
       currentType: "",
+
+      hasAuthority: false,
     };
   },
+  compute: {},
   methods: {
     blockLoadMore() {
       this.loadableMore = false;
@@ -1005,7 +1019,6 @@ export default {
           console.log(response);
         }
       } catch (error) {
-        console.log("Error in lexgramSearch");
         console.error(error);
       }
     },
@@ -1068,7 +1081,6 @@ export default {
             console.log(response);
           }
         } catch (error) {
-          console.log("Error in lexgramSearch");
           console.error(error);
         }
       }
@@ -1212,6 +1224,7 @@ export default {
         data.academicMajors;
     });
     await this.getAllErrorTags();
+    this.hasAuthority = await checkAuthorities("CHECK_ORIGINALDOCUMENT");
   },
 };
 </script>
