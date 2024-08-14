@@ -354,6 +354,10 @@ public class SentencesService {
         return new SentenceContextDTO(contextText, resultNum);
     }
 
+    public Long getDocumentIdBySentenceId(Long id) {
+        return sentencesRepository.findById(id).orElseThrow().getDocument().getId();
+    }
+
     static class LemmatizedWordform {
         @JsonProperty("lemmatized_string")
         private String text;
