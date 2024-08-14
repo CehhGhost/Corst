@@ -719,6 +719,15 @@
                     >
                       Show Context
                     </q-btn>
+                    <q-btn
+                      flat
+                      dense
+                      color="secondary"
+                      style="position: absolute; top: 30px; right: 10px"
+                      @click="showContext(result.id)"
+                    >
+                      Show Document
+                    </q-btn>
                     <q-dialog v-model="contextVisible">
                       <q-card>
                         <q-card-section class="row items-center q-pb-sm">
