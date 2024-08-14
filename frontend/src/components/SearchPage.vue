@@ -1209,7 +1209,7 @@ export default {
       );
       if (request.ok) {
         const data = await request.json();
-        this.$router.push("/document/" + data);
+        this.$router.push("/documents/" + data);
       } else {
         console.error(request);
       }
