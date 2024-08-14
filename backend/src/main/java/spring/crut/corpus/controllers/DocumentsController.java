@@ -120,7 +120,7 @@ public class DocumentsController {
         return ResponseEntity.ok(sentencesService.getContextForSentence(id, amount));
     }
     @GetMapping("/get_by_sentence/{id}")
-    public ResponseEntity<?> getDocumentBySentence(@PathVariable Long id) {
-        return this.getDocumentByID(sentencesService.getDocumentIdBySentence(id));
+    public ResponseEntity<?> getDocumentIdBySentenceId(@PathVariable Long id) {
+        return ResponseEntity.ok(sentencesService.getDocumentIdBySentenceId(id));
     }
 }
