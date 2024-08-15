@@ -8,7 +8,6 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
 
-// TODO подумать насчет неизменяемости и уникальности роли админа
 @Entity
 @Data
 @NoArgsConstructor

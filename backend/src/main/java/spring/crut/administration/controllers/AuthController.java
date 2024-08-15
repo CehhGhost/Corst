@@ -55,7 +55,6 @@ public class AuthController {
         usersService.changePasswordForUser(id, requestBody.get("oldPassword"), requestBody.get("newPassword"));
         return ResponseEntity.ok(HttpStatus.OK);
     }
-    // TODO протестировать при разных исходах работы с токеном
     @GetMapping("/get_auth_info")
     ResponseEntity<?> getAuthInfo() {
         return ResponseEntity.ok(crutUserDetailsService.getAuthInfo());

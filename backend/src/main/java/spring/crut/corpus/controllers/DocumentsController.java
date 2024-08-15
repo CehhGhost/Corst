@@ -24,7 +24,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/documents")
 @RequiredArgsConstructor
-// TODO продумать ситуацию, что удаление и изменение позволительны для своих документов, если есть хотя бы разрешение CREATE_DOCUMENTS
 public class DocumentsController {
     private final ModelMapper modelMapper;
     private final DocumentsService documentsService;
@@ -36,7 +35,6 @@ public class DocumentsController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @PutMapping("/update/{id}")
-    // TODO подумать насчет изменения документов без необходимых прав
     public ResponseEntity<HttpStatus> updateDocumentById(@PathVariable Long id, @RequestBody CreateUpdateDocumentDTO documentDTO) {
         documentsService.updateDocument(id, documentDTO);
         return ResponseEntity.ok(HttpStatus.OK);
@@ -114,7 +112,6 @@ public class DocumentsController {
         documentsService.setStatusById(id, status);
         return ResponseEntity.ok(HttpStatus.OK);
     }
-    // TODO продумать ситуацию с тем, что полный контекст видят только пользователи с определенными правами
     @GetMapping("/sentences/{id}/get_context/{amount}")
     public ResponseEntity<?> getContextForSentence(@PathVariable Long id, @PathVariable Integer amount) {
         return ResponseEntity.ok(sentencesService.getContextForSentence(id, amount));
