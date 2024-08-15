@@ -725,7 +725,7 @@
                       dense
                       color="secondary"
                       style="position: absolute; top: 30px; right: 10px"
-                      @click="showContext(result.id)"
+                      @click="showDocument(result.id)"
                     >
                       Show Document
                     </q-btn>
@@ -1196,6 +1196,25 @@ export default {
       }
     },
 
+    async showDocument(id) {
+      const request = await fetch(
+        serverAdress + `/documents/get_by_sentence/${id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("corst_token"),
+          },
+        }
+      );
+      if (request.ok) {
+        const data = await request.json();
+        this.$router.push("/documents/" + data);
+      } else {
+        console.error(request);
+      }
+    },
+
     async getAllErrorTags() {
       try {
         const response = await fetch(serverAdress + "/info/error_tags", {
@@ -1224,7 +1243,7 @@ export default {
         data.academicMajors;
     });
     await this.getAllErrorTags();
-    this.hasAuthority = await checkAuthorities("CHECK_ORIGINALDOCUMENT");
+    this.hasAuthority = await checkAuthorities("SEE_READ_ALLDOCUMENTS");
   },
 };
 </script>
