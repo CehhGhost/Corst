@@ -39,6 +39,9 @@ public class RolesService {
         if (rolesRepository.findByName(roleDTO.getName()).isPresent()) {
             throw new IllegalArgumentException("This role is already existing");
         }
+        if (roleDTO.getName().equals("ROLE_ADMIN")) {
+            throw new IllegalArgumentException("You cant create a new ROLE_ADMIN!");
+        }
         Role role = new Role();
         role.setName(roleDTO.getName());
         Set<Authority> authorities = new HashSet<>();
@@ -55,6 +58,9 @@ public class RolesService {
         var role = rolesRepository.findById(id);
         if (role.isEmpty()) {
             throw new IllegalArgumentException("There is no such role");
+        }
+        if (role.get().getName().equals("ROLE_ADMIN")) {
+            throw new IllegalArgumentException("You cant delete ROLE_ADMIN!");
         }
         for (var user : role.get().getUsers()) {
             user.setRole(null);
@@ -77,6 +83,9 @@ public class RolesService {
         var role = rolesRepository.findById(id);
         if (role.isEmpty()) {
             throw new IllegalArgumentException("There is no such role");
+        }
+        if (role.get().getName().equals("ROLE_ADMIN")) {
+            throw new IllegalArgumentException("You cant change ROLE_ADMIN!");
         }
         var checkRole = rolesRepository.findByName(roleDTO.getName());
         if (checkRole.isPresent() && !checkRole.get().getId().equals(role.get().getId())) {
