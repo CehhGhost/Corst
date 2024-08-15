@@ -54,6 +54,9 @@ public class UsersService {
         if (role.isEmpty()) {
             throw new IllegalArgumentException("There is no such role");
         }
+        if (role.get().getName().equals("ROLE_ADMIN")) {
+            throw new IllegalArgumentException("You cant set ROLE_ADMIN for any user");
+        }
         var user = usersRepository.findById(id);
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("User not found");
@@ -106,6 +109,9 @@ public class UsersService {
             throw new IllegalArgumentException("No user with such id!");
         }
         var current_user = usersRepository.findByUsername(userDTO.getUsername());
+        if (current_user.isPresent() && current_user.get().getId().equals(usersRepository.findByUsername("admin").orElseThrow().getId())) {
+            throw new IllegalArgumentException("You cant change user admin");
+        }
         if (current_user.isPresent() && !current_user.get().getId().equals(id)) {
             throw new IllegalArgumentException("This username is already existed");
         }
@@ -119,6 +125,9 @@ public class UsersService {
 
     // TODO доделать
     public void deleteUserById(Long id) {
+        if (usersRepository.findByUsername("admin").orElseThrow().getId().equals(id)) {
+            throw new IllegalArgumentException("You cant delete user admin");
+        }
         var user = usersRepository.findById(id);
         if (user.isEmpty()) {
             throw new IllegalArgumentException("No user with such id!");
